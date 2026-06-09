@@ -1,0 +1,24 @@
+{
+  "name": "soritech",
+  "version": "1.0.0",
+  "description": "",
+  "main": "Backend/server.js",
+  "scripts": {
+    "start": "node Backend/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sofiasanfor/SoriTech.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/sofiasanfor/SoriTech/issues"
+  },
+  "homepage": "https://github.com/sofiasanfor/SoriTech#readme",
+  "dependencies": {
+    "express": "^5.2.1"
+  }
+}
