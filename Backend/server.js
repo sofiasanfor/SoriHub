@@ -13,6 +13,7 @@ app.get("/", (req, res) => {
 
 
 console.log("MONGO_URI existe:", !!process.env.MONGO_URI);
+console.log("MONGODB_URI existe:", !!process.env.MONGODB_URI);
 
 mongoose.connect(process.env.MONGO_URI || process.env.MONGODB_URI)
 .then(() => {
