@@ -11,6 +11,17 @@ app.get("/", (req, res) => {
     res.send("SoriTech Backend funcionando 🚀");
 });
 
+
+console.log("MONGO_URI existe:", !!process.env.MONGO_URI);
+
+mongoose.connect(process.env.MONGO_URI)
+.then(() => {
+    console.log("✅ MongoDB conectado");
+})
+.catch((error) => {
+    console.error("❌ Error MongoDB:", error);
+});
+
 mongoose.connect(process.env.MONGO_URI)
 .then(() => {
     console.log("✅ MongoDB conectado");
