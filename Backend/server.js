@@ -45,3 +45,10 @@ app.get("/cloudinary-test", async (req, res) => {
 app.listen(PORT, () => {
     console.log(`Servidor corriendo en puerto ${PORT}`);
 });
+
+app.get("/test-mongo", async (req, res) => {
+    res.json({
+        success: true,
+        message: "Mongo conectado"
+    });
+});
