@@ -1,3 +1,7 @@
+require("dotenv").config({
+    path: "./Backend/.env"
+});
+
 const crypto = require("crypto")
 const express = require("express")
 const path = require("path")
