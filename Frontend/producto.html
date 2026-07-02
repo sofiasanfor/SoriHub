@@ -1,0 +1,1343 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Producto - Sensify</title>
+
+<style>
+
+:root{
+  --color-principal: #1b0b2e; 
+  --color-secundario: #ff4fd8;  
+  --color-acento: #ff8be3;    
+  --color-texto: #ffffff;       
+  --color-card: #1a1a24;
+}
+
+body{
+margin:0;
+font-family:'Poppins',sans-serif;
+background:var(--color-principal);
+color:var(--color-texto);
+}
+
+/* NAVBAR */
+.navbar{
+display:flex;
+align-items:center;
+justify-content:space-between;
+padding:10px 30px;
+background:linear-gradient(90deg,var(--color-principal), var(--color-card));
+position:relative;
+}
+
+.logo img{height:60px;}
+
+.tabs-content,
+#descripcionCorta,
+.info p{
+  text-align:justify;
+}
+
+.menu{
+display:flex;
+gap:30px;
+}
+
+.menu a{
+color:var(--color-texto);
+text-decoration:none;
+}
+
+.menu a:hover{color:var(--color-acento);}
+
+.derecha{
+display:flex;
+gap:15px;
+align-items:center;
+}
+
+.carrito{
+position:relative;
+font-size:22px;
+cursor:pointer;
+}
+
+.contador{
+position:absolute;
+top:-8px;
+right:-10px;
+background:var(--color-secundario);
+color:var(--color-texto);
+font-size:12px;
+padding:2px 6px;
+border-radius:50%;
+display:none;
+}
+
+.login a{
+background:var(--color-secundario);
+padding:8px 15px;
+border-radius:8px;
+color:var(--color-texto);
+text-decoration:none;
+}
+
+
+/* CONTENEDOR */
+.container{
+max-width:1200px;
+margin:auto;
+padding:40px;
+
+display:grid;
+grid-template-columns: auto 1fr 300px;
+gap:40px;
+align-items:start;
+}
+
+.compra{
+width:300px;
+}
+
+/* GALERIA */
+.galeria{
+display:flex;
+gap:15px;
+}
+
+.miniaturas{
+display:flex;
+flex-direction:column;
+gap:10px;
+}
+
+.miniaturas img{
+width:70px;
+height:70px;
+object-fit:cover;
+cursor:pointer;
+border-radius:8px;
+border:2px solid transparent;
+}
+
+.miniaturas img:hover{
+border:2px solid var(--color-secundario);
+}
+
+.zoom-container{
+overflow:hidden;
+border-radius:10px;
+display:flex;
+justify-content:center;
+align-items:center;
+}
+
+.zoom-container img{
+width:400px;
+object-fit:cover; 
+background:var(--color-texto);
+transition:transform 0.15s ease;
+cursor:zoom-in;
+max-width:100%;
+height:auto;
+display:block;
+margin:auto;
+}
+
+.zoom-container{
+position:relative;
+overflow:hidden;
+border-radius:10px;
+}
+
+.zoom-container img{
+width:400px;
+height:400px;
+object-fit:contain;
+background:var(--color-texto);
+transition:transform 0.1s;
+}
+
+/* INFO */
+.info{
+flex:1;
+}
+
+.nombre{
+font-size:28px;
+color:var(--color-acento);
+}
+
+.estrellas span{
+font-size:20px;
+cursor:pointer;
+}
+
+.precio{
+font-size:22px;
+margin:15px 0;
+}
+
+/* PANEL DERECHO */
+.compra{
+width:280px;
+background:var(--color-card);
+padding:20px;
+border-radius:12px;
+border:1px solid var(--color-acento);
+height:fit-content;
+}
+
+.select{
+width:100%;
+padding:8px;
+margin:10px 0;
+border-radius:6px;
+border:none;
+}
+
+.btn{
+width:100%;
+padding:12px;
+background:var(--color-secundario);
+border:none;
+color:var(--color-texto);
+border-radius:8px;
+cursor:pointer;
+}
+
+.btn:hover{
+filter:brightness(1.1);
+}
+
+/* FOOTER */
+.redes img{
+width:30px;
+margin:0 10px;
+cursor:pointer;
+}
+
+/* INFO FINAL */
+.info-final{
+display:flex;
+justify-content:space-between; 
+align-items:flex-start;
+gap:30px;
+
+max-width:1200px;
+margin:40px auto;
+padding:0 20px;
+}
+
+.info-final .bloque{
+flex:1;           
+max-width:220px;  
+text-align:center;
+}
+
+.bloque h4{
+color:var(--color-secundario);
+}
+
+/* WHATSAPP */
+.whatsapp{
+position:fixed;
+bottom:20px;
+right:20px;
+display:flex;
+align-items:center;
+gap:10px;
+text-decoration:none;
+}
+
+.texto{
+background:var(--color-texto);
+color:var(--color-principal);
+padding:10px;
+border-radius:8px;
+}
+
+.whatsapp img{
+width:50px;
+background:#25D366;
+padding:10px;
+border-radius:50%;
+}
+
+/* TOAST */
+#toast{
+position:fixed;
+bottom:30px;
+left:50%;
+transform:translateX(-50%);
+background:var(--color-secundario);
+color:var(--color-texto);
+padding:12px 20px;
+border-radius:8px;
+opacity:0;
+transition:0.3s;
+}
+
+.comentarios{
+max-width:800px;
+margin:60px auto;
+background:var(--color-card);
+padding:30px;
+border-radius:15px;
+border:1px solid #2e2e40;
+}
+
+.comentarios h2{
+color:var(--color-acento);
+text-align:center;
+margin-bottom:20px;
+}
+
+.comentarios textarea{
+width:100%;
+height:100px;
+padding:12px;
+border-radius:8px;
+border:1px solid var(--color-card);
+margin-bottom:15px;
+resize:none;
+box-sizing:border-box;
+background:var(--color-principal);
+color:var(--color-texto);
+}
+
+.comentarios textarea::placeholder{
+color:rgba(255,255,255,0.5);
+}
+
+.comentarios button{
+background:var(--color-secundario);
+border:none;
+padding:10px 20px;
+color:var(--color-texto);
+border-radius:8px;
+cursor:pointer;
+display:block;
+margin:auto;
+box-shadow:0 0 10px var(--color-secundario);
+}
+
+.comentarios button:hover{
+filter:brightness(1.1);
+}
+
+.comentario{
+background:var(--color-card);
+padding:15px;
+border-radius:12px;
+margin-top:15px;
+border:1px solid rgba(255,255,255,0.08);
+box-shadow:0 0 12px var(--color-secundario);
+}
+
+.comentario span{
+color:var(--color-secundario);
+font-size:12px;
+opacity:0.8;
+}
+
+.estrellas-input span.activa{
+color:var(--color-secundario);
+}
+
+.promedio{
+text-align:center;
+margin-bottom:10px;
+color:var(--color-acento);
+font-size:16px;
+}
+
+.contacto{
+background:var(--color-principal);
+padding:40px;
+text-align:center;
+}
+
+.logo-footer{
+width:180px;
+margin-bottom:20px;
+}
+
+.contacto p{
+margin:8px 0;
+color:var(--color-texto);
+}
+
+.redes{
+margin-top:20px;
+}
+
+.redes img{
+width:30px;
+margin:0 10px;
+cursor:pointer;
+transition:0.3s;
+}
+
+.redes img:hover{
+transform:scale(1.2);
+}
+
+.bloque h4{
+color:var(--color-secundario);
+}
+
+.descripcion-larga{
+max-width:1200px;
+margin:30px auto;
+padding:20px 40px;
+color:var(--color-texto);
+line-height:1.6;
+}
+
+.info{
+width:100%;     
+max-width:100%;  
+overflow:hidden;    
+}
+
+
+
+.info p{
+max-width:500px;
+}
+
+.tabs{
+max-width:1200px;
+margin:40px auto;
+}
+
+.tabs-header{
+display:flex;
+justify-content:center;
+align-items:center;
+flex-wrap:wrap;
+gap:15px;
+margin-bottom:25px;
+}
+
+.tabs-header button{
+flex:1 1 180px; 
+max-width:220px;
+
+padding:14px 20px;
+border:none;
+border-radius:12px;
+
+background:var(--color-card);
+color:var(--color-texto);
+cursor:pointer;
+
+font-size:15px;
+font-weight:500;
+
+transition:0.3s;
+}
+
+.tabs-header button:hover{
+transform:translateY(-2px);
+background:var(--color-secundario);
+opacity:0.8;
+}
+
+.tabs-header button.activo{
+background:var(--color-secundario);
+color:var(--color-texto);
+box-shadow:0 0 15px var(--color-secundario);
+}
+
+.tabs-header button.activo{
+background:var(--color-secundario);
+}
+
+.tabs-content{
+background:var(--color-card);
+padding:20px;
+border-radius:12px;
+color:var(--color-texto);
+line-height:1.6;
+}
+
+.menu-btn{
+display:none;
+font-size:28px;
+cursor:pointer;
+color:var(--color-texto);
+}
+
+  .menu-movil{
+display:none;
+position:absolute;
+top:60px;
+left:10px;
+width:200px; 
+right:10px;
+ background:var(--color-card);
+padding:15px;
+border-radius:12px;
+box-shadow:0 10px 30px rgba(0,0,0,0.5);
+z-index:1000;
+animation:fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn{
+from{opacity:0; transform:translateY(-10px);}
+to{opacity:1; transform:translateY(0);}
+}
+
+  .menu-movil a{
+display:block;
+margin:12px 0;
+font-size:16px;
+text-align:center; 
+color:var(--color-texto);
+}
+
+.derecha{
+display:flex;
+align-items:center;
+gap:12px;
+}
+
+/*cel*/
+@media (max-width:768px){
+
+.container,
+.tabs,
+.comentarios,
+.contacto,
+.info{
+  width:100%;
+  max-width:95%;
+  margin-left:auto;
+  margin-right:auto;
+}
+
+  /* NAVBAR */
+  .menu{
+    display:none;
+  }
+
+  .menu-btn{
+    display:block;
+  }
+
+  .logo img{
+    height:45px;
+  }
+
+  .carrito{
+    font-size:16px;
+  }
+
+  /* CONTENIDO */
+  .container{
+    grid-template-columns:1fr !important;
+     padding:10px !important;
+  }
+
+  /* GALERIA */
+  .galeria{
+    flex-direction:column;
+    align-items:center;
+  }
+
+  .miniaturas{
+    flex-direction:row;
+    overflow-x:auto;
+  }
+
+  .miniaturas img{
+    width:60px;
+    height:60px;
+  }
+
+  .zoom-container img{
+    width:100%;
+    height:auto;
+  }
+
+  /* INFO */
+  .nombre{
+    font-size:22px;
+  }
+
+  .precio{
+    font-size:18px;
+  }
+
+  /* COMPRA */
+  .compra{
+  width:90% !important;
+  max-width:350px;
+  margin:20px auto;
+  padding:15px !important;
+}
+
+  /* TABS */
+
+  .tabs{
+  max-width:95% !important;
+  margin:30px auto !important;
+}
+
+  .tabs-header button{
+    flex:1 1 45%;
+    font-size:13px;
+  }
+
+.comentarios{
+  width:90% !important;
+  max-width:480px !important; 
+  margin:40px auto !important;
+  padding:18px !important; 
+}
+
+.tabs-content{
+  padding:18px !important;
+}
+
+.comentarios textarea{
+  height:80px !important; 
+  padding:10px !important;
+}
+
+.info-final{
+display:grid !important;
+grid-template-columns: 1fr 1fr;
+gap:20px;
+padding:30px 15px;
+text-align:center;
+}
+
+.info-final .bloque{
+width:100% !important;
+margin:0;
+}
+
+.info-final .bloque h4{
+font-size:13px;
+}
+
+.info-final .bloque p{
+font-size:11px;
+}
+
+.info-final .bloque:last-child{
+grid-column: 1 / span 2;
+justify-self: center;  
+text-align:center;
+max-width:250px;
+}
+
+.bloque{
+width:100% !important;
+margin:0;
+}
+
+.bloque h4{
+font-size:13px;
+text-align:center;
+}
+
+.bloque p{
+font-size:11px;
+text-align:center;
+}
+
+.contacto{
+padding:25px 15px !important;
+}
+
+.logo-footer{
+width:140px !important;
+}
+
+.redes img{
+width:25px !important;
+margin:0 6px !important;
+}
+
+.contacto p{
+font-size:13px;
+}
+
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="navbar">
+
+  <div class="menu-btn" onclick="toggleMenu()">☰</div>
+
+  <div class="logo">
+    <img src="logo.png">
+  </div>
+
+  <div class="menu">
+    <a href="index.html">Home</a>
+    <a href="sensify.html">Sensify</a>
+    <a href="contacto.html">Contáctenos</a>
+  </div>
+
+  <div class="derecha">
+    <div class="carrito" onclick="window.location='carrito.html'">
+      🛒<span class="contador"></span>
+    </div>
+    <div class="login" id="zonaUsuario"></div>
+  </div>
+
+</div>
+
+<div class="menu-movil" id="menuMovil">
+  <a href="index.html">Home</a>
+  <a href="sensify.html">Sensify</a>
+  <a href="contacto.html">Contáctenos</a>
+  <hr>
+  <div id="zonaUsuarioMovil"></div>
+</div>
+
+<div class="container">
+
+<!-- GALERIA -->
+<div class="galeria">
+<div class="miniaturas" id="miniaturas"></div>
+
+<div class="zoom-container">
+<img id="imgPrincipal">
+</div>
+</div>
+
+<!-- INFO -->
+<div class="info">
+<div class="nombre" id="nombre"></div>
+
+<div class="estrellas" id="estrellas"></div>
+
+<p id="descripcionCorta"></p>
+
+<div class="precio" id="precio"></div>
+</div>
+
+<!-- COMPRA -->
+<div class="compra">
+
+<div class="precio" id="precio2"></div>
+
+<p id="stock"></p>
+
+<select id="cantidad" class="select"></select>
+
+<button class="btn" onclick="agregar()">Agregar al carrito</button>
+
+</div>
+
+</div>
+
+<div class="tabs">
+
+<div class="tabs-header">
+<button onclick="cambiarTab('desc', this)" class="activo">📄 Descripción</button>
+
+<button onclick="cambiarTab('info', this)">📦 Info adicional</button>
+
+<button onclick="cambiarTab('carac', this)">⚙️ Características</button>
+
+<button onclick="cambiarTab('uso', this)">💫 Modo de uso</button>
+
+<button onclick="cambiarTab('reco', this)">⚠️ Recomendaciones</button>
+</div>
+
+<div class="tabs-content" id="tabContenido"></div>
+
+</div>
+
+<div class="comentarios">
+
+<h2>💬 Opiniones</h2>
+
+<!-- PROMEDIO -->
+<div id="promedio" class="promedio"></div>
+
+<!-- ESTRELLAS PARA VOTAR -->
+<div class="estrellas-input" id="estrellasInput">
+<span onclick="setEstrella(1)">☆</span>
+<span onclick="setEstrella(2)">☆</span>
+<span onclick="setEstrella(3)">☆</span>
+<span onclick="setEstrella(4)">☆</span>
+<span onclick="setEstrella(5)">☆</span>
+</div>
+
+<textarea id="textoComentario" placeholder="Todos los comentarios seran publicados como anonimos para mayor confidencialidad"></textarea>
+
+<button onclick="publicarComentario()">Publicar</button>
+
+<div id="listaComentarios"></div>
+
+</div>
+
+<div class="contacto">
+
+<img src="logo.png" class="logo-footer">
+
+<p>Tienda online en Bogotá, para todo Colombia</p>
+
+<p>Pide ahora tus productos:</p>
+
+<p><b>LÍNEA DE WHATSAPP</b></p>
+<p>+57 316 9999985</p>
+
+<p>Email: sensify.tienda@gmail.com</p>
+
+<div class="redes">
+<a href="https://www.facebook.com/share/1a1P11ZPDP/" target="_blank">
+<img src="facebook.png">
+</a>
+
+<a href="https://www.instagram.com/sensify.co_?igsh=eHBlaWJmNngxbmd5" target="_blank">
+<img src="instagram.png">
+</a>
+
+<a href="https://wa.me/3169999985?text=Hola!%20quiero%20información" target="_blank">
+<img src="whatsapp.png">
+</a>
+</div>
+
+</div>
+
+<div class="info-final">
+
+<div class="bloque">
+<h4>TU PEDIDO EN CORTO TIEMPO</h4>
+<p>Realiza tu pedido antes de las 10 am y lo enviaremos el mismo día Si estás en Bogotá, te llegará el mismo día.</p>
+</div>
+
+<div class="bloque">
+<h4>MEDIOS DE PAGO</h4>
+<p>PSE, Tarjetas Débito, Crédito, Transferencia Electrónica, Servicio contraentrega.</p>
+</div>
+
+<div class="bloque">
+<h4>ENVÍOS A CUALQUIER PARTE DE COLOMBIA</h4>
+<p>Se entregarán de acuerdo a las políticas establecidas por la compañía de transporte.</p>
+</div>
+
+<div class="bloque">
+<h4>ASESORÍA PERSONALIZADA</h4>
+<p>Contacta a nuestros asesores expertos a través de WhatsApp y recibe atención oportuna.</p>
+</div>
+
+<div class="bloque">
+<h4>PEDIDO DISCRETO</h4>
+<p>Envíos discretos, nadie sabrá lo que has comprado, la sorpresa es para ti.</p>
+</div>
+
+</div>
+
+<div id="menuBotonBajo"></div>
+
+<script>
+
+  function formatearPrecio(num){
+  return num.toLocaleString("es-CO")
+}
+
+async function aplicarColores(){
+
+  try{
+    let res = await fetch("/colores")
+    let c = await res.json()
+
+    let root = document.documentElement
+
+    root.style.setProperty("--color-principal", c.principal)
+    root.style.setProperty("--color-secundario", c.secundario)
+    root.style.setProperty("--color-acento", c.acento)
+    root.style.setProperty("--color-texto", c.texto)
+    root.style.setProperty("--color-card", c.card)
+
+  }catch(e){
+    console.log("No se pudieron cargar colores dinámicos")
+  }
+
+}
+
+async function cargar(){
+
+let id = new URLSearchParams(window.location.search).get("id")
+
+let res = await fetch("/productos")
+let productos = await res.json()
+
+let p = productos.find(x=>x._id==id)
+  window.productoActual = p
+
+// SUMAR VISTA SOLO UNA VEZ REAL
+let yaVisto = localStorage.getItem("vista_" + id)
+
+if (!yaVisto) {
+
+  localStorage.setItem("vista_" + id, "si")
+
+  fetch("/productos/vista/" + id, {
+    method: "POST"
+  })
+
+}
+
+/* IMAGENES */
+let imgs = p.imagenes && p.imagenes.length ? p.imagenes : [p.imagen]
+
+let mini = document.getElementById("miniaturas")
+let principal = document.getElementById("imgPrincipal")
+
+if(imgs.length > 0){
+  principal.src = imgs[0]
+}
+mini.innerHTML = "" // limpia
+
+imgs.forEach(img=>{
+mini.innerHTML += `<img src="${img}" onclick="cambiar('${img}')">`
+})
+
+document.getElementById("nombre").innerText = p.nombre
+let texto = p.descripcion || ""
+
+let corta = texto.substring(0, 120)
+let larga = texto.substring(120)
+
+document.getElementById("descripcionCorta").innerText = corta + (texto.length > 120 ? "..." : "")
+if(p.promo === true){
+
+document.getElementById("precio").innerHTML = `
+<span style="background:var(--color-secundario); padding:5px 10px; border-radius:8px;">
+Promoción
+</span>
+
+<h2>
+<span style="color:var(--color-acento);">-${p.descuento}%</span>
+$${formatearPrecio(p.precioPromo)}
+</h2>
+
+<p style="text-decoration:line-through; color:var(--color-texto);
+opacity:0.5;">
+$${p.precio}
+</p>
+`
+
+document.getElementById("precio2").innerHTML = `
+<h2>$${p.precioPromo}</h2>
+<p style="text-decoration:line-through; color:var(--color-texto);
+opacity:0.5;">
+$${formatearPrecio(p.precio)}
+</p>
+`
+
+}else{
+
+document.getElementById("precio").innerText = "$" + formatearPrecio(p.precio)
+document.getElementById("precio2").innerText = "$" + formatearPrecio(p.precio)
+
+}
+
+/* STOCK */
+let stock = Math.floor(Math.random()*10)+1
+document.getElementById("stock").innerText =
+stock<=3 ? "⚠️ Solo quedan "+stock : "Disponible"
+
+/* CANTIDAD */
+let select = document.getElementById("cantidad")
+for(let i=1;i<=10;i++){
+select.innerHTML += `<option>${i}</option>`
+}
+
+
+/* CONTADOR */
+actualizarContador()
+}
+
+function cambiar(src){
+document.getElementById("imgPrincipal").src = src
+}
+
+
+/* CARRITO */
+async function agregar(){
+
+let usuario = JSON.parse(localStorage.getItem("usuario"))
+
+let id = new URLSearchParams(window.location.search).get("id")
+
+let res = await fetch("/productos")
+let productos = await res.json()
+
+let p = productos.find(x=>x._id==id)
+
+let cantidad = Number(document.getElementById("cantidad").value)
+
+// calcular precio final
+let precioFinal = p.precio
+if(p.promo === true && p.precioPromo){
+precioFinal = p.precioPromo
+}
+
+if(usuario){
+
+// ✅ BACKEND
+await fetch("/carrito/agregar", {
+method: "POST",
+headers: { "Content-Type": "application/json" },
+body: JSON.stringify({
+usuario: usuario.correo,
+producto: {
+productoId: p._id,
+nombre: p.nombre,
+precio: precioFinal,
+precioOriginal: p.precio,
+descuento: p.descuento,
+promo: p.promo,
+cantidad: cantidad,
+imagen: p.imagenes?.[0] || ""
+}
+})
+})
+
+}else{
+
+// LOCAL (sin login)
+let carrito = JSON.parse(localStorage.getItem("carrito")) || []
+
+let existente = carrito.find(x=>x.productoId === p._id)
+
+if(existente){
+existente.cantidad += cantidad
+}else{
+carrito.push({
+productoId: p._id,
+nombre: p.nombre,
+precio: precioFinal,
+precioOriginal: p.precio,
+descuento: p.descuento,
+promo: p.promo,
+cantidad: cantidad,
+imagen: p.imagenes?.[0] || ""
+})
+}
+
+localStorage.setItem("carrito", JSON.stringify(carrito))
+}
+
+// actualizar contador SIEMPRE
+actualizarContador()
+
+mostrarNotificacion("Producto agregado 🛒")
+}
+
+function toggleMenu(){
+let menu = document.getElementById("menuMovil")
+menu.style.display = menu.style.display === "block" ? "none" : "block"
+}
+
+/* CONTADOR */
+async function actualizarContador(){
+
+let usuario = JSON.parse(localStorage.getItem("usuario"))
+let total = 0
+
+if(usuario){
+
+let res = await fetch("/carrito/" + usuario.correo)
+let data = await res.json()
+
+let carrito = data.productos || []
+total = carrito.reduce((acc,p)=> acc + (p.cantidad || 1), 0)
+
+}else{
+
+let carrito = JSON.parse(localStorage.getItem("carrito")) || []
+total = carrito.reduce((acc,p)=> acc + (p.cantidad || 1), 0)
+
+}
+
+document.querySelectorAll(".contador").forEach(c=>{
+if(total === 0){
+c.style.display="none"
+}else{
+c.style.display="block"
+c.innerText = total
+}
+})
+}
+
+/* TOAST */
+function mostrarNotificacion(msg){
+
+let t = document.getElementById("toast")
+
+t.innerText = msg
+t.style.opacity = "1"
+
+setTimeout(()=>{
+t.style.opacity="0"
+},2000)
+}
+
+let calificacionSeleccionada = 0
+
+function setEstrella(n){
+
+calificacionSeleccionada = n
+
+let estrellas = document.querySelectorAll("#estrellasInput span")
+
+estrellas.forEach((e,i)=>{
+e.innerText = i < n ? "★" : "☆"
+e.classList.toggle("activa", i < n)
+})
+
+}
+
+/* CARGAR */
+async function cargarComentarios(){
+
+let id = new URLSearchParams(window.location.search).get("id")
+
+let res = await fetch("/comentarios/" + id)
+let comentarios = await res.json()
+
+let cont = document.getElementById("listaComentarios")
+cont.innerHTML = ""
+
+/* PROMEDIO */
+let suma = 0
+let cantidad = 0
+
+comentarios.forEach(c => {
+  if(c.estrellas > 0){
+    suma += c.estrellas
+    cantidad++
+  }
+})
+
+let promedio = 0
+
+if(cantidad > 0){
+  promedio = suma / cantidad
+}
+
+/* ESTRELLAS ARRIBA */
+let estrellasTop = ""
+for(let i=1;i<=5;i++){
+estrellasTop += i <= Math.round(promedio) ? "★" : "☆"
+}
+
+document.getElementById("estrellas").innerHTML =
+estrellasTop + " ("+ (promedio || 0).toFixed(1) +")"
+
+/* LISTA */
+comentarios.forEach(c=>{
+
+cont.innerHTML += `
+<div class="comentario">
+<div class="estrellas">${"★".repeat(c.estrellas)}${"☆".repeat(5-c.estrellas)}</div>
+<span>Anónimo</span>
+<p>${c.texto}</p>
+</div>
+`
+
+})
+
+}
+
+async function publicarComentario(){
+
+let input = document.getElementById("textoComentario")
+let texto = input.value.trim()
+
+if(texto === "" && calificacionSeleccionada === 0){
+alert("Agrega un comentario o estrellas 😅")
+return
+}
+
+let id = new URLSearchParams(window.location.search).get("id")
+
+await fetch("/comentarios", {
+method: "POST",
+headers: {
+"Content-Type": "application/json"
+},
+body: JSON.stringify({
+productoId: id,
+texto: texto,
+estrellas: calificacionSeleccionada || 0
+})
+})
+
+input.value = ""
+setEstrella(0)
+
+cargarComentarios()
+
+mostrarNotificacion("Comentario publicado 💜")
+
+}
+
+function verificarUsuario(){
+
+let usuario = JSON.parse(localStorage.getItem("usuario"))
+let cont = document.getElementById("zonaUsuario")
+
+if(usuario){
+
+let foto = usuario.foto || "user.png"
+
+cont.innerHTML = `
+<div onclick="irPerfil()" style="
+display:flex;
+align-items:center;
+gap:8px;
+cursor:pointer;
+">
+
+<img src="${foto}" style="
+width:35px;
+height:35px;
+border-radius:50%;
+object-fit:cover;
+border:2px solid var(--color-secundario);
+">
+
+<span style="
+color:var(--color-acento);
+font-weight:bold;
+font-size:14px;
+">
+Hola, ${usuario.nombre}
+</span>
+
+</div>
+`
+
+}else{
+
+cont.innerHTML = `
+<a href="login.html">Iniciar sesión</a>
+`
+
+}
+
+}
+
+function logout(){
+localStorage.removeItem("usuario")
+window.location.href = "index.html"
+}
+
+function irPerfil(){
+window.location.href = "perfil.html"
+}
+
+function cambiarTab(tab, boton=null){
+
+  console.log("TAB:", tab, productoActual)
+let p = window.productoActual
+if(!p) return
+
+let contenido = ""
+
+if(tab === "desc"){
+  contenido = p.descripcionLarga || p.descripcion || "Sin descripción"}
+if(tab === "info") contenido = p.info || "Sin información"
+if(tab === "carac") contenido = p.caracteristicas || "Sin características"
+if(tab === "uso") contenido = p.modoUso || "Sin instrucciones"
+if(tab === "reco") contenido = p.recomendaciones || "Sin recomendaciones"
+
+document.getElementById("tabContenido").innerText = contenido
+
+// limpiar activos
+document.querySelectorAll(".tabs-header button")
+.forEach(b=>b.classList.remove("activo"))
+
+// activar botón correcto
+if(boton){
+boton.classList.add("activo")
+}else{
+document.querySelector(".tabs-header button").classList.add("activo")
+}
+
+}
+
+verificarUsuario()
+
+aplicarColores().then(()=>{
+  cargar().then(()=>{
+    cambiarTab("desc", document.querySelector(".tabs-header button"))
+    cargarComentarios()
+  })
+})
+
+let zoom = document.querySelector(".zoom-container")
+let img = document.getElementById("imgPrincipal")
+
+zoom.addEventListener("mousemove", (e)=>{
+
+  let rect = zoom.getBoundingClientRect()
+
+  let x = (e.clientX - rect.left) / rect.width * 100
+  let y = (e.clientY - rect.top) / rect.height * 100
+
+  img.style.transformOrigin = `${x}% ${y}%`
+  img.style.transform = "scale(2.2)" 
+
+})
+
+zoom.addEventListener("mouseleave", ()=>{
+  img.style.transform = "scale(1)"
+})
+
+fetch("menubotonbajo.html")
+.then(r=>r.text())
+.then(data=>{
+
+let contenedor =
+document.getElementById(
+"menuBotonBajo"
+)
+
+contenedor.innerHTML = data
+
+/* EJECUTAR SCRIPTS */
+
+contenedor
+.querySelectorAll("script")
+.forEach(script=>{
+
+let nuevo =
+document.createElement("script")
+
+if(script.src){
+nuevo.src = script.src
+}else{
+nuevo.textContent =
+script.textContent
+}
+
+document.body.appendChild(nuevo)
+
+})
+
+})
+
+</script>
+
+</body>
+</html>

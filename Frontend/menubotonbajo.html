@@ -1,0 +1,673 @@
+<style>
+
+:root{
+  --color-principal:#1b0b2e;
+  --color-secundario:#ff4fd8;
+  --color-acento:#ff8be3;
+  --color-texto:#ffffff;
+  --color-card:#1a1a24;
+}
+
+/* CONTENEDOR */
+
+.menu-float{
+
+position:fixed;
+
+right:20px;
+bottom:20px;
+
+display:flex;
+flex-direction:column;
+align-items:flex-end;
+gap:15px;
+
+z-index:9999;
+
+}
+
+/* OPCIONES */
+
+.menu-opciones{
+
+display:flex;
+flex-direction:column;
+align-items:flex-end;
+gap:12px;
+
+opacity:0;
+pointer-events:none;
+
+transform:translateY(20px);
+
+transition:0.3s;
+
+}
+
+.menu-opciones.activo{
+
+opacity:1;
+pointer-events:auto;
+
+transform:translateY(0);
+
+}
+
+/* BOTONES SECUNDARIOS */
+
+.boton-secundario{
+
+display:flex;
+align-items:center;
+gap:10px;
+
+text-decoration:none;
+
+}
+
+.boton-secundario span{
+
+background:var(--color-card);
+
+color:var(--color-texto);
+
+padding:10px 14px;
+
+border-radius:10px;
+
+font-weight:bold;
+
+font-size:14px;
+
+border:1px solid rgba(255,255,255,0.1);
+
+box-shadow:0 8px 20px rgba(0,0,0,0.25);
+
+white-space:nowrap;
+
+}
+
+.icono-secundario{
+
+width:55px;
+height:55px;
+border-radius:50%;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:24px;
+color:white;
+box-shadow:0 10px 30px rgba(0,0,0,0.35);
+border:2px solid var(--color-acento);
+overflow:hidden;
+
+}
+
+/* IMAGENES ICONOS */
+
+.img-icono{
+
+width:100%;
+height:100%;
+
+object-fit:cover;
+
+border-radius:50%;
+
+display:block;
+
+}
+
+/* BOTON PRINCIPAL */
+
+.img-boton-principal{
+
+width:100%;
+height:100%;
+
+object-fit:cover;
+
+border-radius:50%;
+
+display:block;
+
+}
+
+/* IA */
+
+.ia-btn .icono-secundario{
+
+background:linear-gradient(
+135deg,
+var(--color-secundario),
+var(--color-acento)
+);
+
+}
+
+/* WHATSAPP */
+
+.whatsapp-btn .icono-secundario{
+
+background:#25D366;
+
+}
+
+/* BOTON PRINCIPAL */
+
+.boton-principal{
+
+width:68px;
+height:68px;
+
+border-radius:50%;
+
+background:linear-gradient(
+135deg,
+var(--color-secundario),
+var(--color-acento)
+);
+
+display:flex;
+align-items:center;
+justify-content:center;
+
+font-size:32px;
+
+color:white;
+
+cursor:pointer;
+
+box-shadow:0 15px 40px rgba(0,0,0,0.4);
+border:2px solid var(--color-acento);
+overflow:hidden;
+transition:0.3s;
+
+}
+
+.boton-principal:hover{
+transform:scale(1.08);
+}
+
+/* CHAT IA */
+
+.chat-ia{
+
+position:fixed;
+
+right:20px;
+bottom:120px;
+
+width:350px;
+height:520px;
+
+background:var(--color-card);
+
+border-radius:24px;
+
+overflow:hidden;
+
+display:none;
+flex-direction:column;
+
+z-index:10000;
+
+box-shadow:0 20px 60px rgba(0,0,0,0.5);
+
+border:1px solid rgba(255,255,255,0.08);
+
+}
+
+/* HEADER */
+
+.chat-header{
+
+padding:18px;
+
+background:linear-gradient(
+90deg,
+var(--color-secundario),
+var(--color-acento)
+);
+
+display:flex;
+justify-content:space-between;
+align-items:center;
+
+color:white;
+font-weight:bold;
+
+}
+
+/* CERRAR */
+
+.cerrar-chat{
+cursor:pointer;
+font-size:24px;
+}
+
+/* MENSAJES */
+
+.chat-mensajes{
+
+flex:1;
+
+padding:15px;
+
+overflow-y:auto;
+
+display:flex;
+flex-direction:column;
+
+gap:12px;
+
+}
+
+/* BURBUJAS */
+
+.msg{
+
+max-width:80%;
+
+padding:12px 15px;
+
+border-radius:16px;
+
+font-size:14px;
+line-height:1.5;
+
+}
+
+.bot{
+
+align-self:flex-start;
+
+background:rgba(255,255,255,0.08);
+
+color:var(--color-texto);
+
+}
+
+.user{
+
+align-self:flex-end;
+
+background:var(--color-secundario);
+
+color:white;
+
+}
+
+/* INPUT */
+
+.chat-input{
+
+display:flex;
+
+gap:10px;
+
+padding:15px;
+
+border-top:1px solid rgba(255,255,255,0.08);
+
+}
+
+.chat-input input{
+
+flex:1;
+
+padding:12px;
+
+border:none;
+
+border-radius:12px;
+
+background:rgba(255,255,255,0.08);
+
+color:var(--color-texto);
+
+outline:none;
+
+}
+
+.chat-input button{
+
+border:none;
+
+padding:12px 18px;
+
+border-radius:12px;
+
+background:var(--color-secundario);
+
+color:white;
+
+font-weight:bold;
+
+cursor:pointer;
+
+}
+
+.chat-input button:hover{
+background:var(--color-acento);
+}
+
+/* RESPONSIVE */
+
+@media(max-width:768px){
+
+.menu-float{
+
+right:15px;
+bottom:15px;
+
+}
+
+.boton-principal{
+
+width:60px;
+height:60px;
+
+font-size:28px;
+
+}
+
+.icono-secundario{
+
+width:50px;
+height:50px;
+
+font-size:22px;
+
+}
+
+.boton-secundario span{
+
+font-size:12px;
+
+padding:8px 12px;
+
+}
+
+.chat-ia{
+
+width:calc(100vw - 20px);
+
+height:72vh;
+
+right:10px;
+bottom:90px;
+
+}
+
+}
+
+</style>
+
+<!-- MENU -->
+
+<div class="menu-float">
+
+<!-- OPCIONES -->
+
+<div
+class="menu-opciones"
+id="menuOpciones"
+>
+
+<!-- IA -->
+
+<div
+class="boton-secundario ia-btn"
+onclick="abrirChatIA()"
+>
+
+<span>
+Sensify Assistant
+</span>
+
+<div class="icono-secundario">
+
+<img
+src="ia.jpg"
+class="img-icono"
+>
+
+</div>
+
+</div>
+
+<!-- WHATSAPP -->
+
+<a
+href="https://wa.me/573169999985?text=Hola!%20quiero%20información"
+target="_blank"
+class="boton-secundario whatsapp-btn"
+>
+
+<span>
+WhatsApp
+</span>
+
+<div class="icono-secundario">
+
+<img
+src="whtspp1.jpg"
+class="img-icono"
+>
+
+</div>
+
+</a>
+
+</div>
+
+<!-- PRINCIPAL -->
+
+<div
+class="boton-principal"
+onclick="toggleMenuFloat()"
+id="botonPrincipal"
+>
+
+<img
+src="botonmenu.jpg"
+class="img-boton-principal"
+>
+
+</div>
+
+</div>
+
+<!-- CHAT IA -->
+
+<div
+class="chat-ia"
+id="chatIA"
+>
+
+<div class="chat-header">
+
+<span>
+Sensify Assistant 💕
+</span>
+
+<div
+class="cerrar-chat"
+onclick="cerrarChatIA()"
+>
+✕
+</div>
+
+</div>
+
+<div
+class="chat-mensajes"
+id="chatMensajes"
+>
+
+<div class="msg bot">
+💕 Hola hermosa, soy el asistente de Sensify.
+¿En qué puedo ayudarte?
+</div>
+
+</div>
+
+<div class="chat-input">
+
+<input
+id="chatInput"
+placeholder="Escribe tu mensaje..."
+onkeypress="if(event.key==='Enter'){enviarMensajeIA()}"
+>
+
+<button onclick="enviarMensajeIA()">
+➤
+</button>
+
+</div>
+
+</div>
+
+<script>
+
+function toggleMenuFloat(){
+
+let menu =
+document.getElementById("menuOpciones")
+
+let boton =
+document.getElementById("botonPrincipal")
+
+menu.classList.toggle("activo")
+
+if(menu.classList.contains("activo")){
+
+boton.innerHTML = "✕"
+
+}else{
+
+boton.innerHTML = `
+
+<img
+src="botonmenu.jpg"
+class="img-boton-principal"
+>
+
+`
+
+}
+
+}
+
+function abrirChatIA(){
+
+document.getElementById(
+"chatIA"
+).style.display = "flex"
+
+}
+
+function cerrarChatIA(){
+
+document.getElementById(
+"chatIA"
+).style.display = "none"
+
+}
+
+async function enviarMensajeIA(){
+
+let input =
+document.getElementById("chatInput")
+
+let mensaje =
+input.value.trim()
+
+if(!mensaje) return
+
+let mensajes =
+document.getElementById(
+"chatMensajes"
+)
+
+/* usuario */
+
+mensajes.innerHTML += `
+
+<div class="msg user">
+${mensaje}
+</div>
+
+`
+
+input.value = ""
+
+mensajes.scrollTop =
+mensajes.scrollHeight
+
+/* loading */
+
+mensajes.innerHTML += `
+
+<div class="msg bot" id="typingMsg">
+Escribiendo...
+</div>
+
+`
+
+mensajes.scrollTop =
+mensajes.scrollHeight
+
+try{
+
+let res = await fetch("/chatbot",{
+
+method:"POST",
+
+headers:{
+"Content-Type":"application/json"
+},
+
+body:JSON.stringify({
+mensaje
+})
+
+})
+
+let data = await res.json()
+
+document.getElementById(
+"typingMsg"
+)?.remove()
+
+mensajes.innerHTML += `
+
+<div class="msg bot">
+${data.respuesta}
+</div>
+
+`
+
+}catch(e){
+
+document.getElementById(
+"typingMsg"
+)?.remove()
+
+mensajes.innerHTML += `
+
+<div class="msg bot">
+💕 Muy pronto estaré lista para ayudarte.
+</div>
+
+`
+
+}
+
+mensajes.scrollTop =
+mensajes.scrollHeight
+
+}
+
+</script>

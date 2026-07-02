@@ -1,0 +1,4300 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Panel Administrador</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
+<script>
+
+async function guardarCompra(){
+
+let productoId =
+document.getElementById(
+"productoCompra"
+).value
+
+let cantidad =
+document.getElementById(
+"cantidadCompra"
+).value
+
+let precio =
+document.getElementById(
+"precioCompra"
+).value
+
+let proveedor =
+document.getElementById(
+"proveedorCompra"
+).value
+
+let iva =
+Number(
+document.getElementById(
+"ivaCompra"
+).value || 0
+)
+
+let descuento =
+Number(
+document.getElementById(
+"descuentoCompra"
+).value || 0
+)
+
+if(
+!productoId ||
+!cantidad ||
+!precio ||
+!proveedor
+){
+
+alert("Completa todos los campos")
+return
+
+}
+
+try{
+
+let usuario =
+JSON.parse(localStorage.getItem("usuario"))
+
+let res = await fetch("/agregar-compra",{
+
+method:"POST",
+
+headers:{
+"Content-Type":"application/json",
+"x-admin-email": usuario.correo
+},
+
+body:JSON.stringify({
+
+productoId,
+cantidad,
+precio,
+proveedor,
+iva,
+descuento
+
+})
+
+})
+
+let data = await res.json()
+
+alert("Compra guardada 💕")
+
+cargarCompras()
+cerrarModalCompra()
+mostrarCompras()
+
+}catch(e){
+
+console.log(e)
+
+alert("Error guardando compra")
+
+}
+
+}
+
+async function cargarCompras(){
+
+let cont =
+document.getElementById("listaCompras")
+
+let res =
+await fetch("/compras")
+
+let compras =
+await res.json()
+
+cont.innerHTML = ""
+
+compras.forEach(c=>{
+
+cont.innerHTML += `
+
+<div class="card-compra">
+
+<h3>${c.producto}</h3>
+
+<p>
+Cantidad: ${c.cantidad}
+</p>
+
+<p>
+Proveedor: ${c.proveedor}
+</p>
+
+<p>
+IVA: ${c.iva || 0}%
+</p>
+
+<p>
+Descuento: ${c.descuento || 0}%
+</p>
+
+<p>
+Total:
+$${Math.round(Number(c.total)).toLocaleString("es-CO")}
+</p>
+
+<button
+onclick="eliminarCompra('${c._id}')"
+class="btn-eliminar"
+>
+Eliminar
+</button>
+
+</div>
+
+`
+
+})
+
+}
+
+cargarCompras()
+
+async function reiniciarCompras(){
+
+let confirmar = confirm(
+"¿Seguro que quieres borrar todas las compras?"
+)
+
+if(!confirmar) return
+
+try{
+
+await fetch("/reiniciar-compras",{
+
+method:"DELETE"
+
+})
+
+document.getElementById(
+"listaCompras"
+).innerHTML = ""
+
+alert("Compras reiniciadas 💕")
+
+}catch(e){
+
+console.log(e)
+
+alert("Error reiniciando compras")
+
+}
+
+}
+
+async function eliminarCompra(id){
+
+if(
+!confirm(
+"¿Eliminar esta compra?"
+)
+) return
+
+await fetch(
+"/compra/" + id,
+{
+method:"DELETE"
+}
+)
+
+cargarCompras()
+
+}
+
+</script>
+
+
+<style>
+
+:root{
+  --color-principal: #1b0b2e;   /* fondo oscuro */
+  --color-secundario: #ff4fd8;  /* rosado */
+  --color-acento: #ff8be3;      /* rosado claro */
+  --color-texto: #ffffff;       /* blanco */
+  --color-card: #1a1a24;
+}
+
+*{
+font-family:'Poppins',sans-serif;
+box-sizing:border-box;
+}
+
+*{
+transition:none !important;
+animation:none !important;
+}
+
+body{
+margin:0;
+background:var(--color-principal);
+color:var(--color-texto);
+}
+
+.panel{
+display:flex;
+min-height:100vh;
+}
+
+.menu{
+width:240px;
+background:linear-gradient(180deg,var(--color-principal), var(--color-card));
+padding-top:25px;
+
+display:flex;
+flex-direction:column;
+height:100vh;
+overflow-y:auto;
+overflow-x:hidden;
+justify-content:flex-start;
+}
+
+.menu::-webkit-scrollbar{
+display:none;
+}
+
+.menu h2{
+text-align:center;
+font-size:28px;
+color:var(--color-acento);
+margin-bottom:30px;
+}
+
+.menu button{
+width:100%;
+padding:15px;
+border:none;
+background:none;
+color:var(--color-texto);
+opacity:0.8;
+cursor:pointer;
+text-align:left;
+font-size:15px;
+}
+
+.menu button{
+width:100%;
+padding:15px;
+border:none;
+background:none;
+color:var(--color-texto);
+opacity:0.8;
+cursor:pointer;
+text-align:left;
+font-size:15px;
+display:block;
+}
+
+.logout{
+margin-top:auto;
+margin-left:20px;
+margin-right:20px;
+margin-bottom:20px;
+background:var(--color-secundario) !important;
+border-radius:10px;
+text-align:center;
+}
+
+.menu button:hover{
+background:var(--color-card);
+color:var(--color-acento);
+padding-left:20px;
+}
+
+.contenido{
+flex:1;
+padding:50px;
+overflow:auto;
+}
+
+h1{
+font-size:36px;
+color:var(--color-acento);
+text-align:center;
+}
+
+.cards{
+display:grid;
+grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
+gap:16px;
+margin-top:20px;
+}
+
+.card{
+background:var(--color-card);
+padding:20px;
+border-radius:14px;
+border:1px solid rgba(255,255,255,0.1);
+text-align:center;
+}
+
+.card h3{
+margin:5px 0;
+font-size:16px;
+}
+
+.card p{
+margin:2px 0;
+font-size:14px;
+color:var(--color-texto);
+opacity:0.7;
+}
+
+#listaCompras{
+display:grid;
+grid-template-columns:
+repeat(auto-fill,minmax(260px,1fr));
+gap:20px;
+margin-top:40px;
+}
+
+.card-compra{
+background:var(--color-card);
+padding:20px;
+border-radius:18px;
+border:1px solid rgba(255,255,255,0.08);
+box-shadow:0 10px 30px rgba(0,0,0,0.25);
+}
+
+.card-compra h3{
+color:var(--color-acento);
+margin-bottom:15px;
+}
+
+.card-compra p{
+margin:8px 0;
+color:var(--color-texto);
+opacity:0.85;
+}
+
+.numero{
+font-size:28px;
+color:var(--color-texto);
+}
+
+.lista{
+display:none;
+font-size:13px;
+color:var(--color-texto);
+opacity:0.7;
+margin-top:10px;
+}
+
+.card.activa .lista{
+display:block;
+}
+
+button{
+padding:8px 12px;
+border:none;
+border-radius:6px;
+cursor:pointer;
+margin:5px;
+}
+
+.btn-guardar{ background:var(--color-secundario); }
+.btn-editar{ background:var(--color-acento); }
+.btn-eliminar{ background:var(--color-secundario); }
+
+input, textarea, select{
+margin:5px;
+padding:10px;
+border-radius:12px; /* 🔥 más redondito */
+border:none;
+outline:none;
+width:100%;
+}
+
+.pedido-card{
+padding:15px;
+font-size:14px;
+width:100%;
+}
+
+button{
+padding:10px 14px;
+border-radius:8px;
+font-size:13px;
+}
+
+.card{
+background:var(--color-card);
+border:1px solid rgba(255,255,255,0.1);
+padding:18px;
+border-radius:14px;
+text-align:center;
+transition:0.3s;
+
+display:flex;
+flex-direction:column;
+align-items:center;
+justify-content:flex-start;
+
+gap:10px; /* 👈 controla separación interna */
+
+min-height:auto; /* 👈 quitamos el estiramiento */
+}
+
+.form-crear input,
+.form-crear textarea,
+.form-crear select{
+  width: 100%;
+  height: 45px; /* 🔥 TODOS IGUALES */
+  font-size: 14px;
+}
+
+/* 🚫 quitamos tamaños raros */
+.form-crear textarea{
+  resize: none; /* opcional: quita el estiramiento */
+}
+
+/* 🔥 inputs más compactos */
+.form-crear input{
+  height: 40px;
+}
+
+.form-crear select{
+  cursor:pointer;
+}
+
+.perfil-admin{
+  margin:20px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  cursor:pointer;
+}
+
+/* 🔥 imagen igual que index */
+.perfil-admin img{
+  width:35px;
+  height:35px;
+  border-radius:50%;
+  object-fit:cover;
+  border:2px solid var(--color-secundario);
+}
+
+/* 🔥 texto igual */
+.perfil-admin span{
+  color:var(--color-acento);
+  font-weight:bold;
+  font-size:14px;
+}
+
+.menu-toggle{
+  display:none;
+  position:fixed;
+  top:15px;
+  left:15px;
+  font-size:26px;
+  background:var(--color-card);
+  padding:10px 15px;
+  border-radius:10px;
+  z-index:9999;
+  cursor:pointer;
+}
+
+#previewBanner{
+display:flex;
+flex-wrap:wrap;
+gap:15px;
+margin-top:15px;
+}
+
+.img-banner{
+position:relative;
+width:110px;
+height:110px;
+display:inline-block;
+}
+
+.img-banner img{
+width:110px;
+height:110px;
+object-fit:cover;
+border-radius:14px;
+}
+
+.img-banner button{
+position:absolute;
+top:-8px;
+right:-8px;
+width:28px;
+height:28px;
+border:none;
+border-radius:50%;
+cursor:pointer;
+font-size:16px;
+background:white;
+z-index:10;
+
+margin:0;
+padding:0;
+display:flex;
+align-items:center;
+justify-content:center;
+line-height:1;
+}
+
+.pedido-preview-item{
+display:flex;
+align-items:center;
+gap:15px;
+margin:15px 0;
+padding:10px;
+background:#1f1f2b;
+border-radius:14px;
+}
+
+.pedido-preview-item img{
+width:70px;
+height:70px;
+object-fit:cover;
+border-radius:12px;
+}
+
+.producto-carrusel img{
+width:100%;
+height:220px;
+object-fit:cover;
+border-radius:16px;
+}
+
+.fila-imagen{
+display:flex;
+align-items:center;
+gap:20px;
+margin-bottom:20px;
+}
+
+.fila-imagen img{
+width:80px;
+height:80px;
+object-fit:cover;
+border-radius:12px;
+}
+
+.drag-icon{
+font-size:30px;
+cursor:grab;
+opacity:0.7;
+width:25px;
+text-align:center;
+}
+
+.fila-imagen button{
+margin-left:auto;
+
+width:35px;
+height:35px;
+border:none;
+border-radius:50%;
+cursor:pointer;
+
+background:none;
+color:white;
+font-size:28px;
+}
+
+.btn-eliminar{
+margin-top:8px;
+background:var(--color-card);
+color:var(--color-texto);
+border:1px solid var(--color-secundario);
+padding:10px 15px;
+border-radius:8px;
+cursor:pointer;
+}
+
+#bloqueTallas input[type="checkbox"]{
+width:auto !important;
+margin-right:8px;
+transform:scale(1.2);
+}
+
+#bloqueTallas label{
+display:flex;
+align-items:center;
+gap:8px;
+margin:8px 0;
+}
+
+/*cel*/
+@media (max-width: 768px){
+
+  .panel{
+    flex-direction: column;
+  }
+
+  /* 🔥 botón hamburguesa visible */
+  .menu-toggle{
+    display:block;
+  }
+
+  /* 🔥 menú oculto por defecto */
+  .menu{
+    position:fixed;
+    top:0;
+    left:-260px;
+    width:240px;
+    height:100vh;
+    z-index:9998;
+    transition:0.3s;
+  }
+
+  /* 🔥 cuando está activo */
+  .menu.activo{
+    left:0;
+  }
+
+  /* 🔥 contenido ocupa todo */
+  .contenido{
+    padding:20px;
+  }
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="panel">
+  <div class="menu-toggle" onclick="toggleMenu()">☰</div>
+
+<div class="menu">
+
+<img src="logo.png" style="
+width:140px;
+display:block;
+margin:0 auto 20px auto;
+">
+
+<div>
+<button onclick="mostrarDashboard()">📊 Dashboard</button>
+<button onclick="mostrarCrearPedido()">🧾 Crear pedido</button>
+<button onclick="mostrarPedidos()">📦 Pedidos</button>
+<button onclick="mostrarCrear()">➕ Crear producto</button>
+<button onclick="mostrarProductos()">🛍 Productos</button>
+<button onclick="mostrarCompras()">🛒 Compras</button>
+<button onclick="mostrarKits()">🎁 Kits</button>
+<button onclick="mostrarInventario()">📋 Inventario</button>
+<button onclick="mostrarBanner()">🖼 Banner/img</button>
+<button onclick="mostrarCategorias()">📂 Categorías</button>
+<button onclick="mostrarCarruselAdmin()">🎠 Carrusel</button>
+<button onclick="mostrarComentarios()">💬 Comentarios</button>
+<button onclick="mostrarColores()">🎨 Colores</button>
+</div>
+<div class="perfil-admin" onclick="irPerfil()">
+
+  <img id="fotoAdmin" src="img/user.png">
+
+  <div>
+    <span id="saludoAdmin">Hola</span>
+  </div>
+
+</div>
+
+</div>
+
+<div class="contenido" id="contenido"></div>
+
+</div>
+
+<script>
+
+  window.nuevasImagenes = []
+  let bannerActual = []
+  let extrasActual = []
+  let compras = []
+  let productosCompra = []
+  let productosPedido = []
+  let lugaresPedido = []
+
+  document.addEventListener("change", e=>{
+  if(e.target.id === "nuevasImgs"){
+    window.nuevasImagenes = Array.from(e.target.files)
+  }
+})
+
+// SEGURIDAD
+let usuario = JSON.parse(localStorage.getItem("usuario"))
+
+let headersAdmin = {
+"x-admin-email": usuario?.correo
+}
+
+if(usuario){
+
+  document.getElementById("saludoAdmin").innerText =
+    "Hola, " + (usuario.nombre || "usuario")
+
+  if(usuario.foto){
+    document.getElementById("fotoAdmin").src = usuario.foto
+  }
+
+}
+if(!usuario || usuario.rol !== "admin"){
+window.location="index.html"
+}
+
+function irPerfil(){
+  window.location = "perfil.html"
+}
+
+function logout(){
+localStorage.removeItem("usuario")
+window.location="index.html"
+}
+
+function toggle(card){
+card.classList.toggle("activa")
+}
+
+async function toggleAgotado(id){
+
+// 🔥 1. obtener producto actualizado
+let productos = await fetch("/productos").then(r=>r.json())
+let p = productos.find(x => x._id === id)
+
+if(!p){
+  alert("Producto no encontrado")
+  return
+}
+
+// 🔥 2. lógica REAL basada en estado actual
+if(p.stock === 0){
+
+  let nuevoStock = prompt("¿Cuánto stock quieres agregar?")
+
+  if(!nuevoStock) return
+
+  nuevoStock = Number(nuevoStock.trim())
+
+  if(isNaN(nuevoStock) || nuevoStock <= 0){
+    alert("Stock inválido")
+    return
+  }
+
+  let formData = new FormData()
+  formData.append("stock", nuevoStock)
+
+  await fetch("/productos/" + id, {
+method:"PUT",
+headers: headersAdmin,
+body: formData
+})
+
+  alert("Producto reactivado 💚")
+
+}else{
+
+  let formData = new FormData()
+  formData.append("stock", 0)
+
+  await fetch("/productos/" + id, {
+    method:"PUT",
+    headers: headersAdmin,
+    body: formData
+})
+
+  alert("Producto marcado como agotado 🚫")
+}
+
+// 🔥 3. recargar bien
+setTimeout(() => {
+  mostrarProductos()
+}, 150)
+
+}
+
+
+// ================= DASHBOARD =================
+
+async function mostrarDashboard(){
+
+let data = await fetch("/estadisticas",{headers: headersAdmin}).then(r=>r.json())
+let productos = await fetch("/productos",{headers: headersAdmin}).then(r=>r.json())
+let pedidos = await fetch("/pedidos",{headers: headersAdmin}).then(r=>r.json())
+
+pedidos = pedidos.filter(p => 
+  p && (p.productos?.length > 0 || p.producto)
+)
+
+let usuarios = await fetch("/usuarios",{headers: headersAdmin}).then(r=>r.json())
+
+let totalStock = productos.reduce((t,p)=>t+p.stock,0)
+
+let productosOrdenados = [...productos].sort((a,b)=>(b.vistas||0)-(a.vistas||0))
+
+let html = `
+<h1>Dashboard</h1>
+
+<div class="cards">
+
+<div class="card" onclick="toggle(this)">
+<h3>Productos</h3>
+<div class="numero">${data.productos}</div>
+<div class="lista">${productos.map(p=>p.nombre).join("<br>")}</div>
+</div>
+
+<div class="card" onclick="toggle(this)">
+<h3>Usuarios</h3>
+<div class="numero">${usuarios.length}</div>
+<div class="lista">${usuarios.map(u=>u.correo).join("<br>")}</div>
+</div>
+
+<div class="card" onclick="toggle(this)">
+<h3>Pendientes</h3>
+<div class="numero">${pedidos.filter(p=>p.estado==="pendiente").length}</div>
+<div class="lista">${pedidos.filter(p=>p.estado==="pendiente").map(p=>p.numero).join("<br>")}</div>
+</div>
+
+<div class="card" onclick="toggle(this)">
+<h3>Enviados</h3>
+<div class="numero">${pedidos.filter(p=>p.estado==="enviado").length}</div>
+<div class="lista">${pedidos.filter(p=>p.estado==="enviado").map(p=>p.numero).join("<br>")}</div>
+</div>
+
+<div class="card">
+<h3>Más vendido</h3>
+<div class="numero">${data.masVendido || "—"}</div>
+</div>
+
+<div class="card" onclick="toggle(this)">
+<h3>Stock crítico</h3>
+<div class="numero">${data.stockCritico}</div>
+<div class="lista">
+${productos
+  .filter(p => p.stock < 3)
+  .map(p => p.nombre + " (" + p.stock + ")")
+  .join("<br>")
+}
+</div>
+</div>
+
+<div class="card">
+<h3>Total stock</h3>
+<div class="numero">${totalStock}</div>
+</div>
+
+<div class="card" onclick="toggle(this)">
+<h3>Vistas</h3>
+<div class="numero">👁</div>
+<div class="lista">
+${productosOrdenados.map(p=>p.nombre+" ("+(p.vistas||0)+")").join("<br>")}
+</div>
+</div>
+
+</div>
+
+${filtroHTML()}
+`
+
+document.getElementById("contenido").innerHTML = html
+}
+
+// ================= FILTRO =================
+
+function filtroHTML(){
+return `
+<div style="position:fixed;bottom:20px;right:20px;background:var(--color-card);padding:15px;border-radius:10px;">
+<input type="date" id="fechaInicio">
+<input type="date" id="fechaFin">
+<button onclick="filtrarDashboard()" class="btn-guardar">Aplicar</button>
+<button onclick="mostrarDashboard()" class="btn-eliminar">Reset</button>
+</div>
+`
+}
+
+function filtrarDashboard(){
+
+let desde = document.getElementById("fechaInicio").value
+let hasta = document.getElementById("fechaFin").value
+
+fetch(`/estadisticas?desde=${desde}&hasta=${hasta}`)
+.then(r=>r.json())
+.then(data=>{
+
+let html = `
+<h1>Dashboard</h1>
+
+<div class="cards">
+
+<div class="card" onclick="toggle(this)">
+<h3>Productos</h3>
+<div class="numero">${data.productos}</div>
+<div class="lista">${(data.listaProductos || []).join("<br>")}</div>
+</div>
+
+<div class="card" onclick="toggle(this)">
+<h3>Usuarios</h3>
+<div class="numero">${data.usuarios}</div>
+<div class="lista">${(data.listaUsuarios || []).join("<br>")}</div>
+</div>
+
+<div class="card" onclick="toggle(this)">
+<h3>Pendientes</h3>
+<div class="numero">${data.pendientes}</div>
+<div class="lista">${(data.listaPendientes || []).join("<br>")}</div>
+</div>
+
+<div class="card" onclick="toggle(this)">
+<h3>Enviados</h3>
+<div class="numero">${data.enviados}</div>
+<div class="lista">${(data.listaEnviados || []).join("<br>")}</div>
+</div>
+
+<div class="card">
+<h3>Más vendido</h3>
+<div class="numero">${data.masVendido || "—"}</div>
+</div>
+
+<div class="card" onclick="toggle(this)">
+<h3>Stock crítico</h3>
+<div class="numero">${data.stockCritico}</div>
+</div>
+
+</div>
+
+${filtroHTML()}
+`
+
+document.getElementById("contenido").innerHTML = html
+
+})
+}
+
+// ================= PEDIDOS =================
+
+let busquedaGlobal = ""
+
+async function mostrarPedidos(filtro="todos", busqueda=""){
+
+let pedidos = await fetch("/pedidos",{headers: headersAdmin}).then(r=>r.json())
+window.pedidosExcel = pedidos
+
+pedidos = pedidos.filter(p => 
+p && p._id && (p.productos?.length > 0 || p.producto)
+)
+
+// ordenar por fecha
+pedidos.sort((a,b)=> new Date(b.fecha) - new Date(a.fecha))
+
+// buscador
+busqueda = busqueda || ""
+
+if(busqueda){
+pedidos = pedidos.filter(p =>
+(p.numero || "").toString().includes(busqueda)
+)
+}
+
+// filtro
+if(filtro!=="todos"){
+pedidos = pedidos.filter(p=>p.estado===filtro)
+}
+
+let html = `
+<h1>Pedidos</h1>
+
+<div
+style="
+display:flex;
+gap:15px;
+align-items:center;
+margin-bottom:20px;
+flex-wrap:wrap;
+"
+>
+
+<input
+id="buscadorPedidos"
+placeholder="Buscar pedido #0001..."
+style="
+padding:10px;
+width:250px;
+border-radius:8px;
+border:none;
+"
+>
+
+<button
+onclick="descargarExcelPedidos()"
+class="btn-guardar"
+>
+📥 Descargar Excel
+</button>
+
+</div>
+
+<div style="margin-bottom:20px;">
+<button onclick="mostrarPedidos('todos')" class="btn-editar">
+Todos
+</button>
+
+<button onclick="mostrarPedidos('pendiente')" class="btn-guardar">
+Pendientes
+</button>
+
+<button onclick="mostrarPedidos('enviado')" class="btn-guardar">
+Enviados
+</button>
+
+</div>
+
+<button onclick="eliminarEnviados()" style="
+position:fixed;
+bottom:20px;
+right:20px;
+background:var(--color-secundario);
+color:var(--color-texto);
+border:none;
+padding:12px 18px;
+border-radius:10px;
+cursor:pointer;
+z-index:999;
+">
+🗑 Eliminar enviados
+</button>
+
+
+<div style="
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+gap:15px;
+">
+`
+
+
+pedidos.forEach(p=>{
+
+let numero = (p.numero||0).toString().padStart(4,"0")
+let fecha = p.fecha ? new Date(p.fecha).toLocaleDateString() : "Sin fecha"
+
+html += `
+<div class="pedido-card" data-numero="${numero}" style="
+background:var(--color-card);
+padding:15px;
+border-radius:15px;
+border:1px solid rgba(255,255,255,0.1);
+display:flex;
+flex-direction:column;
+gap:10px;
+">
+
+<h2 style="color:var(--color-texto);">#${numero}</h2>
+<p style="color:var(--color-texto); opacity:0.6;">📅 ${fecha}</p>
+<p style="color:var(--color-texto); opacity:0.6;">👤 ${p.usuario || "invitado"}</p>
+
+<div>
+${p.productos?.length
+  ? p.productos.map(x => `- ${x.nombre} x${x.cantidad}`).join("<br>")
+  : `- ${p.producto || ""} x1`
+}
+</div>
+
+<div style="margin-top:10px;">
+
+<div style="margin-bottom:5px;">
+<h3>$${p.total}</h3>
+<p style="
+font-weight:bold;
+color:${p.estado==="pendiente"?"var(--color-acento)":"var(--color-secundario)"};
+margin:0;
+">
+${p.estado==="pendiente" ? "PENDIENTE" : "ENVIADO ✔"}
+</p>
+</div>
+
+<div style="
+display:flex;
+gap:8px;
+flex-wrap:wrap;
+">
+
+${p.estado === "pendiente" ? `
+<button onclick="enviarPedido('${p._id}')" class="btn-editar">
+Marcar como enviado
+</button>
+` : ""}
+
+<button onclick='verDetalle(JSON.parse(decodeURIComponent("${encodeURIComponent(JSON.stringify(p))}")))' class="btn-guardar">
+Ver detalle
+</button>
+
+<button onclick="eliminarPedido('${p._id}')" class="btn-eliminar">
+Eliminar
+</button>
+
+</div>
+</div>
+</div>
+`
+})
+
+html += `</div>`
+
+document.getElementById("contenido").innerHTML = html
+setTimeout(()=>{
+
+let input = document.getElementById("buscadorPedidos")
+
+if(input){
+
+input.value = busquedaGlobal
+
+input.oninput = function(){
+
+busquedaGlobal = this.value
+
+let tarjetas = document.querySelectorAll(".pedido-card")
+
+tarjetas.forEach(card=>{
+
+let numero = card.dataset.numero
+
+if(numero.includes(busquedaGlobal)){
+card.style.display = "block"
+}else{
+card.style.display = "none"
+}
+
+})
+
+}
+
+}
+
+},0)
+}
+
+function descargarExcelPedidos(){
+
+if(!window.pedidosExcel?.length){
+
+alert("No hay pedidos")
+
+return
+
+}
+
+let datos = window.pedidosExcel.map(p=>({
+
+Pedido: "#" + p.numero,
+
+Fecha: new Date(p.fecha)
+.toLocaleDateString(),
+
+Usuario: p.usuario,
+
+Lugar: p.lugar || "Página web",
+
+Productos: p.productos
+?.map(prod=>
+`${prod.nombre} x${prod.cantidad}`
+)
+.join(" | "),
+
+Total: p.total,
+
+Estado: p.estado
+
+}))
+
+let ws =
+XLSX.utils.json_to_sheet(datos)
+
+let wb =
+XLSX.utils.book_new()
+
+XLSX.utils.book_append_sheet(
+wb,
+ws,
+"Pedidos"
+)
+
+XLSX.writeFile(
+wb,
+"Pedidos_Sensify.xlsx"
+)
+
+}
+
+async function mostrarCarruselAdmin(){
+
+// 🔥 carga simultánea (MUCHO más rápido)
+let [productos, seleccionados] = await Promise.all([
+  fetch("/productos",{headers: headersAdmin}).then(r=>r.json()),
+  fetch("/carrusel",{headers: headersAdmin}).then(r=>r.json())
+])
+
+let idsSeleccionados = []
+
+if(Array.isArray(seleccionados)){
+  idsSeleccionados = seleccionados.map(p=>p._id)
+}else if(seleccionados.productos){
+  idsSeleccionados = seleccionados.productos
+}
+
+window.carruselSeleccion = new Set(idsSeleccionados)
+
+// 🔥 render
+let html = `<h1>Configurar Carrusel</h1><div class="cards">`
+
+productos.forEach(p=>{
+
+let activo = window.carruselSeleccion.has(p._id)
+
+html += `
+<div class="card" onclick="toggleCarrusel('${p._id}', this)" 
+style="${activo ? 'border:2px solid var(--color-secundario);' : ''}">
+
+<img src="${p.imagenes?.[0] || 'logo.png'}" style="
+width:100%;
+height:150px;
+object-fit:cover;
+border-radius:10px;
+">
+
+<h3>${p.nombre}</h3>
+
+<p class="estado" style="
+color:${activo ? 'var(--color-secundario)' : 'var(--color-texto)'};
+opacity:${activo ? 1 : 0.6};
+">
+${activo ? '✔ En carrusel' : 'Seleccionar'}
+</p>
+
+</div>
+`
+})
+
+html += `</div>`
+
+contenido.innerHTML = html
+}
+
+function toggleMenu(){
+  document.querySelector(".menu").classList.toggle("activo")
+}
+
+async function toggleCarrusel(id, card){
+
+let texto = card.querySelector(".estado")
+
+// 🔁 toggle local inmediato (UI rápida)
+if(window.carruselSeleccion.has(id)){
+  window.carruselSeleccion.delete(id)
+
+  card.style.border = "1px solid rgba(255,255,255,0.1)"
+  texto.innerText = "Seleccionar"
+  texto.style.color = "var(--color-texto)"
+  texto.style.opacity = "0.6"
+
+}else{
+  window.carruselSeleccion.add(id)
+
+  card.style.border = "2px solid var(--color-secundario)"
+  texto.innerText = "✔ En carrusel"
+  texto.style.color = "var(--color-secundario)"
+  texto.style.opacity = "1"
+}
+
+// 🚀 GUARDADO AUTOMÁTICO (sin botón)
+try{
+
+  await fetch("/carrusel", {
+    method:"POST",
+    headers:{
+      "Content-Type":"application/json",
+      ...headersAdmin
+    },
+    body: JSON.stringify({
+      productos: Array.from(window.carruselSeleccion)
+    })
+  })
+
+}catch(e){
+
+  console.error("Error guardando carrusel", e)
+
+}
+}
+
+async function mostrarComentarios(){
+
+let productos = await fetch("/productos",{headers: headersAdmin}).then(r=>r.json())
+
+let html = `<h1>Comentarios</h1><div class="cards">`
+
+productos.forEach(p=>{
+
+html += `
+<div class="card" onclick="verComentariosProducto('${p._id}')">
+
+<img src="${p.imagenes?.[0] || 'logo.png'}" style="
+width:100%;
+height:150px;
+object-fit:cover;
+border-radius:10px;
+">
+
+<h3>${p.nombre}</h3>
+
+<p style="opacity:0.6;">
+Ver comentarios y valoraciones
+</p>
+
+</div>
+`
+})
+
+html += `</div>`
+
+contenido.innerHTML = html
+}
+
+async function verComentariosProducto(id){
+
+let res = await fetch("/comentarios/" + id)
+let data = await res.json()
+
+let html = `
+<h1>Comentarios</h1>
+
+<button onclick="mostrarComentarios()" class="btn-editar">
+⬅ Volver
+</button>
+
+<div class="cards">
+`
+
+if(data.length === 0){
+html += `<p>No hay comentarios 😢</p>`
+}
+
+data.forEach(c=>{
+
+html += `
+<div class="card">
+
+<p><b>${c.usuario || "Anónimo"}</b></p>
+
+<p>${c.texto}</p>
+
+<p>★ ${c.estrellas || 0}/5</p>
+
+<button onclick="eliminarComentario('${c._id}')" class="btn-eliminar">
+Eliminar
+</button>
+
+</div>
+`
+})
+
+html += `</div>`
+
+contenido.innerHTML = html
+}
+
+async function eliminarComentario(id){
+
+if(!confirm("¿Eliminar comentario?")) return
+
+let res = await fetch("/comentarios/" + id, {
+method: "DELETE"
+})
+
+if(res.ok){
+alert("Comentario eliminado 💥")
+location.reload()
+}else{
+alert("Error eliminando")
+}
+
+}
+
+function filtrarPedidos(filtro="todos"){
+
+let texto = document.getElementById("buscadorPedidos").value
+
+mostrarPedidos(filtro, texto)
+
+}
+
+function verDetalle(p){
+
+let numero = (p.numero||0).toString().padStart(4,"0")
+
+let productos = p.productos.map(x=>`
+<div style="margin:10px 0;">
+<b>${x.nombre}</b> x${x.cantidad} - $${x.precio}
+</div>
+`).join("")
+
+let modal = document.createElement("div")
+
+modal.innerHTML = `
+<div style="
+position:fixed;
+top:0; left:0;
+width:100%; height:100%;
+background:rgba(0,0,0,0.7);
+display:flex;
+align-items:center;
+justify-content:center;
+z-index:9999;
+">
+
+<div class="pedido-card" data-numero="${numero}" style="
+background:var(--color-card);
+padding:15px;
+border-radius:15px;
+width:400px;
+max-width:700px;
+margin:auto;
+overflow:auto;
+">
+
+<h2 style="color:var(--color-acento);">Pedido #${numero}</h2>
+
+<p>👤 ${p.usuario}</p>
+<p>📍 ${p.lugar || "Página web"}</p>
+<p>💰 Total: $${p.total}</p>
+${p.datosEnvio ? `
+
+<hr>
+
+<p><b>📦 Datos de envío</b></p>
+<p>👤 ${p.datosEnvio.nombreCompleto || "-"}</p>
+<p>📞 ${p.datosEnvio.telefono || "-"}</p>
+<p>📍 ${p.datosEnvio.direccion || "-"}</p>
+<p>🏘 ${p.datosEnvio.barrio || "-"}</p>
+<p>🏙 ${p.datosEnvio.municipio || "-"}</p>
+<p>🗺 ${p.datosEnvio.departamento || "-"}</p>
+<p>🏠 ${p.datosEnvio.apartamento || "-"}</p>
+${p.datosEnvio.complemento ? `
+<p>➕ ${p.datosEnvio.complemento}</p>
+` : ""}
+` : ""}
+
+<hr>
+
+${productos}
+
+<br>
+
+<button onclick="this.parentElement.parentElement.remove()" class="btn-eliminar">
+Cerrar
+</button>
+
+</div>
+
+</div>
+`
+
+document.body.appendChild(modal)
+}
+
+async function enviarPedido(id){
+
+try{
+let res = await fetch("/pedido/" + id, {
+method:"PUT",
+headers:{
+...headersAdmin,
+"Content-Type":"application/json"
+},
+
+body: JSON.stringify({
+estado:"enviado"
+})
+})
+
+let data = await res.json()
+console.log(data)
+if(res.ok){
+alert("Pedido marcado como enviado 🚚✨")
+mostrarPedidos()
+
+}else{
+alert(data.error || "No se pudo actualizar")
+}
+
+}catch(e){
+console.error(e)
+alert("Error real")
+}}
+async function eliminarPedido(id){
+
+if(!confirm("¿Eliminar pedido?")) return
+
+console.log("Eliminando ID:", id)
+
+try{
+
+let res = await fetch("/pedido/" + id, {
+method:"DELETE",
+headers: headersAdmin
+})
+
+let data = await res.json()
+
+console.log("Respuesta:", data)
+
+if(res.ok){
+alert("Pedido eliminado ✅")
+mostrarPedidos()
+}else{
+alert("No se pudo eliminar")
+}
+
+}catch(e){
+console.error(e)
+alert("Error real al eliminar")
+}
+
+}
+
+async function eliminarEnviados(){
+
+if(!confirm("¿Eliminar TODOS los pedidos enviados? ⚠️")) return
+
+try{
+
+let res = await fetch("/pedidos/enviados", {
+method:"DELETE",
+headers: headersAdmin
+})
+
+let data = await res.json()
+
+if(res.ok){
+  alert("Pedidos enviados eliminados 🧹✨")
+  mostrarPedidos()
+}else{
+  alert("Error al eliminar")
+}
+
+}catch(e){
+console.error(e)
+alert("Error real")
+}
+
+}
+
+// ================= Colores ====================
+async function mostrarColores(){
+
+let colores = await fetch("/colores").then(r=>r.json())
+
+contenido.innerHTML = `
+<h1>Colores</h1>
+
+<div style="
+max-width:600px;
+margin:auto;
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:20px;
+background:var(--color-card);
+padding:30px;
+border-radius:15px;
+">
+
+<label>Color principal</label>
+<div style="display:flex; gap:10px; align-items:center;">
+  <input id="principal" type="color" value="${colores.principal}">
+  <div id="previewPrincipal" style="
+    width:50px;
+    height:50px;
+    border-radius:10px;
+    background:${colores.principal};
+    border:2px solid var(--color-texto);
+  "></div>
+</div>
+
+<label>Color secundario</label>
+<div style="display:flex; gap:10px; align-items:center;">
+  <input id="secundario" type="color" value="${colores.secundario}">
+  <div id="previewSecundario" style="
+    width:50px;
+    height:50px;
+    border-radius:10px;
+    background:${colores.secundario};
+    border:2px solid var(--color-texto);
+  "></div>
+</div>
+
+<label>Color acento</label>
+<div style="display:flex; gap:10px; align-items:center;">
+  <input id="acento" type="color" value="${colores.acento}">
+  <div id="previewAcento" style="
+    width:50px;
+    height:50px;
+    border-radius:10px;
+    background:${colores.acento};
+    border:2px solid #fff;
+  "></div>
+</div>
+
+<label>Color texto</label>
+<div style="display:flex; gap:10px; align-items:center;">
+  <input id="texto" type="color" value="${colores.texto}">
+  <div id="previewTexto" style="
+    width:50px;
+    height:50px;
+    border-radius:10px;
+    background:${colores.texto};
+    border:2px solid #fff;
+  "></div>
+</div>
+
+<label>Color card</label>
+<div style="display:flex; gap:10px; align-items:center;">
+  <input id="card" type="color" value="${colores.card}">
+  <div id="previewCard" style="
+    width:50px;
+    height:50px;
+    border-radius:10px;
+    background:${colores.card};
+    border:2px solid #fff;
+  "></div>
+</div>
+
+<div style="grid-column:span 2; display:flex; flex-direction:column; gap:10px;">
+
+<button onclick="guardarColores()" class="btn-guardar">
+Guardar colores
+</button>
+
+<button onclick="resetearColores()" class="btn-eliminar">
+Restaurar colores
+</button>
+
+</div>
+
+`
+}
+
+async function resetearColores(){
+
+let coloresBase = {
+  principal: "#1b0b2e",
+  secundario: "#ff4fd8",
+  acento: "#ff8be3",
+  texto: "#ffffff",
+  card: "#1a1a24"
+}
+
+// guardar en backend
+await fetch("/colores",{
+method:"POST",
+headers:{"Content-Type":"application/json"},
+body:JSON.stringify(coloresBase)
+})
+
+alert("Colores restaurados 💜")
+
+// recargar vista
+mostrarColores()
+}
+
+function aplicarColoresEnAdmin(colores){
+
+let root = document.documentElement
+
+root.style.setProperty("--color-principal", colores.principal)
+root.style.setProperty("--color-secundario", colores.secundario)
+root.style.setProperty("--color-acento", colores.acento)
+root.style.setProperty("--color-texto", colores.texto)
+root.style.setProperty("--color-card", colores.card)
+
+}
+
+
+async function guardarColores(){
+
+let datos = {
+  principal: document.getElementById("principal").value,
+  secundario: document.getElementById("secundario").value,
+  acento: document.getElementById("acento").value,
+  texto: document.getElementById("texto").value,
+  card: document.getElementById("card").value
+}
+
+// 🔥 aplicar instantáneo
+aplicarColoresEnAdmin(datos)
+
+await fetch("/colores",{
+method:"POST",
+headers:{"Content-Type":"application/json"},
+body:JSON.stringify(datos)
+})
+
+alert("Colores guardados 🎨🔥")
+}
+
+// ================= PRODUCTOS =================
+
+function mostrarCrear(){
+contenido.innerHTML = `
+<h1>Crear producto</h1>
+
+<div class="form-crear" 
+style="max-width:500px;  
+margin:auto; 
+display:flex; 
+flex-direction:column; 
+gap:15px; 
+background:var(--color-card); 
+padding:30px; border-radius:15px; 
+border:1px solid rgba(255,255,255,0.1);">
+
+<input id="nombre" placeholder="Nombre">
+
+<input id="precio" placeholder="Precio">
+
+<input id="descripcion" placeholder="Descripción corta">
+
+<textarea id="descripcionLarga" placeholder="Descripción larga"></textarea>
+
+<textarea id="info" placeholder="Información adicional"></textarea>
+
+<textarea id="caracteristicas" placeholder="Características"></textarea>
+
+<textarea id="modoUso" placeholder="Modo de uso"></textarea>
+
+<textarea id="recomendaciones" placeholder="Recomendaciones"></textarea>
+
+<input id="stock" placeholder="Stock">
+
+<select id="categoria">
+  <option value="">Selecciona categoría</option>
+  <option value="estimulantes">Estimulantes</option>
+  <option value="lubricantes">Lubricantes</option>
+  <option value="juguetes">Juguetes</option>
+  <option value="lenceria">Lencería</option>
+  <option value="cuidado intimo">Cuidado íntimo</option>
+  <option value="juegos eroticos">Juegos eróticos</option>
+</select>
+
+<div id="bloqueTallas" style="display:none;">
+
+<h4>Tallas disponibles</h4>
+
+<label><input type="checkbox" value="XS"> XS</label>
+<label><input type="checkbox" value="S"> S</label>
+<label><input type="checkbox" value="M"> M</label>
+<label><input type="checkbox" value="L"> L</label>
+<label><input type="checkbox" value="XL"> XL</label>
+<label><input type="checkbox" value="XXL"> XXL</label>
+
+</div>
+
+<label style="color:var(--color-texto); opacity:0.6;">Imágenes (1 a 6)</label>
+<input id="imagenes" type="file" multiple accept="image/*" onchange="previewImgs()">
+<div id="previewImgs"></div>
+
+<button onclick="crearProducto()" class="btn-guardar">
+Guardar producto
+</button>
+</div>
+`
+
+let categoria =
+document.getElementById("categoria")
+
+categoria.addEventListener("change",()=>{
+
+let bloque =
+document.getElementById("bloqueTallas")
+
+if(categoria.value === "lenceria"){
+
+bloque.style.display = "block"
+
+}else{
+
+bloque.style.display = "none"
+
+}
+
+})
+
+}
+
+async function mostrarCrearPedido(){
+
+let res = await fetch("/productos")
+let productos = await res.json()
+
+let resLugares = await fetch("/lugares-pedido",{
+headers: headersAdmin
+})
+
+lugaresPedido = await resLugares.json()
+
+contenido.innerHTML = `
+
+<h2>🧾 Crear pedido</h2>
+
+<label>Productos</label>
+
+<button onclick="abrirSelectorPedido()">
+Seleccionar productos
+</button>
+
+<div id="productosPedidoPreview"></div>
+
+<label>Fecha</label>
+
+<input type="date" id="fechaPedido">
+
+<label>Lugar</label>
+
+<select id="lugarPedido">
+
+${lugaresPedido.map(l=>`
+<option value="${l.nombre}">
+${l.nombre}
+</option>
+`).join("")}
+
+<option value="nuevo">
+➕ Agregar lugar
+</option>
+
+</select>
+
+<div id="nuevoLugarBox" style="display:none;margin-top:10px;">
+
+<input
+type="text"
+id="nuevoLugarInput"
+placeholder="Nuevo lugar"
+>
+
+<button onclick="guardarNuevoLugar()">
+Guardar lugar
+</button>
+
+</div>
+
+<br><br>
+
+<button
+class="btn-guardar"
+onclick="guardarPedidoManual()"
+>
+Guardar pedido
+</button>
+
+`
+
+window.todosProductosPedido = productos
+
+renderProductosPedido()
+
+let selectLugar =
+document.getElementById("lugarPedido")
+
+function actualizarLugarBox(){
+
+document.getElementById(
+"nuevoLugarBox"
+).style.display =
+
+selectLugar.value === "nuevo"
+? "block"
+: "none"
+
+}
+
+/* 🔥 detectar cambios */
+selectLugar.addEventListener(
+"change",
+actualizarLugarBox
+)
+
+/* 🔥 ejecutar al cargar */
+actualizarLugarBox()
+
+}
+
+function abrirSelectorPedido(){
+
+contenido.innerHTML = `
+
+<h1>Seleccionar productos</h1>
+
+<input
+type="text"
+id="buscadorProductos"
+placeholder="Buscar producto..."
+oninput="filtrarProductosPedido()"
+style="
+width:320px;
+padding:14px;
+border:none;
+border-radius:12px;
+background:#111;
+color:white;
+margin-bottom:25px;
+font-size:15px;
+outline:none;
+"
+>
+
+<div class="cards">
+
+${window.todosProductosPedido.map(p=>{
+
+let activo = productosPedido.find(
+x=>x.productoId===p._id
+)
+
+return `
+
+<div
+class="card producto-card"
+data-nombre="${p.nombre.toLowerCase()}"
+onclick="toggleProductoPedido('${p._id}')"
+
+style="
+${activo
+? 'border:2px solid var(--color-secundario);'
+: ''}
+"
+>
+
+<img src="${p.imagenes?.[0] || 'logo.png'}"
+
+style="
+width:100%;
+height:150px;
+object-fit:cover;
+border-radius:10px;
+">
+
+<h3>${p.nombre}</h3>
+
+<p class="estado"
+
+style="
+color:${activo
+? 'var(--color-secundario)'
+: 'var(--color-texto)'};
+
+opacity:${activo ? 1 : 0.6};
+"
+>
+
+${activo
+? '✔ Seleccionado'
+: 'Seleccionar'}
+</p>
+</div>
+`
+
+}).join("")}
+</div>
+<button
+class="btn-guardar"
+onclick="volverCrearPedido()"
+>
+Guardar selección
+</button>
+`
+}
+
+function filtrarProductosPedido(){
+
+let texto = document
+.getElementById("buscadorProductos")
+.value
+.toLowerCase()
+
+let cards =
+document.querySelectorAll(".producto-card")
+
+cards.forEach(card=>{
+
+let nombre =
+card.dataset.nombre || ""
+
+if(nombre.includes(texto)){
+
+card.style.display = "block"
+
+}else{
+
+card.style.display = "none"
+
+}
+
+})
+
+}
+
+function toggleProductoPedido(id){
+
+let existe = productosPedido.find(
+p=>p.productoId===id
+)
+
+if(existe){
+
+productosPedido =
+productosPedido.filter(
+p=>p.productoId!==id
+)
+
+}else{
+
+productosPedido.push({
+productoId:id,
+cantidad:1
+})
+
+}
+
+abrirSelectorPedido()
+
+}
+
+function volverCrearPedido(){
+mostrarCrearPedido()
+}
+
+function renderProductosPedido(){
+
+let cont = document.getElementById(
+"productosPedidoPreview"
+)
+
+if(!cont) return
+
+cont.innerHTML = ""
+
+productosPedido.forEach(sel=>{
+
+let prod =
+window.todosProductosPedido.find(
+p=>p._id===sel.productoId
+)
+
+if(!prod) return
+
+cont.innerHTML += `
+
+<div class="pedido-preview-item">
+
+<img src="${prod.imagenes?.[0] || ''}">
+
+<div>
+<b>${prod.nombre}</b>
+
+<br>
+
+Cantidad:
+
+<input
+type="number"
+min="1"
+value="${sel.cantidad}"
+onchange="
+actualizarCantidadPedido(
+'${sel.productoId}',
+this.value
+)
+"
+>
+</div>
+
+</div>
+
+`
+
+})
+
+}
+
+function abrirSelectorKit(){
+
+contenido.innerHTML = `
+
+<h1>Seleccionar productos para el kit</h1>
+
+<div class="cards">
+
+${window.todosProductosKit.map(p=>{
+
+let activo = productosKit.find(
+x=>x.productoId===p._id
+)
+
+return `
+
+<div
+class="card"
+onclick="toggleProductoKit('${p._id}')"
+style="
+${activo
+? 'border:2px solid var(--color-secundario);'
+: ''}
+"
+>
+
+<img src="${p.imagenes?.[0] || 'logo.png'}"
+style="
+width:100%;
+height:150px;
+object-fit:cover;
+border-radius:10px;
+">
+
+<h3>${p.nombre}</h3>
+
+<p>
+${activo ? "✔ Seleccionado" : "Seleccionar"}
+</p>
+
+</div>
+
+`
+
+}).join("")}
+
+</div>
+
+<button
+onclick="mostrarKits()"
+class="btn-guardar"
+>
+Guardar selección
+</button>
+
+`
+
+}
+
+function toggleProductoKit(id){
+
+let existe =
+productosKit.find(
+p=>p.productoId===id
+)
+
+if(existe){
+
+productosKit =
+productosKit.filter(
+p=>p.productoId!==id
+)
+
+}else{
+
+productosKit.push({
+productoId:id,
+cantidad:1
+})
+
+}
+
+abrirSelectorKit()
+
+}
+
+function renderProductosKit(){
+
+let cont =
+document.getElementById(
+"productosKitPreview"
+)
+
+if(!cont) return
+
+cont.innerHTML = ""
+
+productosKit.forEach(sel=>{
+
+let prod =
+window.todosProductosKit.find(
+p=>p._id===sel.productoId
+)
+
+if(!prod) return
+
+cont.innerHTML += `
+
+<div class="pedido-preview-item">
+
+<img src="${prod.imagenes?.[0] || ''}">
+
+<div>
+
+<b>${prod.nombre}</b>
+
+<br>
+
+Cantidad:
+
+<input
+type="number"
+min="1"
+value="${sel.cantidad}"
+onchange="
+selCantidadKit(
+'${sel.productoId}',
+this.value
+)
+"
+>
+
+</div>
+
+</div>
+
+`
+
+})
+
+}
+
+function selCantidadKit(id,cantidad){
+
+let prod =
+productosKit.find(
+p=>p.productoId===id
+)
+
+if(prod){
+prod.cantidad = Number(cantidad)
+}
+
+}
+
+function actualizarCantidadPedido(id,cantidad){
+
+let prod = productosPedido.find(
+p=>p.productoId===id
+)
+
+if(prod){
+prod.cantidad = Number(cantidad)
+}
+
+}
+
+async function guardarNuevoLugar(){
+
+let nombre =
+document.getElementById(
+"nuevoLugarInput"
+).value.trim()
+
+if(!nombre){
+alert("Escribe un lugar")
+return
+}
+
+try{
+
+let res = await fetch("/lugares-pedido",{
+
+method:"POST",
+
+headers:{
+...headersAdmin,
+"Content-Type":"application/json"
+},
+
+body: JSON.stringify({ nombre })
+
+})
+
+let data = await res.json()
+
+if(data.error){
+alert(data.error)
+return
+}
+
+/* 🔥 agregar localmente */
+lugaresPedido.push(data)
+
+/* 🔥 volver al formulario */
+await mostrarCrearPedido()
+
+/* 🔥 seleccionar automáticamente */
+document.getElementById(
+"lugarPedido"
+).value = data.nombre
+
+}catch(e){
+
+console.log(e)
+
+alert("Error guardando lugar")
+
+}
+
+}
+
+async function guardarPedidoManual(){
+
+if(productosPedido.length === 0){
+alert("Selecciona productos")
+return
+}
+
+let lugar =
+document.getElementById(
+"lugarPedido"
+).value
+
+if(lugar === "nuevo"){
+alert("Guarda el lugar primero")
+return
+}
+
+let fecha =
+document.getElementById(
+"fechaPedido"
+).value
+
+let res = await fetch(
+"/crear-pedido-manual",
+{
+
+method:"POST",
+
+headers:{
+...headersAdmin,
+"Content-Type":"application/json"
+},
+
+body: JSON.stringify({
+
+productos: productosPedido,
+
+fecha,
+
+lugar
+
+})
+
+})
+
+let data = await res.json()
+
+if(data.ok){
+
+alert("Pedido creado 💕")
+
+productosPedido = []
+
+mostrarPedidos()
+
+}else{
+
+alert("Error")
+
+}
+
+}
+
+let imagenesOrden = []
+
+function previewImgs(){
+  // 🔥 cuando el usuario selecciona archivos
+  imagenesOrden = Array.from(document.getElementById("imagenes").files)
+  renderImgs()
+}
+
+function renderImgs(){
+
+  let cont = document.getElementById("previewImgs")
+
+  cont.innerHTML = imagenesOrden.map((f,i)=>`
+  <div draggable="true" 
+       ondragstart="dragStart(${i})"
+       ondragover="dragOver(event)"
+       ondrop="dropItem(event, ${i})"
+       style="
+         display:flex;
+         justify-content:space-between;
+         background:#2a2a3a;
+         padding:10px;
+         border-radius:10px;
+         margin:6px 0;
+         cursor:grab;
+       ">
+
+    <span>${f.name}</span>
+    <span style="opacity:0.5;">☰</span>
+
+  </div>
+  `).join("")
+}
+
+let dragIndex = null
+
+function dragStart(index){
+  dragIndex = index
+}
+
+function dragOver(e){
+  e.preventDefault()
+}
+
+function dropItem(e, dropIndex){
+  e.preventDefault()
+
+  const rect = e.currentTarget.getBoundingClientRect()
+  const offset = e.clientY - rect.top
+
+  let newIndex = dropIndex
+
+  // 🔥 si sueltas en la mitad de abajo → baja
+  if(offset > rect.height / 2){
+    newIndex = dropIndex + 1
+  }
+
+  const item = imagenesOrden[dragIndex]
+
+  imagenesOrden.splice(dragIndex, 1)
+
+  // 🔥 ajustar índice si se movió hacia abajo
+  if(dragIndex < newIndex) newIndex--
+
+  imagenesOrden.splice(newIndex, 0, item)
+
+  renderImgs()
+}
+
+async function crearProducto(){
+
+let files = document.getElementById("imagenes").files
+
+if(files.length === 0){
+alert("Sube al menos una imagen")
+return
+}
+
+if(files.length > 6){
+alert("Máximo 6 imágenes")
+return
+}
+
+let tallas = []
+
+document
+.querySelectorAll(
+'#bloqueTallas input:checked'
+)
+.forEach(c=>{
+
+tallas.push(c.value)
+
+})
+
+let formData = new FormData()
+
+formData.append("nombre", nombre.value)
+formData.append("precio", precio.value)
+formData.append("descripcion", descripcion.value)
+formData.append("descripcionLarga", document.getElementById("descripcionLarga").value)
+formData.append("info", document.getElementById("info").value)
+formData.append("caracteristicas", document.getElementById("caracteristicas").value)
+formData.append("modoUso", document.getElementById("modoUso").value)
+formData.append("recomendaciones", document.getElementById("recomendaciones").value)
+let stockValor = textoANumero(document.getElementById("stock").value)
+formData.append("stock", stockValor)
+formData.append("categoria", categoria.value)
+formData.append("tallas",JSON.stringify(tallas))
+
+// 🔥 múltiples imágenes (esto ya lo tenías bien)
+imagenesOrden.forEach(file=>{
+formData.append("imagenes", file)
+})
+
+let res = await fetch("/productos",{
+method:"POST",
+headers:{
+"x-admin-email": usuario.correo
+},
+body:formData
+})
+
+let data = await res.text()
+
+console.log("RESPUESTA:", data)
+
+if(!res.ok){
+alert("Error creando producto: " + data)
+return
+}
+
+alert("Producto creado 🔥")
+
+// limpiar formulario
+document.getElementById("nombre").value = ""
+document.getElementById("precio").value = ""
+document.getElementById("descripcion").value = ""
+document.getElementById("stock").value = ""
+document.getElementById("categoria").value = ""
+document.getElementById("imagenes").value = ""
+
+mostrarProductos()
+}
+
+
+
+async function mostrarProductos(){
+
+let productos = await fetch("/productos").then(r=>r.json())
+
+let html = "<h1>Productos</h1><div class='cards'>"
+
+productos.forEach(p=>{
+
+  let imgs = (p.imagenes && p.imagenes.length)
+  ? p.imagenes.map(img => `
+    <img src="${img}" style="
+      width:100%;
+      height:180px;
+      object-fit:cover;
+      border-radius:10px;
+      display:none;
+    ">
+  `).join("")
+  : `<img src="logo.png" style="width:100%;height:180px;object-fit:cover;border-radius:10px;">`
+
+html += `
+<div class="card" style="${p.stock === 0 ? 'opacity:0.6; filter:grayscale(40%);' : ''}">
+
+<div class="img-container" style="
+position:relative;
+width:100%;
+margin-bottom:10px;
+">
+
+  ${imgs}
+
+  ${p.stock === 0 ? `
+  <img src="img/agotado.png" style="
+    position:absolute;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    object-fit:contain;
+    pointer-events:none;
+    opacity:0.9;
+  ">
+  ` : ""}
+
+</div>
+
+<h3>${p.nombre}</h3>
+${p.promo === true ? `
+<div style="margin:10px 0;">
+
+<span style="
+background:var(--color-secundario);
+padding:3px 8px;
+border-radius:6px;
+font-size:12px;
+">
+-${p.descuento}%
+</span>
+
+<p style="text-decoration:line-through; color:var(--color-texto); opacity:0.6;">
+$${p.precio}
+</p>
+
+<p style="color:var(--color-secundario); font-size:18px;">
+$${p.precioPromo}
+</p>
+
+</div>
+` : `
+<p>$${p.precio}</p>
+`}
+
+<div style="display:grid; grid-template-columns:1fr 1fr; gap:6px;">
+
+<button onclick="editar('${p._id}')" class="btn-editar">✏️ Editar</button>
+
+<button onclick="toggleAgotado('${p._id}')" class="btn-eliminar">
+${p.stock === 0 ? "🔄 Quitar agotado" : "🚫 Agotado"}
+</button>
+
+<button onclick="agregarDescuento('${p._id}')" class="btn-guardar">
+${p.promo === true ? "❌ Quitar promo" : "🏷 Promo"}
+</button>
+
+<button onclick="eliminar('${p._id}')" class="btn-eliminar">🗑️ Eliminar</button>
+
+</div>
+
+
+</div>
+`
+})
+
+html += "</div>"
+
+document.getElementById("contenido").innerHTML = html
+setTimeout(() => {
+
+  document.querySelectorAll(".img-container").forEach(container => {
+
+    let imgs = container.querySelectorAll("img:not([src*='agotado'])")
+    let index = 0
+
+    if(imgs.length > 0){
+      imgs[0].style.display = "block"
+    }
+
+    if(imgs.length > 1){
+      setInterval(() => {
+        imgs[index].style.display = "none"
+        index = (index + 1) % imgs.length
+        imgs[index].style.display = "block"
+      }, 2000)
+    }
+
+  })
+
+}, 0)
+}
+
+// ================= INVENTARIO =================
+
+async function mostrarInventario(){
+
+let data = await fetch("/inventario",{headers: headersAdmin}).then(r=>r.json())
+
+// 🔥 guardamos global para exportar
+window.inventarioData = data
+
+let html = `
+<h1>Inventario</h1>
+
+<div style="
+display:flex;
+justify-content:center;
+gap:15px;
+margin-bottom:20px;
+flex-wrap:wrap;
+">
+
+<button
+onclick="exportarInventario()"
+class="btn-guardar"
+>
+📥 Descargar Excel
+</button>
+
+<button
+onclick="reiniciarInventario()"
+class="btn-guardar"
+style="background:#ff4d4d;"
+>
+🗑 Reiniciar
+</button>
+
+</div>
+
+<div class='cards'>
+`
+
+data.forEach(p=>{
+html+=`
+<div class="card">
+<h3>${p.nombre}</h3>
+
+Stock:${p.stock}<br>
+
+Vendidos:${p.vendidos}<br>
+
+Total vendido:
+$${(
+(p.vendidos || 0) *
+Number(p.precioFinal || 0)
+).toLocaleString()}
+</div>
+`
+})
+
+html+="</div>"
+
+contenido.innerHTML=html
+}
+
+async function mostrarCompras(){
+
+let productos =
+await fetch("/productos")
+.then(r=>r.json())
+
+let html = `
+
+<h1>Compras</h1>
+
+<div style="
+display:flex;
+justify-content:center;
+gap:10px;
+margin-bottom:25px;
+flex-wrap:wrap;
+">
+
+<button
+onclick="abrirAgregarCompra()"
+style="
+background:var(--color-secundario);
+color:white;
+padding:12px 18px;
+border:none;
+border-radius:10px;
+font-weight:bold;
+cursor:pointer;
+"
+>
+➕ Agregar compra
+</button>
+
+<button
+onclick="exportarCompras()"
+style="
+background:var(--color-acento);
+color:white;
+padding:12px 18px;
+border:none;
+border-radius:10px;
+font-weight:bold;
+cursor:pointer;
+"
+>
+📥 Descargar Excel
+</button>
+
+<button
+onclick="reiniciarCompras()"
+style="
+background:#ff4d4d;
+color:white;
+padding:12px 18px;
+border:none;
+border-radius:10px;
+font-weight:bold;
+cursor:pointer;
+"
+>
+🗑 Reiniciar
+</button>
+
+</div>
+
+<div id="listaCompras"></div>
+
+<div
+id="modalCompra"
+style="
+display:none;
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.7);
+z-index:99999;
+justify-content:center;
+align-items:center;
+"
+>
+
+<div style="
+background:var(--color-card);
+padding:30px;
+border-radius:20px;
+width:400px;
+max-width:90%;
+border:1px solid rgba(255,255,255,0.1);
+">
+
+<h2 style="
+text-align:center;
+color:var(--color-acento);
+margin-bottom:20px;
+">
+Agregar compra
+</h2>
+
+<div style="position:relative;">
+
+<input
+id="buscadorProducto"
+placeholder="Buscar producto..."
+oninput="filtrarProductosCompra()"
+style="
+width:100%;
+padding:12px;
+border-radius:10px;
+margin-bottom:10px;
+background:#111;
+color:white;
+border:none;
+box-sizing:border-box;
+"
+>
+
+<div
+id="resultadosProductos"
+style="
+position:absolute;
+top:55px;
+left:0;
+right:0;
+background:#111;
+border-radius:12px;
+max-height:200px;
+overflow-y:auto;
+z-index:10;
+display:none;
+border:1px solid rgba(255,255,255,0.1);
+"
+>
+</div>
+
+</div>
+
+<input type="hidden" id="productoCompra">
+
+<input
+id="cantidadCompra"
+type="number"
+placeholder="Cantidad"
+style="
+width:100%;
+padding:12px;
+border-radius:10px;
+margin-bottom:15px;
+background:#111;
+color:white;
+border:none;
+box-sizing:border-box;
+"
+>
+
+<input
+id="precioCompra"
+type="number"
+placeholder="Precio unitario compra"
+style="
+width:100%;
+padding:12px;
+border-radius:10px;
+margin-bottom:20px;
+background:#111;
+color:white;
+border:none;
+box-sizing:border-box;
+"
+>
+
+<label style="
+display:block;
+margin-bottom:5px;
+color:var(--color-texto);
+font-size:14px;
+font-weight:bold;
+">
+IVA (%)
+</label>
+
+<input
+id="ivaCompra"
+type="number"
+min="0"
+max="100"
+value="0"
+style="
+width:100%;
+padding:12px;
+border-radius:10px;
+margin-bottom:15px;
+background:#111;
+color:white;
+border:none;
+box-sizing:border-box;
+"
+>
+
+<label style="
+display:block;
+margin-bottom:5px;
+color:var(--color-texto);
+font-size:14px;
+font-weight:bold;
+">
+Descuento (%)
+</label>
+
+<input
+id="descuentoCompra"
+type="number"
+min="0"
+max="100"
+value="0"
+style="
+width:100%;
+padding:12px;
+border-radius:10px;
+margin-bottom:15px;
+background:#111;
+color:white;
+border:none;
+box-sizing:border-box;
+"
+>
+
+<div style="margin-bottom:20px;">
+
+<select
+id="proveedorCompra"
+
+onchange="mostrarNuevoProveedor()"
+
+style="
+width:100%;
+padding:12px;
+border-radius:12px;
+background:#111;
+color:white;
+border:none;
+outline:none;
+font-size:15px;
+box-sizing:border-box;
+"
+>
+
+<option value="">
+Seleccionar proveedor
+</option>
+
+<option value="nuevo">
+＋ Agregar proveedor
+</option>
+
+</select>
+
+<input
+id="nuevoProveedor"
+
+placeholder="Nuevo proveedor"
+
+style="
+display:none;
+width:100%;
+padding:12px;
+margin-top:12px;
+border-radius:12px;
+background:#111;
+color:white;
+border:none;
+outline:none;
+box-sizing:border-box;
+"
+>
+
+<button
+id="guardarProveedorBtn"
+
+onclick="guardarProveedor()"
+
+style="
+display:none;
+margin-top:12px;
+width:100%;
+padding:12px;
+border:none;
+border-radius:12px;
+background:var(--color-secundario);
+color:white;
+font-weight:bold;
+cursor:pointer;
+"
+>
+
+Guardar proveedor
+
+</button>
+
+</div>
+
+<div style="
+display:flex;
+gap:10px;
+">
+
+<button
+onclick="guardarCompra()"
+style="
+flex:1;
+padding:12px;
+border:none;
+border-radius:10px;
+background:var(--color-secundario);
+color:white;
+font-weight:bold;
+cursor:pointer;
+"
+>
+Guardar
+</button>
+
+<button
+onclick="cerrarModalCompra()"
+style="
+flex:1;
+padding:12px;
+border:none;
+border-radius:10px;
+background:#444;
+color:white;
+font-weight:bold;
+cursor:pointer;
+"
+>
+Cancelar
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+`
+
+document.getElementById(
+"contenido"
+).innerHTML = html
+
+cargarCompras()
+
+}
+
+function abrirAgregarCompra(){
+
+document.getElementById(
+"modalCompra"
+).style.display = "flex"
+
+cargarProductosCompra()
+cargarProveedores()
+
+}
+
+function cerrarModalCompra(){
+
+document.getElementById(
+"modalCompra"
+).style.display = "none"
+
+}
+
+function filtrarProductosCompra(){
+
+let texto =
+document.getElementById(
+"buscadorProducto"
+).value.toLowerCase()
+
+let cont =
+document.getElementById(
+"resultadosProductos"
+)
+
+if(!texto){
+
+cont.style.display = "none"
+return
+
+}
+
+let filtrados =
+productosCompra.filter(p=>
+
+p.nombre.toLowerCase()
+.includes(texto)
+
+)
+
+cont.innerHTML = ""
+
+filtrados.forEach(p=>{
+
+cont.innerHTML += `
+
+<div
+onclick="seleccionarProductoCompra('${p._id}','${p.nombre}')"
+style="
+padding:12px;
+cursor:pointer;
+border-bottom:1px solid rgba(255,255,255,0.05);
+"
+>
+
+${p.nombre}
+
+</div>
+
+`
+
+})
+
+cont.style.display =
+filtrados.length
+? "block"
+: "none"
+
+}
+
+function seleccionarProductoCompra(id,nombre){
+
+document.getElementById(
+"productoCompra"
+).value = id
+
+document.getElementById(
+"buscadorProducto"
+).value = nombre
+
+document.getElementById(
+"resultadosProductos"
+).style.display = "none"
+}
+
+function mostrarNuevoProveedor(){
+
+let select =
+document.getElementById(
+"proveedorCompra"
+)
+
+let input =
+document.getElementById(
+"nuevoProveedor"
+)
+
+let btn =
+document.getElementById(
+"guardarProveedorBtn"
+)
+
+if(select.value === "nuevo"){
+
+input.style.display = "block"
+btn.style.display = "block"
+
+}else{
+
+input.style.display = "none"
+btn.style.display = "none"
+
+}
+
+}
+
+function guardarProveedor(){
+
+let input =
+document.getElementById(
+"nuevoProveedor"
+)
+
+let nombre =
+input.value.trim()
+
+if(!nombre) return
+
+/* traer existentes */
+
+let proveedores =
+JSON.parse(
+localStorage.getItem("proveedores")
+) || []
+
+/* evitar repetidos */
+
+if(proveedores.includes(nombre)){
+
+alert("Ese proveedor ya existe")
+return
+
+}
+
+/* guardar */
+
+proveedores.push(nombre)
+
+localStorage.setItem(
+"proveedores",
+JSON.stringify(proveedores)
+)
+
+/* recargar select */
+
+cargarProveedores(nombre)
+
+/* limpiar */
+
+input.value = ""
+
+input.style.display = "none"
+
+document.getElementById(
+"guardarProveedorBtn"
+).style.display = "none"
+
+}
+
+function cargarProveedores(seleccionado=""){
+
+let select =
+document.getElementById(
+"proveedorCompra"
+)
+
+let proveedores =
+JSON.parse(
+localStorage.getItem("proveedores")
+) || []
+
+select.innerHTML = `
+
+<option value="">
+Seleccionar proveedor
+</option>
+
+`
+
+proveedores.forEach(p=>{
+
+select.innerHTML += `
+
+<option value="${p}">
+${p}
+</option>
+
+`
+
+})
+
+select.innerHTML += `
+
+<option value="nuevo">
+＋ Agregar proveedor
+</option>
+
+`
+
+if(seleccionado){
+
+select.value = seleccionado
+
+}
+
+}
+
+async function cargarProductosCompra(){
+
+productosCompra =
+await fetch("/productos")
+.then(r=>r.json())
+
+}
+
+function exportarInventario(){
+
+let data = window.inventarioData
+
+if(!data || data.length === 0){
+alert("No hay datos")
+return
+}
+
+// 🧠 convertimos a formato Excel (CSV)
+let csv = "Nombre;Stock;Vendidos;Total Vendido\n"
+
+data.forEach(p=>{
+let totalVendido =
+(p.vendidos || 0) * (p.precioFinal || 0)
+
+csv += `"${p.nombre}";${p.stock};${p.vendidos};${totalVendido}\n`
+})
+
+// 📥 descargar archivo
+let blob = new Blob([csv], { type: "text/csv;charset=utf-8;" })
+let url = URL.createObjectURL(blob)
+
+let a = document.createElement("a")
+a.href = url
+a.download = "inventario.csv"
+a.click()
+
+URL.revokeObjectURL(url)
+}
+
+async function reiniciarInventario(){
+
+let confirmar = confirm(
+"¿Reiniciar vendidos y total vendido?"
+)
+
+if(!confirmar) return
+
+await fetch("/reiniciar-inventario",{
+method:"POST",
+headers: headersAdmin
+})
+
+alert("Inventario reiniciado ✨")
+
+mostrarInventario()
+
+}
+
+async function exportarCompras(){
+
+try{
+
+let res = await fetch("/compras")
+
+let compras = await res.json()
+
+if(!compras.length){
+
+alert("No hay compras")
+return
+
+}
+
+let csv =
+"Producto;Proveedor;Cantidad;Costo unitario;IVA (%);Descuento (%);Total gastado\n"
+
+compras.forEach(c=>{
+
+csv += [
+  c.producto,
+  c.proveedor,
+  c.cantidad,
+  Math.round(c.precioCompra || 0),
+  c.iva || 0,
+  c.descuento || 0,
+  Math.round(c.total || 0)
+].join(";") + "\n"
+
+})
+
+let blob = new Blob(
+[csv],
+{
+type:"text/csv;charset=utf-8;"
+}
+)
+
+let url = URL.createObjectURL(blob)
+
+let a = document.createElement("a")
+
+a.href = url
+a.download = "compras.csv"
+
+a.click()
+
+URL.revokeObjectURL(url)
+
+}catch(e){
+
+console.log(e)
+
+alert("Error descargando Excel")
+
+}
+
+}
+
+async function agregarDescuento(id){
+
+// 🔥 buscamos producto actual
+let res = await fetch("/productos")
+let productos = await res.json()
+let p = productos.find(x => x._id === id)
+
+// 🟥 SI YA TIENE PROMO → ELIMINAR
+if(p.promo === true){
+
+let formData = new FormData()
+formData.append("promo", "false")
+formData.append("descuento", 0)
+formData.append("precioPromo", 0)
+
+await fetch("/productos/"+id,{
+  method:"PUT",
+  body: formData
+})
+
+alert("Promoción eliminada 💔")
+mostrarProductos()
+return
+}
+
+// 🟢 SI NO TIENE → CREAR
+let descuento = prompt("Porcentaje de descuento (ej: 40)")
+
+if(!descuento) return
+
+let precioOriginal = Number(p.precio)
+let precioPromo = Math.round(precioOriginal - (precioOriginal * descuento / 100))
+
+let formData = new FormData()
+formData.append("promo", "true")
+formData.append("descuento", Number(descuento))
+formData.append("precioPromo", precioPromo)
+
+await fetch("/productos/"+id,{
+  method:"PUT",
+  body: formData
+})
+
+alert("Promoción aplicada 🔥")
+mostrarProductos()
+}
+
+async function editar(id){
+
+let p = await fetch("/productos").then(r=>r.json())
+p = p.find(x=>x._id === id)
+
+contenido.innerHTML = `
+<h1>Editar producto</h1>
+
+<div style="
+max-width:500px;
+margin:auto;
+display:flex;
+flex-direction:column;
+gap:15px;
+background:var(--color-card);
+padding:30px;
+border-radius:15px;
+border:1px solid rgba(255,255,255,0.1);
+">
+
+<input id="nombre" value="${p.nombre}">
+<input id="precio" value="${p.precio}">
+<input id="descripcion" value="${p.descripcion}">
+<input id="descripcionLarga" value="${p.descripcionLarga || ''}">
+<input id="info" value="${p.info || ''}">
+<input id="caracteristicas" value="${p.caracteristicas || ''}">
+<input id="modoUso" value="${p.modoUso || ''}">
+<input id="recomendaciones" value="${p.recomendaciones || ''}">
+<input id="stock" value="${p.stock}">
+
+<select id="categoria">
+<option value="">Selecciona categoría</option>
+<option value="estimulantes" ${p.categoria==="estimulantes"?"selected":""}>Estimulantes</option>
+<option value="lubricantes" ${p.categoria==="lubricantes"?"selected":""}>Lubricantes</option>
+<option value="juguetes" ${p.categoria==="juguetes"?"selected":""}>Juguetes</option>
+<option value="lenceria" ${p.categoria==="lenceria"?"selected":""}>Lencería</option>
+<option value="cuidado intimo" ${p.categoria==="cuidado intimo"?"selected":""}>Cuidado íntimo</option>
+<option value="juegos eroticos" ${p.categoria==="juegos eroticos"?"selected":""}>Juegos eróticos</option>
+</select>
+
+<label>Imágenes actuales</label>
+<div id="imagenesActuales"></div>
+
+<label>Agregar más imágenes</label>
+<input id="nuevasImgs" type="file" multiple accept="image/*">
+
+<button onclick="guardarEdicion('${id}')" class="btn-guardar">
+Guardar cambios
+</button>
+
+</div>
+`
+
+let cont = document.getElementById("imagenesActuales")
+
+let imagenesEdit = [...(p.imagenes || [])]
+
+window.imagenesEdit = imagenesEdit
+
+renderImgsEdit()
+}
+
+function renderImgsEdit(){
+
+  let cont = document.getElementById("imagenesActuales") // 👈 traerlo aquí
+
+  if(!cont) return // por si acaso
+
+  cont.innerHTML = window.imagenesEdit.map((img,i)=>`
+  
+  <div draggable="true" 
+       ondragstart="dragStartEdit(${i})"
+       ondragover="dragOverEdit(event)"
+       ondrop="dropEdit(event, ${i})"
+       style="
+         display:flex;
+         justify-content:space-between;
+         align-items:center;
+         background:var(--color-card);
+         padding:10px;
+         border-radius:10px;
+         margin:6px 0;
+         cursor:grab;
+       ">
+
+   <div style="display:flex; align-items:center; gap:10px;">
+
+  <span style="
+    cursor:grab;
+    opacity:0.5;
+    font-size:18px;
+  ">☰</span>
+
+  <img src="${img}" style="
+    width:60px;
+    height:60px;
+    object-fit:cover;
+    border-radius:8px;
+  ">
+
+</div>
+
+<span onclick="eliminarImg(${i})" style="
+  cursor:pointer;
+  font-size:18px;
+  color:var(--color-texto);
+">✖</span>
+
+  </div>
+  `).join("")
+}
+
+let dragIndexEdit = null
+
+function dragStartEdit(index){
+  dragIndexEdit = index
+}
+
+function dragOverEdit(e){
+  e.preventDefault()
+}
+
+function dropEdit(e, dropIndex){
+  e.preventDefault()
+
+  const rect = e.currentTarget.getBoundingClientRect()
+  const offset = e.clientY - rect.top
+
+  let newIndex = dropIndex
+
+  if(offset > rect.height / 2){
+    newIndex = dropIndex + 1
+  }
+
+  const item = window.imagenesEdit[dragIndexEdit]
+
+  window.imagenesEdit.splice(dragIndexEdit, 1)
+
+  if(dragIndexEdit < newIndex) newIndex--
+
+  window.imagenesEdit.splice(newIndex, 0, item)
+
+  renderImgsEdit()
+}
+
+function eliminarImg(i){
+  window.imagenesEdit.splice(i,1)
+  renderImgsEdit()
+}
+
+async function guardarEdicion(id){
+
+let formData = new FormData()
+
+formData.append("nombre", document.getElementById("nombre").value)
+formData.append("precio", document.getElementById("precio").value)
+
+formData.append("descripcion", document.getElementById("descripcion").value)
+formData.append("descripcionLarga", document.getElementById("descripcionLarga").value)
+formData.append("info", document.getElementById("info").value)
+formData.append("caracteristicas", document.getElementById("caracteristicas").value)
+formData.append("modoUso", document.getElementById("modoUso").value)
+formData.append("recomendaciones", document.getElementById("recomendaciones").value)
+
+formData.append("stock", document.getElementById("stock").value)
+formData.append("categoria", document.getElementById("categoria").value)
+
+// 🔥 imágenes existentes (ordenadas)
+formData.append("imagenesActuales", JSON.stringify(window.imagenesEdit))
+
+// 🔥 nuevas imágenes
+window.nuevasImagenes.forEach(file=>{
+  formData.append("imagenes", file)
+})
+
+await fetch("/productos/"+id,{
+  method:"PUT",
+  headers: headersAdmin,
+  body:formData
+})
+
+alert("Producto actualizado 💖")
+window.nuevasImagenes = []
+mostrarProductos()
+}
+
+function textoANumero(texto){
+
+texto = texto.toLowerCase()
+
+let mapa = {
+uno:1, dos:2, tres:3, cuatro:4, cinco:5,
+seis:6, siete:7, ocho:8, nueve:9, diez:10,
+veinte:20, treinta:30, cuarenta:40, cincuenta:50,
+cien:100, ciento:100, mil:1000
+}
+
+if(!isNaN(texto)) return Number(texto)
+
+let palabras = texto.split(" ")
+let total = 0
+
+palabras.forEach(p=>{
+if(mapa[p]) total += mapa[p]
+})
+
+return total || 0
+}
+
+async function eliminar(id){
+
+let confirmar = confirm("¿Eliminar producto?")
+if(!confirmar) return
+
+await fetch("/productos/"+id,{
+method:"DELETE",
+headers: headersAdmin
+})
+
+alert("Producto eliminado")
+mostrarProductos()
+
+}
+//===============Banner================
+
+function mostrarBanner(){
+
+contenido.innerHTML = `
+<h1>Banner e imagenes</h1>
+
+<div style="
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(350px,1fr));
+gap:25px;
+margin-top:30px;
+">
+
+<!-- BANNER -->
+<div style="
+display:flex;
+flex-direction:column;
+gap:15px;
+background:var(--color-card);
+padding:30px;
+border-radius:15px;
+border:1px solid rgba(255,255,255,0.1);
+">
+
+<label>Subir imágenes del banner</label>
+
+<input id="bannerImgs" type="file" multiple accept="image/*,.svg">
+
+<div id="previewBanner"></div>
+
+<button onclick="guardarBanner()" class="btn-guardar">
+Guardar banner
+</button>
+
+</div>
+
+<!-- IMAGENES EXTRA -->
+<div style="
+display:flex;
+flex-direction:column;
+gap:15px;
+background:var(--color-card);
+padding:30px;
+border-radius:15px;
+border:1px solid rgba(255,255,255,0.1);
+">
+
+<label>Subir imágenes extra</label>
+
+<input id="extraImgs" type="file" multiple accept="image/*,.svg">
+
+<div id="previewExtras"></div>
+
+<button onclick="guardarExtras()" class="btn-guardar">
+Guardar imágenes extra
+</button>
+
+</div>
+
+</div>
+`
+
+cargarBanner()
+cargarExtras()
+
+}
+
+async function mostrarCategorias(){
+
+let data = await fetch("/categorias")
+.then(r=>r.json())
+
+contenido.innerHTML = `
+
+<h1>Categorías</h1>
+
+<div class="cards">
+
+${crearCardCategoria(
+"todo",
+"Todo",
+data.todo
+)}
+
+${crearCardCategoria(
+"estimulantes",
+"Estimulantes",
+data.estimulantes
+)}
+
+${crearCardCategoria(
+"lubricantes",
+"Lubricantes",
+data.lubricantes
+)}
+
+${crearCardCategoria(
+"juguetes",
+"Juguetes",
+data.juguetes
+)}
+
+${crearCardCategoria(
+"kits",
+"Kits",
+data.kits
+)}
+
+${crearCardCategoria(
+"lenceria",
+"Lencería",
+data.lenceria
+)}
+
+${crearCardCategoria(
+"cuidado_intimo",
+"Cuidado íntimo",
+data.cuidado_intimo
+)}
+
+${crearCardCategoria(
+"juegos_eroticos",
+"Juegos eróticos",
+data.juegos_eroticos
+)}
+
+</div>
+`
+
+}
+
+let productosKit = []
+
+async function mostrarKits(){
+
+let productos = await fetch("/productos")
+.then(r=>r.json())
+
+window.todosProductosKit = productos
+
+contenido.innerHTML = `
+
+<h1>Kits</h1>
+
+<div style="
+max-width:700px;
+margin:auto;
+display:flex;
+flex-direction:column;
+gap:15px;
+background:var(--color-card);
+padding:30px;
+border-radius:15px;
+">
+
+<input id="nombreKit" placeholder="Nombre del kit">
+
+<input id="precioKit" placeholder="Precio del kit">
+
+<textarea
+id="descripcionKit"
+placeholder="Descripción del kit"
+></textarea>
+
+<input
+id="imagenKit"
+type="file"
+accept="image/*"
+>
+
+<button
+onclick="abrirSelectorKit()"
+class="btn-guardar"
+>
+Seleccionar productos
+</button>
+
+<div id="productosKitPreview"></div>
+
+<button
+class="btn-guardar"
+>
+Guardar kit
+</button>
+
+</div>
+
+`
+
+renderProductosKit()
+
+}
+
+function crearCardCategoria(
+id,
+titulo,
+imagen
+){
+
+return `
+
+<div class="card">
+
+<h3>${titulo}</h3>
+
+${
+imagen
+?
+`
+<img
+src="${imagen}"
+style="
+width:120px;
+height:120px;
+object-fit:cover;
+border-radius:12px;
+margin-bottom:10px;
+">
+`
+:
+`
+<div style="
+width:120px;
+height:120px;
+display:flex;
+align-items:center;
+justify-content:center;
+border-radius:12px;
+background:var(--color-principal);
+margin-bottom:10px;
+opacity:.6;
+">
+Sin imagen
+</div>
+`
+}
+
+<input
+type="file"
+id="img_${id}"
+accept="image/*"
+>
+
+<button
+onclick="guardarCategoria('${id}')"
+class="btn-guardar"
+>
+Guardar imagen
+</button>
+
+<button
+onclick="eliminarCategoria('${id}')"
+class="btn-eliminar"
+>
+Eliminar imagen
+</button>
+
+</div>
+
+`
+
+}
+
+async function guardarCategoria(nombre){
+
+let input =
+document.getElementById(
+"img_" + nombre
+)
+
+if(!input.files.length){
+
+alert("Selecciona una imagen")
+return
+
+}
+
+let formData =
+new FormData()
+
+formData.append(
+"nombre",
+nombre
+)
+
+formData.append(
+"imagen",
+input.files[0]
+)
+
+let res =
+await fetch(
+"/categorias",
+{
+method:"POST",
+body:formData
+}
+)
+
+if(res.ok){
+
+alert(
+"Imagen guardada 💜"
+)
+
+mostrarCategorias()
+
+}else{
+
+alert(
+"Error guardando"
+)
+
+}
+
+}
+
+async function eliminarCategoria(nombre){
+
+if(
+!confirm(
+"¿Eliminar imagen?"
+)
+)return
+
+await fetch(
+"/categorias/" + nombre,
+{
+method:"DELETE"
+}
+)
+
+mostrarCategorias()
+
+}
+
+async function cargarBanner(){
+
+let res = await fetch("/banner")
+let data = await res.json()
+bannerActual = data.imagenes || []
+renderBanner()
+}
+
+function renderBanner(){
+let contenedor = document.getElementById("previewBanner")
+if(!contenedor) return
+contenedor.innerHTML = ""
+bannerActual.forEach((img,index)=>{
+
+contenedor.innerHTML += `
+<div class="img-banner">
+<img src="${img}">
+<button onclick="eliminarBanner(${index})">
+✕
+</button>
+</div>
+`
+})
+}
+
+function eliminarBanner(index){
+bannerActual.splice(index,1)
+renderBanner()
+}
+
+
+async function guardarBanner(){
+
+let btn = document.querySelector(".btn-guardar")
+let input = document.getElementById("bannerImgs")
+
+let files = input.files
+
+// 🔒 bloquear botón
+btn.disabled = true
+btn.innerText = "Subiendo..."
+
+let formData = new FormData()
+
+formData.append(
+"imagenesActuales",
+JSON.stringify(bannerActual)
+)
+
+Array.from(files).forEach(f=>{
+formData.append("imagenes", f)
+})
+
+try{
+
+let res = await fetch("/banner",{
+method:"POST",
+headers: headersAdmin,
+body:formData
+})
+
+let text = await res.text()
+console.log("RESPUESTA BACK:", text)
+
+if(res.ok){
+alert("Banner guardado 💜")
+input.value = "" // limpiar
+}else{
+alert("Error: " + text)
+}
+
+}catch(e){
+console.error(e)
+alert("Error real al subir")
+}
+
+// 🔓 reactivar botón
+btn.disabled = false
+btn.innerText = "Guardar banner"
+
+}
+
+// ================= IMAGENES EXTRA =================
+
+async function cargarExtras(){
+
+let res = await fetch("/extras")
+let data = await res.json()
+
+extrasActual = data.imagenes || []
+
+renderExtras()
+
+}
+
+function renderExtras(){
+
+let contenedor =
+document.getElementById("previewExtras")
+
+if(!contenedor) return
+
+contenedor.innerHTML = ""
+
+extrasActual.forEach((img,index)=>{
+
+contenedor.innerHTML += `
+
+<div
+class="fila-imagen"
+draggable="true"
+ondragstart="dragExtra(event, ${index})"
+ondragover="allowDropExtra(event)"
+ondrop="dropExtra(event, ${index})"
+>
+
+<span class="drag-icon">☰</span>
+
+<img src="${img}">
+
+<button onclick="eliminarExtra(${index})">
+✕
+</button>
+
+</div>
+
+`
+
+})
+
+}
+
+function eliminarExtra(index){
+
+extrasActual.splice(index,1)
+
+renderExtras()
+
+}
+
+let extraDragIndex = null
+
+function dragExtra(e,index){
+
+extraDragIndex = index
+
+}
+
+function allowDropExtra(e){
+
+e.preventDefault()
+
+}
+
+function dropExtra(e,index){
+
+e.preventDefault()
+
+if(extraDragIndex === null) return
+
+let movida =
+extrasActual.splice(extraDragIndex,1)[0]
+
+extrasActual.splice(index,0,movida)
+
+renderExtras()
+
+}
+
+async function guardarExtras(){
+
+let input =
+document.getElementById("extraImgs")
+
+let files = input.files
+
+let formData = new FormData()
+
+formData.append(
+"imagenesActuales",
+JSON.stringify(extrasActual)
+)
+
+Array.from(files).forEach(f=>{
+
+formData.append("imagenes",f)
+
+})
+
+let res = await fetch("/extras",{
+
+method:"POST",
+headers: headersAdmin,
+body: formData
+
+})
+
+if(res.ok){
+
+alert("Imágenes extra guardadas 💖")
+
+input.value = ""
+
+}else{
+
+alert("Error guardando extras")
+
+}
+
+}
+
+document.addEventListener("input", e => {
+  if(e.target.type === "color"){
+
+    let nombre = e.target.id
+    let valor = e.target.value
+
+    // preview
+    let preview = document.getElementById("preview" + nombre.charAt(0).toUpperCase() + nombre.slice(1))
+    if(preview){
+      preview.style.background = valor
+    }
+
+    // aplicar en vivo
+    aplicarColoresEnAdmin({
+      principal: document.getElementById("principal")?.value,
+      secundario: document.getElementById("secundario")?.value,
+      acento: document.getElementById("acento")?.value,
+      texto: document.getElementById("texto")?.value,
+      card: document.getElementById("card")?.value
+    })
+
+  }
+})
+
+async function cargarColoresAdmin(){
+let colores = await fetch("/colores").then(r=>r.json())
+aplicarColoresEnAdmin(colores)
+}
+cargarColoresAdmin()
+
+// INICIO
+mostrarDashboard()
+
+</script>
+
+</body>
+
+</html>

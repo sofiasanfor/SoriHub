@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gracias por tu compra - Sensify</title>
+
+<style>
+
+:root{
+  --color-principal:#1b0b2e;
+  --color-secundario:#ff4fd8;
+  --color-acento:#ff8be3;
+  --color-texto:#ffffff;
+  --color-card:#1a1a24;
+}
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
+
+body{
+font-family:'Poppins',sans-serif;
+background:var(--color-principal);
+color:var(--color-texto);
+min-height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+padding:20px;
+}
+
+.contenedor{
+width:100%;
+max-width:700px;
+background:var(--color-card);
+border-radius:25px;
+padding:50px 35px;
+border:1px solid var(--color-acento);
+box-shadow:0 0 30px rgba(0,0,0,0.4);
+text-align:center;
+animation:aparecer 0.5s ease;
+}
+
+@keyframes aparecer{
+from{
+opacity:0;
+transform:translateY(20px);
+}
+to{
+opacity:1;
+transform:translateY(0);
+}
+}
+
+.check{
+width:110px;
+height:110px;
+margin:auto;
+margin-bottom:25px;
+border-radius:50%;
+background:linear-gradient(135deg,var(--color-secundario),var(--color-acento));
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:55px;
+box-shadow:0 0 25px var(--color-secundario);
+}
+
+h1{
+font-size:40px;
+margin-bottom:15px;
+color:var(--color-acento);
+}
+
+.sub{
+opacity:0.8;
+font-size:18px;
+line-height:1.6;
+margin-bottom:35px;
+}
+
+.resumen{
+background:var(--color-principal);
+padding:25px;
+border-radius:18px;
+margin-top:25px;
+text-align:left;
+border:1px solid rgba(255,255,255,0.05);
+}
+
+.resumen h2{
+margin-bottom:20px;
+color:var(--color-secundario);
+font-size:22px;
+}
+
+.producto{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:12px 0;
+border-bottom:1px solid var(--color-card);
+gap:15px;
+}
+
+.producto:last-child{
+border-bottom:none;
+}
+
+.nombre{
+font-size:15px;
+opacity:0.9;
+}
+
+.precio{
+font-weight:bold;
+color:var(--color-acento);
+}
+
+.total{
+margin-top:20px;
+display:flex;
+justify-content:space-between;
+font-size:22px;
+font-weight:bold;
+color:var(--color-secundario);
+}
+
+.botones{
+margin-top:40px;
+display:flex;
+justify-content:center;
+gap:15px;
+flex-wrap:wrap;
+}
+
+.btn{
+padding:14px 28px;
+border-radius:14px;
+text-decoration:none;
+font-weight:bold;
+transition:0.25s;
+}
+
+.btn-principal{
+background:linear-gradient(135deg,var(--color-secundario),var(--color-acento));
+color:var(--color-texto);
+}
+
+.btn-secundario{
+border:1px solid var(--color-acento);
+color:var(--color-texto);
+}
+
+.btn:hover{
+transform:translateY(-2px);
+box-shadow:0 0 15px rgba(255,255,255,0.08);
+}
+
+.logo{
+width:140px;
+margin-bottom:25px;
+opacity:0.95;
+}
+
+.mensaje{
+margin-top:20px;
+opacity:0.75;
+font-size:14px;
+line-height:1.5;
+}
+
+@media(max-width:768px){
+
+.contenedor{
+padding:35px 20px;
+}
+
+h1{
+font-size:30px;
+}
+
+.sub{
+font-size:15px;
+}
+
+.producto{
+flex-direction:column;
+align-items:flex-start;
+}
+
+.total{
+font-size:18px;
+}
+
+.btn{
+width:100%;
+text-align:center;
+}
+
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="contenedor">
+
+<img src="logo.png" class="logo">
+
+<div class="check">
+✓
+</div>
+
+<h1>¡Gracias por tu compra!</h1>
+
+<p class="sub">
+Tu pedido fue realizado correctamente 💜<br>
+Muy pronto nos pondremos en contacto contigo.
+</p>
+
+<div class="resumen">
+
+<h2>Resumen del pedido</h2>
+
+<div id="productos"></div>
+
+<div class="total">
+<span>Total</span>
+<span id="total">$0</span>
+</div>
+
+</div>
+
+<div class="botones">
+
+<a href="index.html" class="btn btn-principal">
+Volver al inicio
+</a>
+
+<a href="carrito.html" class="btn btn-secundario">
+Ver mis pedidos
+</a>
+
+</div>
+
+<p class="mensaje">
+Gracias por confiar en Sensify ✨
+</p>
+
+</div>
+
+<div id="menuBotonBajo"></div>
+
+<script>
+
+function formatoPrecio(num){
+return Number(num).toLocaleString("es-CO")
+}
+
+async function aplicarColores(){
+
+try{
+
+let colores = await fetch("/colores")
+.then(r=>r.json())
+
+let root = document.documentElement
+
+root.style.setProperty("--color-principal", colores.principal)
+root.style.setProperty("--color-secundario", colores.secundario)
+root.style.setProperty("--color-acento", colores.acento)
+root.style.setProperty("--color-texto", colores.texto)
+root.style.setProperty("--color-card", colores.card)
+
+}catch(e){
+
+console.log("No se pudieron cargar colores")
+
+}
+
+}
+
+async function cargarPedido(){
+
+let pedido = JSON.parse(
+localStorage.getItem("pedidoPendiente")
+)
+
+if(!pedido){
+
+window.location.href = "index.html"
+return
+
+}
+
+let cont = document.getElementById("productos")
+
+cont.innerHTML = ""
+
+pedido.carrito.forEach(p=>{
+
+let precioOriginal =
+Number(p.precioOriginal) ||
+Number(p.precio) ||
+0
+
+let descuento = Number(p.descuento) || 0
+
+let promo = p.promo
+
+let precio = promo
+? Math.round(
+precioOriginal * (1 - descuento / 100)
+)
+: precioOriginal
+
+cont.innerHTML += `
+
+<div class="producto">
+
+<div class="nombre">
+${p.nombre} x${p.cantidad}
+</div>
+
+<div class="precio">
+$${formatoPrecio(precio * p.cantidad)}
+</div>
+
+</div>
+
+`
+
+})
+
+document.getElementById("total").innerText =
+"$" + formatoPrecio(pedido.total)
+
+/* SOLO LIMPIAR LOCAL */
+
+localStorage.removeItem("pedidoPendiente")
+
+}
+
+async function verificarPago(){
+
+let pedido = JSON.parse(
+localStorage.getItem("pedidoPendiente")
+)
+
+if(!pedido){
+
+window.location.href = "index.html"
+return
+
+}
+
+let params = new URLSearchParams(
+window.location.search
+)
+
+let idTransaccion = params.get("id")
+
+if(!idTransaccion){
+
+window.location.href = "index.html"
+return
+
+}
+
+try{
+
+let res = await fetch(
+"https://sandbox.wompi.co/v1/transactions/" + idTransaccion
+)
+
+if(!res.ok){
+
+throw new Error("Error consultando Wompi")
+
+}
+
+let data = await res.json()
+
+if(!data.data){
+
+throw new Error("Transacción inválida")
+
+}
+
+let transaccion = data.data
+
+let estado = transaccion.status
+
+let referencia = transaccion.reference
+
+if(referencia !== pedido.referencia){
+
+window.location.href = "index.html"
+return
+
+}
+
+switch(estado){
+
+case "APPROVED":
+
+cargarPedido()
+break
+
+case "DECLINED":
+
+alert("Tu pago fue rechazado 😢")
+window.location.href = "carrito.html"
+break
+
+case "VOIDED":
+
+alert("El pago fue cancelado")
+window.location.href = "carrito.html"
+break
+
+case "ERROR":
+
+alert("Ocurrió un error procesando el pago")
+window.location.href = "carrito.html"
+break
+
+case "PENDING":
+
+alert("Tu pago está pendiente ⏳")
+window.location.href = "carrito.html"
+break
+
+default:
+
+window.location.href = "carrito.html"
+
+}
+
+}catch(e){
+
+console.log(e)
+
+window.location.href = "carrito.html"
+
+}
+
+}
+
+(async ()=>{
+await aplicarColores()
+verificarPago()
+})()
+
+fetch("menubotonbajo.html")
+.then(r=>r.text())
+.then(data=>{
+
+let contenedor =
+document.getElementById(
+"menuBotonBajo"
+)
+
+contenedor.innerHTML = data
+
+/* EJECUTAR SCRIPTS */
+
+contenedor
+.querySelectorAll("script")
+.forEach(script=>{
+
+let nuevo =
+document.createElement("script")
+
+if(script.src){
+nuevo.src = script.src
+}else{
+nuevo.textContent =
+script.textContent
+}
+
+document.body.appendChild(nuevo)
+
+})
+
+})
+
+</script>
+
+</body>
+</html>
