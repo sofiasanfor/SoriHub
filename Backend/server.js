@@ -19,6 +19,8 @@ type: "*/*"
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
+app.use(express.static(path.join(__dirname, "../Frontend")));
+
 const Carrusel = mongoose.model("Carrusel",{
   productos: [String] // guardamos IDs
 })
@@ -2277,4 +2279,4 @@ res.status(500).send("error")
 })
 
 // FRONTEND
-app.use(express.static(path.join(__dirname,"../frontend")))
+app.use(express.static(path.join(__dirname,"../Frontend")))
