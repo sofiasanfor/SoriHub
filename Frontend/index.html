@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html>
-
 <head>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SoriTech</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login - SoriTech</title>
 
 <style>
-
+  
+/*colores base*/
 :root{
 
   --color-principal: #0F172A; 
@@ -17,820 +17,157 @@
 
 }
 
+*{
+box-sizing: border-box;
+}
+
 body{
 margin:0;
+min-height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
 font-family:'Poppins',sans-serif;
-background:var(--color-principal);
-color:var(--color-texto);
+background: linear-gradient(135deg, var(--color-principal), #0f0f14);
+color: var(--color-texto);
+padding:20px;
+box-sizing:border-box;
 }
 
-/* LAYOUT */
-.container{
-justify-content:flex-start; 
-align-items:stretch; 
-display:block;
-width:100%; 
-padding:0;
+/* TARJETA */
+.login{
+background: var(--color-card);
+padding:40px;
+border-radius:16px;
+width:320px;
+text-align:center;
+border:1px solid rgba(255,255,255,0.05);
+transition:0.3s;
+
 }
 
-.content{
-  width:100%;
-  max-width:1400px; 
-  margin:0 auto; 
-  padding:30px 20px;
+.login:hover{
+transform:translateY(-5px);
 }
 
-.sidebar h3{ 
-  color:var(--color-acento);
-}
-
-.sidebar div{
-margin:10px 0;
-cursor:pointer;
-color:var(--color-texto);
-opacity:0.7;
-}
-
-.sidebar div:hover{ color:var(--color-acento);}
-
-/* BUSCADOR */
-.buscador{
-width:100%;
-max-width:700px; 
-display:block;
-margin:20px auto;
-padding:12px;
-border-radius:8px;
-border:none;
+/* LOGO */
+.logo{
+width:140px;
+margin-bottom:10px;
 }
 
 /* TITULO */
-.titulo{
-font-size:30px;
-margin:20px 0;
-color:var(--color-acento);
-text-align:center;
+.login h2{
+margin-bottom:20px;
+color: var(--color-acento);
 }
 
-/* CARRUSEL */
-.carrusel-container{
-position:relative;
-margin-bottom:30px;
+/* INPUTS */
+.login input{
 width:100%;
-margin-bottom:30px;
-}
-
-.carrusel{
-display:flex;
-overflow:hidden;
-gap:20px;
-scroll-behavior:smooth;
-width:100%;
-}
-
-.item{
-min-width:200px;
-max-width:200px;
-flex-shrink:0;
-background:var(--color-card);
-padding:15px;
-border-radius:12px;
-text-align:center;
-border:1px solid #2e2e40;
-}
-
-.item img{
-width:100%;
-height:180px;
-object-fit:contain;
+padding:12px;
+margin:10px 0;
 border-radius:8px;
-}
-
-.flecha{
-position:absolute;
-top:40%;
-background:var(--color-secundario);
 border:none;
-color:var(--color-texto);
-padding:8px;
-cursor:pointer;
-border-radius:6px;
+outline:none;
+background: var(--color-principal);
+color: var(--color-texto);
 }
 
-.izq{ left:10px; }
-.der{ right:10px; }
-
-.flecha{
-  z-index: 10;
-  opacity: 0.9;
+.login input::placeholder{
+color:#aaa;
 }
 
-.categoria-card{
 
-width:140px;
-min-height:150px;
 
-background:var(--color-card);
-
-border-radius:15px;
-
-padding:15px;
-
-display:flex;
-flex-direction:column;
-
-align-items:center;
-justify-content:center;
-
-cursor:pointer;
-
-transition:.3s;
-
-border:1px solid rgba(255,255,255,.08);
-}
-
-.categoria-card:hover{
-
-transform:translateY(-5px);
-
-box-shadow:0 0 15px var(--color-secundario);
-
-border-color:var(--color-secundario);
-}
-
-.categoria-img{
-width:80px;
-height:80px;
-object-fit:contain;
-margin-bottom:12px;
-display:none;
-}
-
-.categoria-card img{
-
-width:140px;
-max-width:100%;
-
-height:auto;
-
-object-fit:contain;
-
-margin-bottom:15px;
-
-border-radius:12px;
-
-display:block;
-}
-
-.categoria-card span{
-
-color:var(--color-texto);
-
-font-size:15px;
-
-font-weight:600;
-
-text-align:center;
-}
-
-/* PRODUCTOS */
-.productos{
-  display:grid;
- grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));
-  gap:20px;
-  justify-content:center;
-  width:100%;
-}
-
-.producto{
-background:var(--color-card);
-padding:15px;
-border-radius:12px;
-text-align:center;
-border:1px solid #2e2e40;
-margin:auto;
-height:380px;
-max-width:100%;
-
-display:flex;
-flex-direction:column;
-justify-content:space-between;
-
-min-height:360px;
-}
-
-.producto h3{
-  display:-webkit-box;
-  -webkit-line-clamp:2;
-  line-clamp:2;
-  -webkit-box-orient:vertical;
-  overflow:hidden;
-}
-
-.producto img{
-width:100%;
-height:180px;
-object-fit:contain;
-border-radius:8px;
-}
-
-button{
+/* BOTON */
+.login button{
 margin-top:10px;
-padding:6px 10px;
+width:100%;
+padding:12px;
 border:none;
-border-radius:6px;
-background:var(--color-secundario);
-color:var(--color-texto);
-cursor:pointer;
-}
-
-/* INFO FINAL */
-.info{
-background:var(--color-principal);
-padding:40px 20px;
-display:flex;
-justify-content:space-around;
-flex-wrap:wrap;
-text-align:center;
-}
-
-.bloque{
-width:200px;
-margin:10px;
-}
-
-.bloque h4{
-color:var(--color-secundario);
-}
-
-/* ARREGLAR LOGO */
-.logo img{
-height:60px;
-width:auto;
-}
-
-.login a{
-background:var(--color-secundario);
-padding:8px 15px;
 border-radius:8px;
-color:var(--color-texto);
-text-decoration:none;
+background: var(--color-secundario);
+color: var(--color-texto);
 font-weight:bold;
+cursor:pointer;
+transition:0.3s;
+}
+
+.login button:hover{
+background: var(--color-acento);
+transform:scale(1.05);
+}
+
+/* LINK */
+.login a{
+color: var(--color-acento);
+text-decoration:none;
 }
 
 .login a:hover{
-background:var(--color-acento);
+text-decoration:underline;
 }
 
-/* EVITAR QUE SE DAÑE LA NAVBAR */
-.navbar{
-height:80px;
-overflow:hidden;
-}
-
-
-/* ===== NAVBAR ===== */
-.navbar{
-display:flex;
-align-items:center;
-justify-content:space-between;
-padding:0px 30px;
-background:linear-gradient(90deg,var(--color-principal), var(--color-card));
-position:relative;
-}
-
-.menu{
-position:absolute;
-left:50%;
-transform:translateX(-50%);
-display:flex;
-gap:30px;
-}
-
-.menu a{
-color:var(--color-texto);
-opacity:0.8;
-text-decoration:none;
-}
-
-.menu a:hover{
-color:var(--color-acento);
-}
-
-.derecha{
-display:flex;
-align-items:center;
-gap:15px;
-}
-
-.carrito{
-position:relative;
-font-size:20px;
-}
-
-.contador{
-position:absolute;
-top:-8px;
-right:-10px;
-background:var(--color-secundario);
-color:var(--color-texto);
-font-size:12px;
-padding:2px 6px;
-border-radius:50%;
-}
-
-.contacto{
-background:var(--color-principal);
-padding:40px;
-text-align:center;
-}
-
-.logo-footer{
-width:180px;
-margin-bottom:20px;
-}
-
-.contacto p{
-margin:8px 0;
-color:var(--color-texto);
-opacity:0.7;
-}
-
-.redes{
-margin-top:20px;
-}
-
-.redes img{
-width:45px;
-margin:0 10px;
-cursor:pointer;
-transition:0.3s;
-}
-
-.redes img:hover{
-transform:scale(1.2);
-}
-
-.prev, .next {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  background: var(--color-secundario);
-  border: none;
- color:var(--color-texto);
-  font-size: 20px;
-  padding: 10px;
+.link-recuperar{
+  color: var(--color-acento);
+  text-decoration: none;
+  display: inline-block;
+  margin-top: 5px;
+  transition: 0.3s;
   cursor: pointer;
-  border-radius: 50%;
 }
 
-.prev { left: 10px; }
-.next { right: 10px; }
-
-.menu-btn{
-  display:none;
-  font-size:24px;
-  cursor:pointer;
+.link-recuperar:hover{
+  text-decoration: underline;
+  opacity: 0.8;
 }
 
-/* menú móvil oculto */
-.menu-movil{
-  display:none;
-  position:absolute;
-  top:80px;
-  left:50%;
-  transform:translateX(-50%);
-  width:90%;
-  max-width:350px;
- background:var(--color-card);
-  padding:20px;
-  border-radius:12px;
-  z-index:999;
-  text-align:center;
+.login input:focus{
+  box-shadow: 0 0 0 2px var(--color-secundario);
 }
 
-.menu-movil a{
-  display:block;
-  margin:15px 0;
-color:var(--color-texto);
-  text-decoration:none;
-  font-size:18px;
-}
-
-.sidebar div.activo{
-background:var(--color-secundario);
-color:var(--color-texto);
-padding:6px 10px;
-border-radius:8px;
-box-shadow:0 0 10px var(--color-secundario);
-}
-
-.sidebar{
-display:flex;
-justify-content:center;
-flex-wrap:wrap;
-gap:20px;
-
-max-width:1200px;
-margin:30px auto;
-}
-
-.sidebar div{
-padding:8px 14px;
-border-radius:20px;
-background:#2a2a38;
-color:var(--color-texto);
-opacity:0.7;
-cursor:pointer;
-white-space:nowrap;
-transition:0.3s;
-}
-
-.sidebar div:hover{
-background:var(--color-secundario);
-color:var(--color-texto);
-}
-
-.sidebar div.activo{
-background:var(--color-secundario);
-color:var(--color-texto);
-box-shadow:0 0 10px var(--color-secundario);
-}
-
-body, html{
-overflow-x:hidden; 
-}
-
-#banner {
-  width: 100%;
-  overflow: hidden;
-  margin-top: 0px;
-  position: relative;
-}
-
-#bannerSlider {
-  display: flex;
-  transition: transform 0.5s ease;
-}
-
-#bannerSlider img {
-  width: 100%;
-  height: 400px;
-  object-fit: cover;
-  flex-shrink: 0;
-}
-
-.banner-btn{
-  position:absolute;
-  top:50%;
-  transform:translateY(-50%);
-background:color-mix(in srgb, var(--color-principal), black 40%);
-  border:none;
-color:var(--color-texto);
-  font-size:22px;
+.mensaje{
+  margin-top:10px;
   padding:10px;
-  cursor:pointer;
-  border-radius:50%;
-  z-index:20;
-}
-
-.banner-btn.izq{ left:10px; }
-.banner-btn.der{ right:10px; }
-
-.banner-btn:hover{
-background:var(--color-secundario);
-}
-
-.extra-publicidad{
-grid-column:1/-1;
-display:flex;
-justify-content:center;
-align-items:center;
-background:var(--color-card);
-border-radius:20px;
-overflow:hidden;
-padding:20px;
-margin:10px 0;
-}
-
-.extra-publicidad img{
-width:100%;
-max-height:450px;
-object-fit:contain;
-border-radius:15px;
-}
-
-.extra-publicidad{
-grid-column:1/-1;
-width:100%;
-background:var(--color-card);
-border-radius:20px;
-overflow:hidden;
-padding:20px;
-margin:10px 0;
-
-display:flex;
-justify-content:center;
-align-items:center;
-}
-
-.extra-publicidad img{
-width:100%;
-max-height:450px;
-object-fit:contain;
-border-radius:15px;
-display:block;
-}
-
-.categoria-img:not([src]),
-.categoria-img[src=""]{
-display:none;
-}
-
-/* SOLO EN CELULAR */
-@media (max-width:768px){
-
-  #banner{
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    position: relative;
-height:220px;
-overflow:hidden;
-}
-  
-#bannerSlider img{
-    width:100%;
-    height:220px;
-    object-fit:cover;
-}
-
-  *{
-  box-sizing: border-box;
-}
-
-html, body{
-  width:100%;
-  overflow-x:hidden;
-}
-
-.categoria-card img,
-.categoria-img{
-
-width:110px;
-max-width:90%;
-
-height:auto;
-
-object-fit:contain;
-
-margin-bottom:12px;
-}
-
-.categoria-card{
-min-height:180px;
-}
-
-.categoria-card span{
-
-font-size:13px;
-}
-
-.info{
-  display:grid;
-  grid-template-columns: 1fr 1fr;
-  gap:20px;
-  padding:30px 15px;
-  text-align:center;
-}
-
-.bloque{
-  width:100%;
-  margin:0;
-}
-
-.bloque h4{
-  font-size:13px;
-  text-align:center;
-}
-
-.bloque p{
-  font-size:11px;
-  text-align:center;
-}
-
-.bloque:last-child{
-  grid-column: 1 / span 2;
-  text-align:center;
-}
-
-  .productos{
-    grid-template-columns: repeat(2, 1fr) !important;
-  }
-  .menu{
-    display:none;
-  }
-
-  .menu-btn{
-    display:block;
-  }
-
-  .item{
-  min-width:150px;
-  max-width:150px;
-  height:280px; 
-  flex-shrink:0;
-  background:var(--color-card);
-  padding:10px;
-  border-radius:12px;
-  text-align:center;
-  
-
-  display:flex;
-  flex-direction:column;
-  justify-content:space-between;
-}
-
-.item button{
-  font-size:11px;
-  padding:6px 6px;
-  flex:1; 
-}
-
-.item img{
-  width:100%;
-  height:100px; 
-  object-fit:contain;
   border-radius:8px;
-}
-
-.item p{
-  font-size:13px;
-  margin:5px 0;
-}
-
-.item button{
-  font-size:12px;
-  padding:5px 8px;
-}
-
-  body{
-    overflow-x:hidden;
-  }
-
-  .container{
-  flex-direction:column;
- 
- /* align-items:center;*/
-  width:100%;
-  max-width:100%;
-  display:flex;
-  align-items:stretch;
-  min-height:calc(100vh - 300px); 
-  }
-
-  .content{
-width:100%;
-max-width:100%; 
-padding:30px 20px;
-}
-
-.sidebar{
-display:flex;
-gap:15px;
-overflow-x:auto;
-padding:15px 10px;
-margin:20px 0;
-background:var(--color-card);
-border-radius:12px;
-}
-
-/* botones */
-.sidebar div{
-min-width:max-content;
-padding:8px 14px;
-border-radius:8px;
-background:#2a2a38;
-color:var(--color-texto);
-opacity:0.7;
-cursor:pointer;
-white-space:nowrap;
-transition:0.3s;
-}
-
-.sidebar div:hover{
-background:var(--color-secundario);
-color:var(--color-texto);
-}
-
-/* activo */
-.sidebar div.activo{
-background:var(--color-secundario);
-color:var(--color-texto);
-box-shadow:0 0 10px var(--color-secundario);
-}
-
-/* buscador FIX REAL */
-.buscador{
-  width:80%;
-  max-width:300px;
-  display:block;
-  margin:15px auto;
-  padding:10px;
   font-size:14px;
+  display:none;
+  animation:fadeIn 0.3s ease;
 }
 
-  /* productos */
-  .productos{
-    grid-template-columns:repeat(2,1fr);
-    gap:15px;
-    padding:0 10px;
-  }
-
-  /* carrusel */
-.carrusel{
-  display:flex;
-  overflow-x:auto;
-  overflow-y:hidden;
-  gap:15px;
-  scroll-behavior:smooth;
+.mensaje.error{
+background: rgba(255, 0, 100, 0.15);
+  color: var(--color-secundario);
 }
 
-.carrusel-container{
-  width:100%;
-  overflow:hidden;
-}
-
-.carrusel-container .flecha{
-  z-index:50;
-}
-  /* flechas pegadas a bordes */
-  .carrusel-container .izq{
-    left:0;
-  }
-
-  .carrusel-container .der{
-    right:0;
-  }
-
-  .producto{
-  max-width:100%;
-  padding:10px;
-  min-height:380px;
-  height:auto;
-}
-
-.producto img{
-  height:140px;
-}
-
-.container{
-flex-direction:column;
-}
-
-.carrusel-container{
-order:1;
-}
-
-.buscador{
-order:2;
-}
-
-.sidebar{
-order:3;
-}
-
-.productos{
-order:4;
-}
-
-   .menu-movil{
-display:none;
-position:absolute;
-top:60px;
-left:10px;
-width:200px; 
-right:10px;
-background:var(--color-card);
-padding:15px;
-border-radius:12px;
-box-shadow:0 10px 30px rgba(0,0,0,0.5);
-z-index:1000;
-animation:fadeIn 0.2s ease;
+.mensaje.ok{
+  background: rgba(0, 255, 170, 0.15);
+  color: var(--color-acento);
 }
 
 @keyframes fadeIn{
-from{opacity:0; transform:translateY(-10px);}
-to{opacity:1; transform:translateY(0);}
+  from{opacity:0; transform:translateY(-5px);}
+  to{opacity:1; transform:translateY(0);}
 }
 
-  .menu-movil a{
-display:block;
-margin:12px 0;
-font-size:16px;
-text-align:center; 
+.login input{
+  transition: 0.2s;
 }
 
+/*cel*/
+@media (max-width: 768px){
+
+body{
+align-items:flex-start;
+}
+
+.login{
+width:90% !important;
+max-width:350px;
+margin:auto;
+padding:20px;
+}
 }
 
 </style>
@@ -838,823 +175,83 @@ text-align:center;
 
 <body>
 
-<div class="navbar">
+<div class="login">
 
-  <!-- BOTÓN HAMBURGUESA -->
-  <div class="menu-btn" onclick="toggleMenu()">☰</div>
+<img src="logo.png" class="logo">
 
-  <!-- LOGO -->
-  <div class="logo">
-    <img src="logo.png">
-  </div>
+<h2>Iniciar sesión</h2>
 
-  <!-- MENÚ NORMAL -->
-  <div class="menu">
-    <a href="index.html">Home</a>
-    <a href="soritech.html">SoriTech</a>
-    <a href="contacto.html">Contáctenos</a>
-  </div>
+<input id="correo" placeholder="Correo">
+<input id="password" type="password" placeholder="Contraseña" onkeypress="if(event.key==='Enter') login()">
 
-  <!-- DERECHA -->
-  <div class="derecha">
-    <div class="carrito" onclick="irCarrito()">
-      🛒<span class="contador">0</span>
-    </div>
-    <div class="login" id="zonaUsuario"></div>
-  </div>
+<button onclick="login()">Entrar</button>
+<div id="mensaje" class="mensaje"></div>
+<p style="margin-top:10px; text-align:center;">
+  <a href="recuperar.html" class="link-recuperar">
+    ¿Olvidaste tu contraseña?
+  </a>
+</p>
+
+<br><br>
+
+<a href="registro.html">Crear cuenta</a>
 
 </div>
-
-  <div id="banner">
-  <button class="banner-btn izq" onclick="moverManual(-1)">❮</button>
-  <div id="bannerSlider"></div>
-  <button class="banner-btn der" onclick="moverManual(1)">❯</button>
-</div>
-
-<!-- MENÚ MÓVIL -->
-<div class="menu-movil" id="menuMovil">
-  <a href="index.html">Home</a>
-  <a href="soritech.html">SoriTech</a>
-  <a href="contacto.html">Contáctenos</a>
-  <hr>
-  <div id="zonaUsuarioMovil"></div>
-</div>
-
-<div class="container">
-
-  <!-- CONTENIDO DERECHO -->
-  <div class="content">
-  
-  <h2 class="titulo">Productos destacados</h2>
-
-    <div class="carrusel-container">
-      <button class="flecha izq" onclick="mover(-1)">❮</button>
-      <div class="carrusel" id="carrusel"></div>
-      <button class="flecha der" onclick="mover(1)">❯</button>
-    </div>
-
-    <input class="buscador" placeholder="Buscar..." onkeyup="buscar(this.value)">
-
-      <!-- SIDEBAR IZQUIERDA -->
-<div class="sidebar">
-
-<div class="categoria-card" onclick="filtrar('todo')">
-<img src="" class="categoria-img">
-<span>Todo</span>
-
-</div>
-
-<div class="categoria-card" onclick="filtrar('estimulantes')">
-<img src="" class="categoria-img">
-<span>Estimulantes</span>
-</div>
-
-<div class="categoria-card" onclick="filtrar('lubricantes')">
-<img src="" class="categoria-img">
-<span>Lubricantes</span>
-</div>
-
-<div class="categoria-card" onclick="filtrar('juguetes')">
-<img src="" class="categoria-img">
-<span>Juguetes</span>
-</div>
-
-<div class="categoria-card" onclick="filtrar('Kits')">
-<img src="" class="categoria-img">
-<span>Kits</span>
-</div>
-
-<div class="categoria-card" onclick="filtrar('lenceria')">
-<img src="" class="categoria-img">
-<span>Lencería</span>
-</div>
-
-<div class="categoria-card" onclick="filtrar('cuidado intimo')">
-<img src="" class="categoria-img">
-<span>Cuidado íntimo</span>
-</div>
-
-<div class="categoria-card" onclick="filtrar('juegos eroticos')">
-<img src="" class="categoria-img">
-<span>Juegos eróticos</span>
-</div>
-
-</div>
-
-<div id="extraInicio"></div>
-
-
-    <div class="productos" id="productos"></div>
-
-  </div>
-
-</div>
-
-<div class="contacto">
-
-<img src="logo.png" class="logo-footer">
-
-<p>Tienda online en Bogotá, para todo Colombia</p>
-
-<p>Pide ahora tus productos:</p>
-
-<p><b>LÍNEA DE WHATSAPP</b></p>
-<p>+57 316 9999985</p>
-
-<p>Email: soritech.tienda@gmail.com</p>
-
-<div class="redes">
-<a href="https://www.facebook.com/share/1a1P11ZPDP/" target="_blank">
-<img src="facebook.png">
-</a>
-
-<a href="https://www.instagram.com/sensify.co_?igsh=eHBlaWJmNngxbmd5" target="_blank">
-<img src="instagram.png">
-</a>
-
-<a href="https://wa.me/3169999985?text=Hola!%20quiero%20información" target="_blank">
-<img src="whatsapp.png">
-</a>
-</div>
-
-</div>
-
-<!-- INFO -->
-<div class="info">
-
-<div class="bloque">
-<h4>TU PEDIDO EN CORTO TIEMPO</h4>
-<p>Realiza tu pedido antes de las 10 am y lo enviaremos el mismo día Si estás en Bogotá, te llegará el mismo día.</p>
-</div>
-
-<div class="bloque">
-<h4>MEDIOS DE PAGO</h4>
-<p>PSE, Tarjetas Débito, Crédito, Transferencia Electrónica, Servicio contraentrega.</p>
-</div>
-
-<div class="bloque">
-<h4>ENVÍOS A CUALQUIER PARTE DE COLOMBIA</h4>
-<p>Se entregarán de acuerdo a las políticas establecidas por la compañía de transporte.</p>
-</div>
-
-<div class="bloque">
-<h4>ASESORÍA PERSONALIZADA</h4>
-<p>Contacta a nuestros asesores expertos a través de WhatsApp y recibe atención oportuna.</p>
-</div>
-
-<div class="bloque">
-<h4>PEDIDO DISCRETO</h4>
-<p>Envíos discretos, nadie sabrá lo que has comprado, la sorpresa es para ti.</p>
-</div>
-
-</div>
-
-<div id="menuBotonBajo"></div>
-<script>
-
-  let index = 0;
-let total = 0;
-
-async function actualizarContadorGlobal(){
-
-let usuario = JSON.parse(localStorage.getItem("usuario"))
-let total = 0
-
-if(usuario){
-  let res = await fetch("/carrito/" + usuario.correo)
-  let data = await res.json()
-  let carrito = data.productos || []
-  total = carrito.reduce((acc,p)=> acc + (p.cantidad || 1), 0)
-}else{
-  let carrito = JSON.parse(localStorage.getItem("carrito")) || []
-  total = carrito.reduce((acc,p)=> acc + (p.cantidad || 1), 0)
-}
-
-document.querySelectorAll(".contador").forEach(c=>{
-  if(total === 0){
-    c.style.display="none"
-  }else{
-    c.style.display="block"
-    c.innerText=total
-  }
-})
-}
-
-async function cargarCategorias(){
-
-let data = await fetch("/categorias")
-.then(r=>r.json())
-
-let cards =
-document.querySelectorAll(".categoria-card")
-
-cards.forEach(card=>{
-
-let nombre =
-card.querySelector("span")
-.innerText
-.toLowerCase()
-
-let img =
-card.querySelector("img")
-
-let url = ""
-
-if(nombre === "todo")
-url = data.todo
-
-if(nombre === "estimulantes")
-url = data.estimulantes
-
-if(nombre === "lubricantes")
-url = data.lubricantes
-
-if(nombre === "juguetes")
-url = data.juguetes
-
-if(nombre === "kits")
-url = data.kits
-
-if(nombre === "lencería")
-url = data.lenceria
-
-if(nombre === "cuidado íntimo")
-url = data.cuidado_intimo
-
-if(nombre === "juegos eróticos")
-url = data.juegos_eroticos
-
-if(url){
-
-img.src = url
-img.style.display = "block"
-
-}else{
-
-img.style.display = "none"
-
-}
-
-})
-
-}
-
-async function actualizarContador(){
-
-let usuario = JSON.parse(localStorage.getItem("usuario"))
-let total = 0
-
-if(usuario){
-  let res = await fetch("/carrito/" + usuario.correo)
-  let data = await res.json()
-  let carrito = data.productos || []
-  total = carrito.reduce((acc,p)=> acc + (p.cantidad || 1), 0)
-}else{
-  let carrito = JSON.parse(localStorage.getItem("carrito")) || []
-  total = carrito.reduce((acc,p)=> acc + (p.cantidad || 1), 0)
-}
-
-document.querySelectorAll(".contador").forEach(c=>{
-  if(total === 0){
-    c.style.display = "none"
-  }else{
-    c.style.display = "block"
-    c.innerText = total
-  }
-})
-}
-
-actualizarContadorGlobal()
-
-</script>
 
 <script>
 
-let productosGlobal=[]
-let imagenesExtra=[]
+async function login(){
 
-async function cargarProductos(){
-let res=await fetch("/productos")
-productosGlobal=await res.json()
+let correo = document.getElementById("correo").value
+let password = document.getElementById("password").value
 
-productosGlobal.forEach(p=>{
-
-p.agotado =
-Number(p.cantidad || p.stock || 0) <= 0
-
-})
-
-let extras = await fetch("/extras")
-.then(r=>r.json())
-
-imagenesExtra =
-extras.imagenes || []
-mostrarExtraInicio()
-
-console.log(productosGlobal)
-
-mostrar([])
-mostrarCarrusel()
-}
-
-
-
-async function mostrarCarrusel(){
-
-let carrusel = document.getElementById("carrusel")
-carrusel.innerHTML = ""
-
-// intentar traer del backend
-let lista = []
-
-try{
-  let res = await fetch("/carrusel")
-  let data = await res.json()
-
-  if(Array.isArray(data) && data.length){
-    lista = data
-  }
-}catch(e){
-  console.log("No hay carrusel personalizado")
-}
-
-// fallback si no hay carrusel configurado
-if(lista.length === 0){
-  lista = [...productosGlobal].slice(-8).reverse()
-}
-
-// render
-lista.forEach((p,i)=>{
-carrusel.innerHTML += `
-<div class="item" onclick="verProducto('${p._id}')">
-
-<div style="position:relative;">
-
-<img src="${p.imagenes && p.imagenes.length ? p.imagenes[0] : 'logo.png'}">
-
-${p.agotado ? `
-<img src="img/agotado.png" style="
-position:absolute;
-top:0;
-left:0;
-width:100%;
-height:100%;
-object-fit:contain;
-pointer-events:none;
-z-index:10;
-opacity:0.9;
-">
-` : ""}
-
-</div>
-
-<p>${p.nombre}</p>
-
-${p.promo === true ? `
-<div style="display:flex; flex-direction:column; align-items:center;">
-
-<span style="
-background:var(--color-secundario);
-padding:4px 10px;
-border-radius:6px;
-font-size:12px;
-margin-bottom:5px;
-">
-Promoción
-</span>
-
-<div style="display:flex; align-items:center; gap:10px;">
-<span style="color:var(--color-acento); font-weight:bold;">
--${p.descuento}%
-</span>
-
-<span style="font-size:20px; font-weight:bold;">
-$${formatearPrecio(p.precioPromo)}
-</span>
-</div>
-
-<span style="
-text-decoration:line-through;
-color:#888;
-font-size:13px;
-">
-$${formatearPrecio(p.precio)}
-</span>
-
-</div>
-` : `
-<p>$${formatearPrecio(p.precio)}</p>
-`}
-
-<div style="
-display:flex;
-gap:6px;
-justify-content:center;
-margin-top:auto;
-">
-
-<button onclick="verProducto('${p._id}')">
-Ver más
-</button>
-
-<button 
-onclick='${p.agotado ? "" : `agregarAlCarrito(${JSON.stringify(p)})`}'
-style="${p.agotado ? 'background:#555; cursor:not-allowed;' : ''}"
->
-${p.agotado ? "Agotado" : "Agregar"}
-</button>
-
-</div>
-
-</div>
-`
-})
-}
-
-function mostrarExtraInicio(){
-
-let cont =
-document.getElementById("extraInicio")
-
-if(!imagenesExtra.length){
-cont.innerHTML = ""
-return
-}
-
-cont.innerHTML = `
-<div class="extra-publicidad">
-<img src="${imagenesExtra[0]}">
-</div>
-`
-
-}
-
-function irPerfil(){
-  window.location = "perfil.html"
-}
-
-function mover(dir){
-  document.getElementById("carrusel").scrollLeft += dir*150;
-}
-
-function mostrar(lista){
-let cont=document.getElementById("productos")
-cont.innerHTML=""
-
-lista.forEach((p,i)=>{
-cont.innerHTML+= `
-<div class="producto" onclick="verProducto('${p._id}')" 
-style="${p.agotado ? 'opacity:0.6; filter:grayscale(40%);' : ''}">
-
-<div style="position:relative;">
-
-<img src="${p.imagenes && p.imagenes.length ? p.imagenes[0] : 'logo.png'}">
-
-${p.agotado ? `
-<img src="img/agotado.png" style="
-position:absolute;
-top:0;
-left:0;
-width:100%;
-height:100%;
-object-fit:contain;
-pointer-events:none;
-z-index:10;
-opacity:0.9;
-">
-` : ""}
-
-</div>
-<h3>${p.nombre}</h3>
-${p.promo === true ? `
-<div style="display:flex; flex-direction:column; align-items:center;">
-
-<span style="
-background:var(--color-secundario);
-padding:4px 10px;
-border-radius:6px;
-font-size:12px;
-margin-bottom:5px;
-">
-Promoción
-</span>
-
-<div style="display:flex; align-items:center; gap:10px;">
-
-<span style="color:var(--color-acento); font-weight:bold;">
--${p.descuento}%
-</span>
-
-<span style="font-size:20px; font-weight:bold;">
-$${formatearPrecio(p.precioPromo)}
-</span>
-
-</div>
-
-<span style="
-text-decoration:line-through;
-color:#888;
-font-size:13px;
-">
-$${formatearPrecio(p.precio)}
-</span>
-
-</div>
-` : `
-<p>$${formatearPrecio(p.precio)}</p>
-`}
-<div style="display:flex; gap:10px; justify-content:center; margin-top:10px;">
-
-<button onclick="event.stopPropagation(); verProducto('${p._id}')">
-Ver más
-</button>
-
-<button 
-onclick='event.stopPropagation(); ${p.agotado ? "" : `agregarAlCarrito(${JSON.stringify(p)})`}'
-style="${p.agotado ? 'background:#555; cursor:not-allowed;' : ''}"
->
-${p.agotado ? "Agotado" : "Agregar al carrito"}
-</button>
-
-</div>
-</div>
-`
-
-let indicePublicidad =
-Math.floor(i / 10)
-
-if(
-(i + 1) % 10 === 0 &&
-imagenesExtra[indicePublicidad]
-){
-
-let extra =
-imagenesExtra[indicePublicidad]
-
-cont.innerHTML += `
-<div class="extra-publicidad">
-
-<img src="${extra}">
-
-</div>
-`
-}
-
-})
-
-}
-
-function buscar(t){
-
-  document.getElementById("extraInicio").innerHTML = ""
-
-  if(t.trim() === ""){
-document.getElementById("productos").innerHTML = ""
-return
-}
-
-let f=productosGlobal.filter(p=>p.nombre.toLowerCase().includes(t.toLowerCase()))
-mostrar(f)
-}
-
-function filtrar(cat){
-
-  document.getElementById("extraInicio").innerHTML = ""
-
-document.querySelectorAll(".sidebar div").forEach(d=>{
-  d.classList.remove("activo")
-})
-
-event.target.classList.add("activo")
-
-if(cat==="todo"){ 
-  mostrar(productosGlobal); 
-  return 
-}
-
-let f = productosGlobal.filter(p => 
-  (p.categoria || "").trim().toLowerCase() === cat.toLowerCase()
-)
-
-mostrar(f)
-}
-
-function formatearPrecio(num){
-return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
-}
-
-function mostrarHome(){
-let home = document.getElementById("home");
-if (home) {
-  home.style.display = "block";
-}
-cargarProductos()
-}
-
-async function verProducto(id){
-  
-  // SUMAR VISTA
-  await fetch("/productos/vista/" + id, {
-    method: "POST"
-  })
-  window.location = "producto.html?id=" + id
-}
-
-mostrarHome()
-cargarCategorias()
-
-function irCarrito(){
-window.location = "carrito.html"
-}
-
-async function agregarAlCarrito(producto){
-
-  if(producto.agotado){
-  alert("Este producto está agotado 😢")
+// validar campos
+if(!correo || !password){
+  mostrarMensaje("Completa todos los campos")
   return
 }
 
-let usuario = JSON.parse(localStorage.getItem("usuario"))
-
-// calcular precio final
-let precioFinal = producto.precio
-if(producto.promo === true && producto.precioPromo){
-  precioFinal = producto.precioPromo
+let datos = {
+  correo,
+  password
 }
 
-let item = {
-productoId: producto._id,
-nombre: producto.nombre,
-precio: precioFinal,
-precioOriginal: producto.precio,
-descuento: producto.descuento,
-promo: producto.promo,
-cantidad: 1,
-imagen: producto.imagenes && producto.imagenes.length ? producto.imagenes[0] : ""
+let res = await fetch("/login",{
+  method:"POST",
+  headers:{"Content-Type":"application/json"},
+  body:JSON.stringify(datos)
+})
+
+let data = await res.json()
+
+// validar respuesta
+if(data.mensaje !== "login correcto"){
+  mostrarMensaje("Correo o contraseña incorrectos")
+
+  document.getElementById("password").value = ""
+  document.getElementById("password").focus()
+
+  return
 }
 
+// GUARDAR SESION
+localStorage.setItem("usuario",JSON.stringify(data.usuario))
+
+// REDIRECCION
+if(data.usuario.rol === "admin"){
+  window.location = "admin.html"
+} else {
+  window.location = "index.html"
+}
+}
+// SI YA HAY SESION, REDIRIGIR
+window.onload = function(){
+let usuario = localStorage.getItem("usuario")
 if(usuario){
-  // BACKEND
-  await fetch("/carrito/agregar", {
-    method:"POST",
-    headers:{ "Content-Type":"application/json" },
-    body: JSON.stringify({
-      usuario: usuario.correo,
-      producto: item
-    })
-  })
-}else{
-  // LOCALSTORAGE
-  let carrito = JSON.parse(localStorage.getItem("carrito")) || []
+window.location = "index.html"
+}}
 
-  let existe = carrito.find(p=>p.productoId === item.productoId)
-
-  if(existe){
-    existe.cantidad++
-  }else{
-    carrito.push(item)
-  }
-
-  localStorage.setItem("carrito", JSON.stringify(carrito))
-}
-
-// actualizar contador SIEMPRE
-actualizarContadorGlobal()
-
-alert("Producto agregado 🛒")
-}
-
-function verificarUsuario(){
-
-let usuario = JSON.parse(localStorage.getItem("usuario"))
-
-let cont = document.getElementById("zonaUsuario")
-
-if(usuario){
-
-let foto = usuario.foto || "user.png"
-
-cont.innerHTML = `
-<div onclick="irPerfil()" style="
-display:flex;
-align-items:center;
-gap:8px;
-cursor:pointer;
-">
-
-<img src="${foto}" style="
-width:35px;
-height:35px;
-border-radius:50%;
-object-fit:cover;
-border:2px solid var(--color-secundario);
-">
-
-<span style="
-color:var(--color-acento);
-font-weight:bold;
-font-size:14px;
-">
-Hola, ${usuario.nombre}
-</span>
-
-</div>
-`
-
-}else{
-
-cont.innerHTML = `
-<a href="login.html">Iniciar sesión</a>
-`
-
-}
-
-}
-
-function logout(){
-localStorage.removeItem("usuario")
-window.location.reload()
-}
-
-let usuario = JSON.parse(localStorage.getItem("usuario"))
-
-if(usuario?.rol === "admin"){
-window.location = "admin.html"
-}
-
-// IMPORTANTE
-verificarUsuario()
-aplicarColores()
-
-function toggleMenu(){
-let menu = document.getElementById("menuMovil")
-menu.style.display = menu.style.display === "block" ? "none" : "block"
-}
-
-window.onload = () => {
-  actualizarContadorGlobal()
-}
-
-let indexBanner = 0;
-let totalBanner = 0;
-
-async function cargarBanner(){
-  let res = await fetch("/banner");
-  let data = await res.json();
-
-  let slider = document.getElementById("bannerSlider");
-  if(!slider) return;
-
-  slider.innerHTML = "";
-
-  data.imagenes.forEach(img=>{
-    let image = document.createElement("img");
-    image.src = img;
-    slider.appendChild(image);
-  });
-
-  totalBanner = data.imagenes.length;
-
-  iniciarAutoSlide();
-}
-
-function moverBanner(){
-  if(totalBanner <= 1) return;
-
-  indexBanner = (indexBanner + 1) % totalBanner;
-
-  let slider = document.getElementById("bannerSlider");
-  slider.style.transform = `translateX(-${indexBanner * 100}%)`;
-}
-
-let autoSlide;
-
-function iniciarAutoSlide(){
-  autoSlide = setInterval(moverBanner, 4000);
-}
-
-function moverManual(dir){
-
-  clearInterval(autoSlide); 
-
-  indexBanner += dir;
-
-  if(indexBanner < 0){
-    indexBanner = totalBanner - 1;
-  }
-
-  if(indexBanner >= totalBanner){
-    indexBanner = 0;
-  }
-
-  let slider = document.getElementById("bannerSlider");
-  slider.style.transform = `translateX(-${indexBanner * 100}%)`;
-
-  iniciarAutoSlide(); 
-}
-
-cargarBanner();
-
+// APLICAR COLORES DINÁMICOS
 async function aplicarColores(){
 
 let colores = await fetch("/colores").then(r=>r.json())
@@ -1669,38 +266,23 @@ root.style.setProperty("--color-card", colores.card)
 
 }
 
-fetch("menubotonbajo.html")
-.then(r=>r.text())
-.then(data=>{
+// ejecutar
+aplicarColores()
 
-let contenedor =
-document.getElementById(
-"menuBotonBajo"
-)
+function mostrarMensaje(texto, tipo="error"){
 
-contenedor.innerHTML = data
+let msg = document.getElementById("mensaje")
 
-/* EJECUTAR SCRIPTS */
+msg.innerText = texto
+msg.className = "mensaje " + tipo
+msg.style.display = "block"
 
-contenedor
-.querySelectorAll("script")
-.forEach(script=>{
+// desaparecer después de 3s
+setTimeout(()=>{
+  msg.style.display = "none"
+},3000)
 
-let nuevo =
-document.createElement("script")
-
-if(script.src){
-nuevo.src = script.src
-}else{
-nuevo.textContent =
-script.textContent
 }
-
-document.body.appendChild(nuevo)
-
-})
-
-})
 
 </script>
 </body>
