@@ -38,7 +38,7 @@ const transporter = nodemailer.createTransport({
 service:"gmail",
 
 auth:{
-user:"sensify.tienda@gmail.com",
+user:"soritech.tienda@gmail.com",
 pass:process.env.GMAIL_APP_PASSWORD
 }
 
@@ -85,22 +85,56 @@ cb(new Error("Tipo de archivo no permitido"), false)
 
 // MODELO (IMPORTANTE)
 const Producto = mongoose.model("Producto",{
+
 nombre:String,
-precio:Number,
-descripcion:String,
-descripcionLarga:String,
-info:String,
-caracteristicas:String,
-modoUso:String,
-recomendaciones:String,
-imagenes:[String],
-stock:Number,
+
+marca:String,
+
+modelo:String,
+
 categoria:String,
-tallas:[String],
-vistas:{type:Number, default:0},
+
+precio:Number,
+
+precioPromo:Number,
+
 promo:Boolean,
+
 descuento:{ type:Number, default:0 },
-precioPromo:Number
+
+descripcion:String,
+
+descripcionLarga:String,
+
+especificaciones:String,
+
+modoUso:String,
+
+recomendaciones:String,
+
+compatibilidad:String,
+
+garantia:String,
+
+imagenes:[String],
+
+stock:Number,
+
+agotado:{
+    type:Boolean,
+    default:false
+},
+
+vistas:{
+    type:Number,
+    default:0
+},
+
+destacado:{
+    type:Boolean,
+    default:false
+}
+
 })
 
 const Kit = mongoose.model("Kit",{
@@ -396,15 +430,14 @@ imagenes:[String]
 })
 
 const Categorias = mongoose.model("Categorias",{
-
-estimulantes:String,
-lubricantes:String,
-juguetes:String,
-lenceria:String,    
-cuidado_intimo:String,
-juegos_eroticos:String,
-todo:String
-
+  celulares:String,
+  impresion:String,
+  audio:String,
+  cargadores:String,
+  gadgets:String,
+  salud:String,
+  modelar:String,
+  todo:String
 })
 
 const LugarPedido = mongoose.model("LugarPedido",{
@@ -572,7 +605,7 @@ if(req.files && req.files.length > 0){
 
     let resultado = await new Promise((resolve, reject)=>{
       const stream = cloudinary.uploader.upload_stream(
-        { folder: "sensify" },
+        { folder: "soritech" },
         (error, result)=>{
           if(result) resolve(result);
           else reject(error);
@@ -608,7 +641,7 @@ if(req.body.imagenesActuales || (req.files && req.files.length > 0)){
     for (let file of req.files) {
       let resultado = await new Promise((resolve, reject)=>{
         const stream = cloudinary.uploader.upload_stream(
-          { folder: "sensify" },
+          { folder: "soritech" },
           (error, result)=>{
             if(result) resolve(result);
             else reject(error);
@@ -739,7 +772,7 @@ if(req.files && req.files.length > 0){
     let resultado = await new Promise((resolve,reject)=>{
 
       const stream = cloudinary.uploader.upload_stream(
-        { folder:"sensify/banner" },
+        { folder:"soritech/banner" },
         (error,result)=>{
           if(result) resolve(result)
           else reject(error)
@@ -805,13 +838,14 @@ let categorias = await Categorias.findOne()
 if(!categorias){
 
 categorias = await Categorias.create({
-estimulantes:"",
-lubricantes:"",
-juguetes:"",
-lenceria:"",
-cuidado_intimo:"",
-juegos_eroticos:"",
-todo:""
+  celulares:"",
+  impresion:"",
+  audio:"",
+  cargadores:"",
+  gadgets:"",
+  salud:"",
+  modelar:"",
+  todo:""
 })
 
 }
@@ -855,8 +889,7 @@ const stream =
 cloudinary.uploader.upload_stream(
 
 {
-folder:
-"sensify/categorias"
+folder:"soritech/categorias"
 },
 
 (error,result)=>{
@@ -958,7 +991,7 @@ let result = await new Promise((resolve,reject)=>{
 
 const stream = cloudinary.uploader.upload_stream(
 
-{ folder:"sensify/extras" },
+{ folder:"soritech/extras" },
 
 (error,result)=>{
 
@@ -1063,14 +1096,16 @@ app.get("/colores", async (req,res)=>{
 let colores = await Colores.findOne()
 
 res.json(colores || {
-  principal:"#1b0b2e",
-  secundario:"#ff4fd8",
-  acento:"#ff8be3",
-  texto:"#ffffff",
-  card:"#1a1a24"
+  principal:"#0F172A",
+  secundario:"#2563EB",
+  acento:"#38BDF8",
+  texto:"#F8FAFC",
+  card:"#1E293B"
 })
 
 })
+
+
 
 
 // REGISTRO
@@ -1165,7 +1200,7 @@ return res.status(400).send("No hay archivo")
 
 let resultado = await new Promise((resolve, reject)=>{
 const stream = cloudinary.uploader.upload_stream(
-  { folder: "sensify/perfiles" },
+  { folder: "soritech/perfiles" },
   (error, result)=>{
     if(result) resolve(result)
     else reject(error)
@@ -1210,7 +1245,7 @@ for (let file of req.files) {
 
   let resultado = await new Promise((resolve, reject)=>{
     const stream = cloudinary.uploader.upload_stream(
-      { folder: "sensify" },
+      { folder: "soritech" },
       (error, result)=>{
         if(result) resolve(result);
         else reject(error);
@@ -1712,7 +1747,7 @@ for(let img of producto.imagenes){
 
 let public_id = img.split("/").pop().split(".")[0]
 
-await cloudinary.uploader.destroy("sensify/" + public_id)
+await cloudinary.uploader.destroy("soritech/" + public_id)
 
 }
 
