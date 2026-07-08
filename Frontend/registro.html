@@ -1,295 +1,56 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
+
 <head>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Registro - Sensify</title>
 
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<style>
+<title>Crear cuenta | SoriHub</title>
 
-  *{
-  box-sizing: border-box;
-}
+<link rel="stylesheet" href="css/global.css">
+<link rel="stylesheet" href="css/registro.css">
 
-/* colores */
-:root{
-
-  --color-principal: #0F172A; 
-  --color-secundario: #2563EB; 
-  --color-acento: #38BDF8; 
-  --color-texto: #F8FAFC;  
-  --color-card: #1E293B;       
-
-}
-
-body{
-margin:0;
-font-family:'Poppins',sans-serif;
-background: linear-gradient(135deg, var(--color-principal), var(--color-card));
-color: var(--color-texto);
-padding:20px;
-box-sizing:border-box;
-}
-
-.contenedor{
-min-height:100dvh;
-display:flex;
-justify-content:center;
-align-items:center;
-}
-
-/* TARJETA */
-.registro{
-background: var(--color-card);
-padding:40px;
-border-radius:16px;
-width:100%;
-max-width:350px;
-text-align:center;
-border:1px solid var(--color-principal);
-box-shadow:0 0 10px var(--color-secundario);
-transition:0.3s;
-}
-
-.registro:hover{
-transform:translateY(-5px);
-}
-
-/* LOGO */
-.logo{
-width:140px;
-margin-bottom:10px;
-}
-
-/* TITULO */
-.registro h2{
-margin-bottom:20px;
-color: var(--color-acento);
-}
-
-.registro input{
-  display:block;
-}
-
-/* INPUTS */
-.registro input{
-width:100%;
-padding:12px;
-margin:10px 0;
-border-radius:8px;
-border:none;
-background: var(--color-principal);
-color: var(--color-texto);
-outline:none;
-transition:0.2s;
-}
-
-.registro input::placeholder{
-color:var(--color-texto);
-opacity:0.6;
-}
-
-.registro input:focus{
-box-shadow: 0 0 0 2px var(--color-secundario);
-}
-
-/* BOTON */
-.registro button{
-margin-top:10px;
-width:100%;
-padding:12px;
-border:none;
-border-radius:8px;
-background: var(--color-secundario);
-color: var(--color-texto);
-font-weight:bold;
-cursor:pointer;
-transition:0.3s;
-box-shadow: 0 5px 15px rgba(0,0,0,0.3);box-shadow:0 5px 15px var(--color-principal);
-}
-
-.registro button:hover{
-background: var(--color-acento);
-transform:scale(1.05);
-}
-
-/* LINK */
-.registro a{
-color: var(--color-texto);
-text-decoration:none;
-}
-
-.registro a:hover{
-text-decoration:underline;
-opacity:0.8;
-}
-
-@media (max-width: 768px){
-
-.contenedor{
-align-items:center;
-padding-top:0;
-}
-
-.registro{
-width:100%;
-max-width:400px;
-padding:25px;
-}
-
-}
-
-.mensaje{
-display:none;
-margin-top:15px;
-padding:12px;
-border-radius:8px;
-font-size:14px;
-font-weight:500;
-text-align:center;
-transition:0.3s;
-}
-
-.registro button:active{
-transform:scale(0.97);
-}
-
-/* error */
-.mensaje.error{
-background: var(--color-principal);
-border:1px solid var(--color-secundario);
-color: var(--color-secundario);
-}
-
-/* éxito */
-.mensaje.exito{
-background: var(--color-principal);
-border:1px solid var(--color-acento);
-color: var(--color-acento);
-}
-
-</style>
 </head>
 
 <body>
 
 <div class="contenedor">
-<div class="registro">
 
-<img src="logo.png" class="logo">
+    <div class="registro">
 
-<h2>Crear cuenta</h2>
+        <img src="logo.png" class="logo">
 
-<input id="nombre" placeholder="Nombre">
-<input id="apellido" placeholder="Apellido">
-<input id="correo" placeholder="Correo">
-<input id="password" type="password" placeholder="Contraseña"
-onkeypress="if(event.key==='Enter') registrar()">
+        <h2>Crear cuenta</h2>
 
-<button onclick="registrar()">Registrarse</button>
-<div id="mensaje" class="mensaje"></div>
-<br><br>
+        <input id="nombre" placeholder="Nombre">
 
-<a href="index.html">Ya tengo cuenta</a>
+        <input id="apellido" placeholder="Apellido">
+
+        <input id="correo" type="email" placeholder="Correo">
+
+        <input
+            id="password"
+            type="password"
+            placeholder="Contraseña"
+            onkeypress="if(event.key==='Enter') registrar()">
+
+        <button onclick="registrar()">
+            Registrarse
+        </button>
+
+        <div id="mensaje" class="mensaje"></div>
+
+        <br><br>
+
+        <a href="index.html">Ya tengo cuenta</a>
+
+    </div>
 
 </div>
-</div>
 
-<script>
-
-async function registrar(){
-
-let nombre = document.getElementById("nombre").value
-let apellido = document.getElementById("apellido").value
-let correo = document.getElementById("correo").value
-let password = document.getElementById("password").value
-
-if(!nombre || !apellido || !correo || !password){
-mostrarMensaje("Completa todos los campos")
-return
-}
-
-if(!correo.includes("@") || !correo.includes(".")){
-mostrarMensaje("Correo inválido")
-return
-}
-
-if(password.length < 6){
-mostrarMensaje("La contraseña debe tener mínimo 6 caracteres")
-return
-}
-
-let datos = {nombre, apellido, correo, password}
-
-let res = await fetch("/registro",{
-method:"POST",
-headers:{"Content-Type":"application/json"},
-body:JSON.stringify(datos)
-})
-
-let data = await res.json()
-
-if(data.mensaje !== "usuario creado"){
-mostrarMensaje("Error al registrar")
-return
-}
-
-// funciona
-mostrarMensaje("Cuenta creada 💜", "exito")
-
-setTimeout(()=>{
-window.location = "login.html"
-},1200)
-
-document.getElementById("nombre").value = ""
-document.getElementById("apellido").value = ""
-document.getElementById("correo").value = ""
-document.getElementById("password").value = ""
-
-}
-
-// colores din
-async function aplicarColores(){
-
-let colores = await fetch("/colores").then(r=>r.json())
-
-let root = document.documentElement
-
-root.style.setProperty("--color-principal", colores.principal)
-root.style.setProperty("--color-secundario", colores.secundario)
-root.style.setProperty("--color-acento", colores.acento)
-root.style.setProperty("--color-texto", colores.texto)
-root.style.setProperty("--color-card", colores.card)
-
-}
-
-function mostrarMensaje(texto, tipo="error"){
-
-let msg = document.getElementById("mensaje")
-
-msg.innerText = texto
-msg.className = "mensaje " + tipo
-msg.style.display = "block"
-
-// SOLO si es error
-if(tipo === "error"){
-  document.getElementById("password").value = ""
-  document.getElementById("password").focus()
-}
-
-// desaparecer después de 3 segundos
-setTimeout(()=>{
-  msg.style.display = "none"
-},3000)
-
-}
-
-window.onload = function(){
-  aplicarColores()
-  document.getElementById("nombre").focus()
-}
-
-</script>
+<script src="js/utils.js"></script>
+<script src="js/registro.js"></script>
 
 </body>
 </html>
