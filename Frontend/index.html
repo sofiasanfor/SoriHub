@@ -1,289 +1,53 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
+
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Login - SoriTech</title>
 
-<style>
-  
-/*colores base*/
-:root{
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  --color-principal: #0F172A; 
-  --color-secundario: #2563EB; 
-  --color-acento: #38BDF8; 
-  --color-texto: #F8FAFC;  
-  --color-card: #1E293B;       
+<title>Iniciar sesión | SoriHub</title>
 
-}
+<link rel="stylesheet" href="css/global.css">
+<link rel="stylesheet" href="css/index.css">
 
-*{
-box-sizing: border-box;
-}
-
-body{
-margin:0;
-min-height:100vh;
-display:flex;
-justify-content:center;
-align-items:center;
-font-family:'Poppins',sans-serif;
-background: linear-gradient(135deg, var(--color-principal), #0f0f14);
-color: var(--color-texto);
-padding:20px;
-box-sizing:border-box;
-}
-
-/* TARJETA */
-.login{
-background: var(--color-card);
-padding:40px;
-border-radius:16px;
-width:320px;
-text-align:center;
-border:1px solid rgba(255,255,255,0.05);
-transition:0.3s;
-
-}
-
-.login:hover{
-transform:translateY(-5px);
-}
-
-/* LOGO */
-.logo{
-width:140px;
-margin-bottom:10px;
-}
-
-/* TITULO */
-.login h2{
-margin-bottom:20px;
-color: var(--color-acento);
-}
-
-/* INPUTS */
-.login input{
-width:100%;
-padding:12px;
-margin:10px 0;
-border-radius:8px;
-border:none;
-outline:none;
-background: var(--color-principal);
-color: var(--color-texto);
-}
-
-.login input::placeholder{
-color:#aaa;
-}
-
-
-
-/* BOTON */
-.login button{
-margin-top:10px;
-width:100%;
-padding:12px;
-border:none;
-border-radius:8px;
-background: var(--color-secundario);
-color: var(--color-texto);
-font-weight:bold;
-cursor:pointer;
-transition:0.3s;
-}
-
-.login button:hover{
-background: var(--color-acento);
-transform:scale(1.05);
-}
-
-/* LINK */
-.login a{
-color: var(--color-acento);
-text-decoration:none;
-}
-
-.login a:hover{
-text-decoration:underline;
-}
-
-.link-recuperar{
-  color: var(--color-acento);
-  text-decoration: none;
-  display: inline-block;
-  margin-top: 5px;
-  transition: 0.3s;
-  cursor: pointer;
-}
-
-.link-recuperar:hover{
-  text-decoration: underline;
-  opacity: 0.8;
-}
-
-.login input:focus{
-  box-shadow: 0 0 0 2px var(--color-secundario);
-}
-
-.mensaje{
-  margin-top:10px;
-  padding:10px;
-  border-radius:8px;
-  font-size:14px;
-  display:none;
-  animation:fadeIn 0.3s ease;
-}
-
-.mensaje.error{
-background: rgba(255, 0, 100, 0.15);
-  color: var(--color-secundario);
-}
-
-.mensaje.ok{
-  background: rgba(0, 255, 170, 0.15);
-  color: var(--color-acento);
-}
-
-@keyframes fadeIn{
-  from{opacity:0; transform:translateY(-5px);}
-  to{opacity:1; transform:translateY(0);}
-}
-
-.login input{
-  transition: 0.2s;
-}
-
-/*cel*/
-@media (max-width: 768px){
-
-body{
-align-items:flex-start;
-}
-
-.login{
-width:90% !important;
-max-width:350px;
-margin:auto;
-padding:20px;
-}
-}
-
-</style>
 </head>
 
 <body>
 
 <div class="login">
 
-<img src="logo.png" class="logo">
+    <img src="logo.png" class="logo">
 
-<h2>Iniciar sesión</h2>
+    <h2>Iniciar sesión</h2>
 
-<input id="correo" placeholder="Correo">
-<input id="password" type="password" placeholder="Contraseña" onkeypress="if(event.key==='Enter') login()">
+    <input id="correo" placeholder="Correo">
 
-<button onclick="login()">Entrar</button>
-<div id="mensaje" class="mensaje"></div>
-<p style="margin-top:10px; text-align:center;">
-  <a href="recuperar.html" class="link-recuperar">
-    ¿Olvidaste tu contraseña?
-  </a>
-</p>
+    <input
+        id="password"
+        type="password"
+        placeholder="Contraseña"
+        onkeypress="if(event.key==='Enter') login()">
 
-<br><br>
+    <button onclick="login()">Entrar</button>
 
-<a href="registro.html">Crear cuenta</a>
+    <div id="mensaje" class="mensaje"></div>
+
+    <p class="recuperar">
+        <a href="recuperar.html" class="link-recuperar">
+            ¿Olvidaste tu contraseña?
+        </a>
+    </p>
+
+    <br><br>
+
+    <a href="registro.html">Crear cuenta</a>
 
 </div>
 
-<script>
+<script src="js/utils.js"></script>
+<script src="js/index.js"></script>
 
-async function login(){
-
-let correo = document.getElementById("correo").value
-let password = document.getElementById("password").value
-
-// validar campos
-if(!correo || !password){
-  mostrarMensaje("Completa todos los campos")
-  return
-}
-
-let datos = {
-  correo,
-  password
-}
-
-let res = await fetch("/login",{
-  method:"POST",
-  headers:{"Content-Type":"application/json"},
-  body:JSON.stringify(datos)
-})
-
-let data = await res.json()
-
-// validar respuesta
-if(data.mensaje !== "login correcto"){
-  mostrarMensaje("Correo o contraseña incorrectos")
-
-  document.getElementById("password").value = ""
-  document.getElementById("password").focus()
-
-  return
-}
-
-// GUARDAR SESION
-localStorage.setItem("usuario",JSON.stringify(data.usuario))
-
-// REDIRECCION
-if(data.usuario.rol === "admin"){
-  window.location = "admin.html"
-} else {
-  window.location = "index.html"
-}
-}
-// SI YA HAY SESION, REDIRIGIR
-window.onload = function(){
-let usuario = localStorage.getItem("usuario")
-if(usuario){
-window.location = "index.html"
-}}
-
-// APLICAR COLORES DINÁMICOS
-async function aplicarColores(){
-
-let colores = await fetch("/colores").then(r=>r.json())
-
-let root = document.documentElement
-
-root.style.setProperty("--color-principal", colores.principal)
-root.style.setProperty("--color-secundario", colores.secundario)
-root.style.setProperty("--color-acento", colores.acento)
-root.style.setProperty("--color-texto", colores.texto)
-root.style.setProperty("--color-card", colores.card)
-
-}
-
-// ejecutar
-aplicarColores()
-
-function mostrarMensaje(texto, tipo="error"){
-
-let msg = document.getElementById("mensaje")
-
-msg.innerText = texto
-msg.className = "mensaje " + tipo
-msg.style.display = "block"
-
-// desaparecer después de 3s
-setTimeout(()=>{
-  msg.style.display = "none"
-},3000)
-
-}
-
-</script>
 </body>
+
 </html>
