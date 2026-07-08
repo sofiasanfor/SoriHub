@@ -3,54 +3,97 @@
 
 <head>
 
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Crear cuenta | SoriHub</title>
+    <title>Crear cuenta | SoriHub</title>
 
-<link rel="stylesheet" href="css/global.css">
-<link rel="stylesheet" href="css/registro.css">
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/registro.css">
 
 </head>
 
 <body>
 
-<div class="contenedor">
+    <div class="contenedor">
+        <div class="registro">
 
-    <div class="registro">
+            <!-- ========================= -->
+            <!-- FORMULARIO -->
+            <!-- ========================= -->
 
-        <img src="logo.png" class="logo">
+            <div id="formRegistro">
+                <img src="logo.png" class="logo">
 
-        <h2>Crear cuenta</h2>
+                <h2>Crear cuenta</h2>
 
-        <input id="nombre" placeholder="Nombre">
+                <p class="descripcion">
+                    Registra tu cuenta para solicitar acceso a SoriHub.
+                </p>
 
-        <input id="apellido" placeholder="Apellido">
+                <input
+                    id="nombre"
+                    type="text"
+                    placeholder="Nombre">
 
-        <input id="correo" type="email" placeholder="Correo">
+                <input
+                    id="apellido"
+                    type="text"
+                    placeholder="Apellido">
 
-        <input
-            id="password"
-            type="password"
-            placeholder="Contraseña"
-            onkeypress="if(event.key==='Enter') registrar()">
+                <input
+                    id="correo"
+                    type="email"
+                    placeholder="Correo electrónico">
 
-        <button onclick="registrar()">
-            Registrarse
-        </button>
+                <input
+                    id="password"
+                    type="password"
+                    placeholder="Contraseña"
+                    onkeypress="if(event.key==='Enter') registrar()">
 
-        <div id="mensaje" class="mensaje"></div>
+                <button onclick="registrar()">
+                    Crear cuenta
+                </button>
 
-        <br><br>
+                <div id="mensaje" class="mensaje"></div>
+                <div class="acciones">
 
-        <a href="index.html">Ya tengo cuenta</a>
+                    <a href="index.html">
+                        Ya tengo una cuenta
+                    </a>
 
+                </div>
+            </div>
+
+            <!-- ========================= -->
+            <!-- REGISTRO EXITOSO -->
+            <!-- ========================= -->
+
+            <div id="registroExitoso" class="oculto">
+                <img src="logo.png" class="logo">
+
+                <h2>🎉 ¡Cuenta creada!</h2>
+
+                <p class="descripcion">
+                    Tu solicitud fue registrada correctamente.
+                    <br><br>
+                    Un administrador revisará tu cuenta y te asignará un rol para acceder a SoriHub.
+                    <br><br>
+                    Una vez aprobada podrás iniciar sesión normalmente.
+                </p>
+
+                <button onclick="window.location='index.html'">
+                    Ir al inicio de sesión
+                </button>
+
+            </div>
+        </div>
     </div>
 
-</div>
-
-<script src="js/utils.js"></script>
-<script src="js/registro.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/registro.js"></script>
 
 </body>
+
 </html>
