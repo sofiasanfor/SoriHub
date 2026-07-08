@@ -1,9 +1,26 @@
 :root{
---color-principal:#0F172A;
---color-secundario:#2563EB;
---color-acento:#38BDF8;
---color-texto:#F8FAFC;
---color-card:#1E293B;
+    /* Fondo principal */
+    --color-principal:#08111F;
+
+    /* Tarjeta */
+    --color-card:#172235;
+
+    /* Colores principales */
+    --color-secundario:#2563EB;
+    --color-acento:#60A5FA;
+
+    /* Texto */
+    --color-texto:#F8FAFC;
+    --color-texto-secundario:#94A3B8;
+
+    /* Estados */
+    --color-exito:#22C55E;
+    --color-error:#EF4444;
+    --color-advertencia:#F59E0B;
+
+    /* Bordes */
+    --color-borde:#2B3A55;
+
 }
 
 *{
