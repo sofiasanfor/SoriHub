@@ -63,3 +63,19 @@ async function registrar() {
         console.error(error);
     }
 }
+
+function mostrarMensaje(texto, tipo = "error") {
+
+    const mensaje = document.getElementById("mensaje");
+
+    mensaje.innerText = texto;
+    mensaje.className = "mensaje " + tipo;
+    mensaje.style.display = "block";
+
+    setTimeout(() => {
+
+        mensaje.style.display = "none";
+
+    }, 4000);
+
+}

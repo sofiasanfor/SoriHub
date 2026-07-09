@@ -113,8 +113,10 @@ app.post("/registro", async (req, res) => {
 
         // Verificar correo existente
         let existe = await Usuario.findOne({ correo });
+        console.log("Existe:", existe);
 
         if (existe) {
+            console.log("Correo repetido");
             return res.json({
                 mensaje: "correo existente"
             });
