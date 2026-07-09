@@ -23,21 +23,42 @@ async function login(){
 
     let data = await res.json()
 
-    if(data.mensaje !== "login correcto"){
-        mostrarMensaje("Correo o contraseña incorrectos")
-        document.getElementById("password").value=""
-        document.getElementById("password").focus()
-        return
-    }
+    if (data.mensaje === "pendiente") {
+    mostrarMensaje(
+        "Tu cuenta está pendiente de aprobación por un administrador."
+    );
+    return;
+}
+
+if (data.mensaje === "suspendido") {
+    mostrarMensaje(
+        "Tu cuenta ha sido suspendida."
+    );
+    return;
+}
+
+if (data.mensaje === "credenciales incorrectas") {
+    mostrarMensaje(
+        "Correo o contraseña incorrectos."
+    );
+
+    document.getElementById("password").value = "";
+    document.getElementById("password").focus();
+    return;
+}
+
+localStorage.setItem("token", data.token);
+
+localStorage.setItem("usuario", JSON.stringify(data.usuario));
+
+window.location = "admin.html";
 
     localStorage.setItem("usuario",JSON.stringify(data.usuario))
-
     if(data.usuario.rol==="admin"){
         window.location="admin.html"
     }else{
         window.location="index.html"
     }
-
 }
 
 window.onload=function(){

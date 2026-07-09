@@ -156,9 +156,7 @@ app.post("/login", async (req, res) => {
     try {
         let correo = req.body.correo.trim().toLowerCase();
         let password = req.body.password;
-        let usuario = await Usuario
-.findOne({ correo })
-.select("+password");
+        let usuario = await Usuario.findOne({ correo });
 
 if (!usuario) {
     return res.json({
@@ -174,12 +172,26 @@ if (!coincide) {
     });
 }
 
-const token = jwt.sign({
-id: usuario._id,
-rol: usuario.rol,
-estado: usuario.estado
-},
+console.log("Estado del usuario:", usuario.estado);
 
+if (usuario.estado === "pendiente") {
+    return res.json({
+        mensaje: "pendiente"
+    });
+}
+
+if (usuario.estado === "suspendido") {
+    return res.json({
+        mensaje: "suspendido"
+    });
+}
+
+const token = jwt.sign(
+    {
+        id: usuario._id,
+        rol: usuario.rol,
+        estado: usuario.estado
+    },
     process.env.JWT_SECRET,
     {
         expiresIn: "8h"
