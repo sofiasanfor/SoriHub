@@ -9,6 +9,7 @@
     <title>Crear cuenta | SoriHub</title>
 
     <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/auth.css">
     <link rel="stylesheet" href="css/registro.css">
 
 </head>
@@ -18,39 +19,40 @@
     <div class="contenedor">
         <div class="registro">
 
-            <!-- ========================= -->
             <!-- FORMULARIO -->
-            <!-- ========================= -->
-
             <div id="formRegistro">
                 <img src="logo.png" class="logo">
 
                 <h2>Crear cuenta</h2>
 
                 <p class="descripcion">
-                    Registra tu cuenta para solicitar acceso a SoriHub.
+                 Crea tu cuenta. Un administrador revisará tu solicitud y habilitará el acceso.
                 </p>
 
                 <input
-                    id="nombre"
-                    type="text"
-                    placeholder="Nombre">
+                id="nombre"
+                type="text"
+                placeholder="Nombre"
+                autocomplete="given-name">
 
                 <input
-                    id="apellido"
-                    type="text"
-                    placeholder="Apellido">
+                id="apellido"
+                type="text"
+                placeholder="Apellido"
+                autocomplete="family-name">
 
                 <input
-                    id="correo"
-                    type="email"
-                    placeholder="Correo electrónico">
+                id="correo"
+                type="email"
+                placeholder="Correo electrónico"
+                autocomplete="email">
 
                 <input
-                    id="password"
-                    type="password"
-                    placeholder="Contraseña"
-                    onkeypress="if(event.key==='Enter') registrar()">
+                id="password"
+                type="password"
+                placeholder="Contraseña"
+                autocomplete="new-password"
+                onkeypress="if(event.key==='Enter') registrar()">
 
                 <button onclick="registrar()">
                     Crear cuenta
@@ -66,10 +68,7 @@
                 </div>
             </div>
 
-            <!-- ========================= -->
             <!-- REGISTRO EXITOSO -->
-            <!-- ========================= -->
-
             <div id="registroExitoso" class="oculto">
                 <img src="logo.png" class="logo">
 
@@ -92,6 +91,7 @@
     </div>
 
     <script src="js/utils.js"></script>
+    <script src="js/auth.js"></script>
     <script src="js/registro.js"></script>
 
 </body>

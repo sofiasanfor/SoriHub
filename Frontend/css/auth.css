@@ -1,0 +1,195 @@
+/* CONTENEDOR */
+
+body{
+margin:0;
+min-height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+padding:20px;
+background:linear-gradient(
+135deg,
+var(--color-principal),
+#0F172A
+);
+}
+
+.contenedor{
+width:100%;
+display:flex;
+justify-content:center;
+align-items:center;
+}
+
+/* TARJETAS */
+
+.login,
+.registro,
+.recuperar{
+
+width:100%;
+max-width:400px;
+background:var(--color-card);
+padding:40px;
+border-radius:18px;
+text-align:center;
+border:1px solid rgba(255,255,255,.05);
+}
+
+/* LOGO */
+
+.logo{
+width:140px;
+margin-bottom:12px;
+}
+
+/* TÍTULOS */
+
+.login h2,
+.registro h2,
+.recuperar h2{
+
+margin-bottom:18px;
+color:var(--color-acento);
+}
+
+/* DESCRIPCIÓN */
+
+.descripcion{
+font-size:14px;
+line-height:1.6;
+color:var(--color-texto-secundario);
+margin-bottom:22px;
+}
+
+/* INPUTS */
+
+.login input,
+.registro input,
+.recuperar input{
+
+width:100%;
+padding:12px;
+margin:10px 0;
+border:none;
+border-radius:8px;
+outline:none;
+background:var(--color-principal);
+color:var(--color-texto);
+transition:.25s;
+}
+
+.login input::placeholder,
+.registro input::placeholder,
+.recuperar input::placeholder{
+color:#9CA3AF;
+}
+
+.login input:focus,
+.registro input:focus,
+.recuperar input:focus{
+box-shadow:0 0 0 2px var(--color-secundario);
+}
+
+/* BOTONES */
+
+.login button,
+.registro button,
+.recuperar button{
+width:100%;
+padding:12px;
+margin-top:15px;
+border:none;
+border-radius:8px;
+background:var(--color-secundario);
+color:var(--color-texto);
+font-weight:600;
+cursor:pointer;
+transition:.25s;
+}
+
+.login button:hover,
+.registro button:hover,
+.recuperar button:hover{
+background:var(--color-acento);
+}
+
+.login button:active,
+.registro button:active,
+.recuperar button:active{
+    transform:scale(.98);
+}
+
+/* ENLACES */
+
+.acciones{
+margin-top:25px;
+}
+
+.acciones a{
+color:var(--color-acento);
+text-decoration:none;
+}
+
+.acciones a:hover{
+text-decoration:underline;
+}
+
+/* MENSAJES */
+
+.mensaje{
+display:none;
+margin-top:15px;
+padding:12px;
+border-radius:8px;
+font-size:14px;
+animation:fadeIn .25s ease;
+}
+
+.mensaje.error{
+background:rgba(239,68,68,.15);
+color:var(--color-error);
+}
+
+.mensaje.exito{
+background:rgba(34,197,94,.15);
+color:var(--color-exito);
+}
+
+/* UTILIDADES */
+
+.oculto{
+display:none;
+}
+
+/* ANIMACIONES */
+
+@keyframes fadeIn{
+
+from{
+opacity:0;
+transform:translateY(-5px);
+}
+
+to{
+opacity:1;
+transform:translateY(0);
+}
+
+}
+
+/* RESPONSIVE */
+
+@media(max-width:768px){
+
+body{
+padding:15px;
+}
+
+.login,
+.registro,
+.recuperar{
+padding:28px;
+}
+
+}

@@ -1,4 +1,8 @@
 window.onload = function () {
+    if (haySesion()) {
+        window.location.href = "admin.html";
+        return;
+    }
     document.getElementById("nombre").focus();
 };
 
@@ -31,7 +35,7 @@ async function registrar() {
     };
 
     try {
-        const res = await fetch("/registro", {
+        const res = await fetch("/auth/registro", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -62,20 +66,4 @@ async function registrar() {
         mostrarMensaje("Error de conexión con el servidor.");
         console.error(error);
     }
-}
-
-function mostrarMensaje(texto, tipo = "error") {
-
-    const mensaje = document.getElementById("mensaje");
-
-    mensaje.innerText = texto;
-    mensaje.className = "mensaje " + tipo;
-    mensaje.style.display = "block";
-
-    setTimeout(() => {
-
-        mensaje.style.display = "none";
-
-    }, 4000);
-
 }

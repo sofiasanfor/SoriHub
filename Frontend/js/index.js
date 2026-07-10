@@ -1,19 +1,21 @@
 async function login(){
 
     let correo = document.getElementById("correo").value
-    let password = document.getElementById("password").value
+    .trim().toLowerCase();
+    let password = document.getElementById("password").value;
 
     if(!correo || !password){
         mostrarMensaje("Completa todos los campos")
-        return
+        return;
     }
-
+    try{
+        
     let datos = {
         correo,
         password
     }
 
-    let res = await fetch("/login",{
+    let res = await fetch("/auth/login",{
         method:"POST",
         headers:{
             "Content-Type":"application/json"
@@ -28,8 +30,7 @@ async function login(){
         "Tu cuenta está pendiente de aprobación por un administrador."
     );
     return;
-}
-
+    }
 if (data.mensaje === "suspendido") {
     mostrarMensaje(
         "Tu cuenta ha sido suspendida."
@@ -46,38 +47,25 @@ if (data.mensaje === "credenciales incorrectas") {
     document.getElementById("password").focus();
     return;
 }
+    guardarSesion(
+    data.token,
+    data.usuario
+);
 
-localStorage.setItem("token", data.token);
+    window.location.href = "admin.html";
 
-localStorage.setItem("usuario", JSON.stringify(data.usuario));
-
-window.location = "admin.html";
-
-    localStorage.setItem("usuario",JSON.stringify(data.usuario))
-    if(data.usuario.rol==="admin"){
-        window.location="admin.html"
-    }else{
-        window.location="index.html"
+}catch(error){
+        mostrarMensaje(
+            "Error de conexión con el servidor."
+        );
+        console.error(error);
     }
 }
 
-window.onload=function(){
-
-    let usuario=localStorage.getItem("usuario")
-    if(usuario){
-        window.location="index.html"
+window.onload = function () {
+    if (haySesion()) {
+        window.location.href = "admin.html";
+        return;
     }
-
-}
-
-function mostrarMensaje(texto,tipo="error"){
-
-    let msg=document.getElementById("mensaje")
-    msg.innerText=texto
-    msg.className="mensaje "+tipo
-    msg.style.display="block"
-    setTimeout(()=>{
-        msg.style.display="none"
-    },3000)
-
+    document.getElementById("correo").focus();
 }

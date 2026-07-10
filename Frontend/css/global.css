@@ -23,13 +23,26 @@
 
 }
 
+/* RESET */
+
 *{
 margin:0;
 padding:0;
 box-sizing:border-box;
 }
 
+/* ELEMENTOS GENERALES */
+
 body{
 font-family:'Poppins',sans-serif;
 color:var(--color-texto);
+}
+
+a{
+    color:inherit;
+}
+
+button,
+input{
+    font-family:inherit;
 }
