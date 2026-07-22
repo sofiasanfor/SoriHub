@@ -1,625 +1,184 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
+
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Perfil - Sensify</title>
 
-<style>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
 
-body{
-  margin:0;
-  font-family:'Poppins',sans-serif;
-  background:linear-gradient(180deg,var(--color-principal),#000);
-  color:white;
-}
+    <title>Mi perfil | SoriHub</title>
 
-/* CONTENEDOR */
-.perfil{
-  max-width:400px;
-  width:90%; 
-  margin:60px auto;
-  text-align:center;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  gap:12px;
-}
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/perfil.css">
 
-/* FOTO */
-.foto{
-  width:100%;
-  height:100%;
-  border-radius:50%;
-  object-fit:cover;
-  position:relative;
-  z-index:1;
-}
-
-/* INPUT OCULTO */
-#inputFoto{
-  display:none;
-}
-
-/* CAMPOS */
-.campo{
-  background:var(--color-card);
-  padding:14px;
-  margin:0;
-  border-radius:10px;
-  border:none;
-  width:100%;
-  color:white;
-  outline:none;
-  transition:0.3s;
-}
-
-.campo:focus{
-  box-shadow:0 0 0 2px var(--color-secundario);
-}
-
-/* BOTONES */
-button{
-  width:100%;
-  padding:12px;
-  border:none;
-  border-radius:10px;
-  background:linear-gradient(45deg,var(--color-secundario),var(--color-acento));
-  color:var(--color-texto);
-  cursor:pointer;
-  font-weight:600;
-  transition:0.3s;
-}
-
-button:hover{
-  transform:scale(1.03);
-  box-shadow:0 0 10px var(--color-secundario);
-}
-
-/* BOTÓN SECUNDARIO */
-.secundario{
-  background:var(--color-acento);
-}
-
-.secundario:hover{
-  box-shadow:0 0 10px rgba(255,59,59,0.5);
-}
-
-:root{
-
-  --color-principal: #0F172A; 
-  --color-secundario: #2563EB; 
-  --color-acento: #38BDF8; 
-  --color-texto: #F8FAFC;  
-  --color-card: #1E293B;       
-
-}
-
-/* NAVBAR */
-.navbar{
-display:flex;
-align-items:center;
-justify-content:space-between;
-padding:10px 30px;
-background:linear-gradient(90deg,var(--color-principal), var(--color-secundario));
-position:relative;
-}
-
-.logo img{
-height:60px;
-width:auto;
-}
-
-.menu{
-position:absolute;
-left:50%;
-transform:translateX(-50%);
-display:flex;
-gap:30px;
-}
-
-.menu a{
-color:var(--color-texto);
-opacity:0.8;
-text-decoration:none;
-}
-
-.menu a:hover{
-color:var(--color-acento);
-}
-
-.derecha{
-display:flex;
-align-items:center;
-gap:15px;
-}
-
-.menu-btn{
-display:none;
-font-size:28px;
-cursor:pointer;
-color:white;
-}
-
-  .menu-movil{
-display:none;
-position:absolute;
-top:60px;
-left:10px;
-width:200px; 
-right:10px;
- background:var(--color-card);
-padding:15px;
-border-radius:12px;
-box-shadow:0 10px 30px rgba(0,0,0,0.5);
-z-index:1000;
-animation:fadeIn 0.2s ease;
-}
-
-@keyframes fadeIn{
-from{opacity:0; transform:translateY(-10px);}
-to{opacity:1; transform:translateY(0);}
-}
-
-  .menu-movil a{
-display:block;
-margin:12px 0;
-font-size:16px;
-text-align:center; 
-color:var(color-texto);
-}
-
-.foto-container{
-  position:relative;
-  width:140px;
-  height:140px;
-  margin:auto;
-  cursor:pointer;
-  border-radius:50%;
-  overflow:hidden; 
-  margin-bottom:10px;
-  border:3px solid var(--color-secundario);
-box-shadow:0 0 15px var(--color-secundario);
-}
-
-.overlay{
-  position:absolute;
-  top:0;
-  left:0;
-  width:100%;
-  height:100%;
-  border-radius:50%;
-  background:rgba(0,0,0,0.6);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:30px;
-  opacity:0;
-  transition:0.3s;
-  z-index:2;
-}
-
-.foto-container:hover .overlay{
-  opacity:1;
-}
-
-.eliminar-btn{
-  width:auto;
-  padding:6px 14px;
-  font-size:12px;
-  border-radius:20px;
-  display:block;
-  margin:8px auto 0;
-  background:var(--color-acento);
-}
-
-#formPassword{
-  width:100%;
-  display:flex;
-  flex-direction:column;
-  gap:10px;
-}
-
-.olvide-pass{
-  font-size:12px;
-  color: var(--color-secundario);
-  cursor:pointer;
-  transition:0.3s;
-}
-
-.olvide-pass:hover{
-  color: var(--color-acento);
-  text-decoration:underline;
-}
-
-@media (max-width:768px){
-
-  .perfil{
-    width:85%;
-  }
-
-.menu{
-display:none;
-}
-
-.menu-btn{
-display:block;
-}
-
-.logo img{
-height:45px;
-}
-
-.menu-movil{
-  display:none;
-  opacity:0;
-  transition:0.3s;
-}
-
-.menu-movil.activo{
-  display:block;
-  opacity:1;
-}
-
-}
-
-
-</style>
 </head>
 
 <body>
 
-<div class="navbar">
-
-  <!-- BOTÓN HAMBURGUESA -->
-  <div class="menu-btn" onclick="toggleMenu()">☰</div>
-
-  <!-- LOGO -->
-  <div class="logo">
-    <img src="logo.png">
-  </div>
-
-  <!-- MENÚ NORMAL -->
-  <div class="menu">
-    <a href="index.html">Home</a>
-    <a href="sensify.html">Sensify</a>
-    <a href="contacto.html">Contáctenos</a>
-  </div>
-
-</div> 
-
-<!-- MENÚ MÓVIL -->
-<div class="menu-movil" id="menuMovil">
-  <a href="index.html">Home</a>
-  <a href="sensify.html">Sensify</a>
-  <a href="contacto.html">Contáctenos</a>
-  <hr>
-  <div id="zonaUsuarioMovil"></div>
-</div>
-
 <div class="perfil">
 
-<!-- FOTO -->
-<div class="foto-container" onclick="cambiarFoto()">
-  <img id="fotoPerfil" class="foto" src="user.png">
-  <div class="overlay">
-    📷
-  </div>
+    <!-- VOLVER -->
+
+    <div class="volver">
+
+        <button
+            type="button"
+            onclick="volverPanel()">
+
+            ← Volver al panel
+
+        </button>
+
+    </div>
+
+    <!-- FOTO -->
+
+    <div
+        class="foto-container"
+        onclick="cambiarFoto()">
+
+        <img
+            id="fotoPerfil"
+            class="foto"
+            src="img/user.png">
+
+        <div class="overlay">
+            📷
+        </div>
+
+    </div>
+
+    <button
+        id="btnEliminarFoto"
+        class="secundario eliminar-btn"
+        onclick="eliminarFoto()">
+
+        Eliminar foto
+
+    </button>
+
+    <input
+        id="inputFoto"
+        type="file"
+        accept="image/*"
+        onchange="subirFoto(event)">
+
+    <!-- NOMBRE -->
+
+    <h2 id="nombreUsuario">
+        Usuario
+    </h2>
+
+    <!-- DATOS -->
+
+    <input
+        id="nombre"
+        class="campo"
+        type="text"
+        placeholder="Nombre">
+
+    <input
+        id="apellido"
+        class="campo"
+        type="text"
+        placeholder="Apellido">
+
+    <input
+        id="correo"
+        class="campo"
+        type="email"
+        placeholder="Correo electrónico">
+
+    <!-- CONTRASEÑA -->
+
+    <button
+        type="button"
+        onclick="togglePassword()">
+
+        Cambiar contraseña
+
+    </button>
+
+    <div
+        id="formPassword"
+        style="display:none;">
+
+        <input
+            id="passActual"
+            class="campo"
+            type="password"
+            placeholder="Contraseña actual">
+
+        <div style="text-align:left;">
+
+            <span
+                class="olvide-pass"
+                onclick="olvido()">
+
+                ¿Olvidaste tu contraseña?
+
+            </span>
+
+        </div>
+
+        <input
+            id="passNueva"
+            class="campo"
+            type="password"
+            placeholder="Nueva contraseña">
+
+        <input
+            id="passConfirmar"
+            class="campo"
+            type="password"
+            placeholder="Confirmar contraseña">
+
+        <button
+            type="button"
+            onclick="guardarPassword()">
+
+            Guardar nueva contraseña
+
+        </button>
+
+    </div>
+
+    <!-- GUARDAR -->
+
+    <button
+        type="button"
+        onclick="guardarPerfil()">
+
+        Guardar cambios
+
+    </button>
+
+    <!-- MENSAJES -->
+
+    <div
+        id="mensaje"
+        class="mensaje">
+
+    </div>
+
+    <!-- CERRAR SESIÓN -->
+
+    <button
+        type="button"
+        class="secundario"
+        onclick="cerrarSesion()">
+
+        Cerrar sesión
+
+    </button>
+
 </div>
-<button id="btnEliminarFoto" class="secundario eliminar-btn" onclick="eliminarFoto()">
-Eliminar foto
-</button>
 
-<input type="file" id="inputFoto" accept="image/*" onchange="subirFoto(event)">
-
-<h2 id="nombreUsuario">Usuario</h2>
-
-<!-- DATOS -->
-<input class="campo" id="nombre" placeholder="Nombre">
-<input class="campo" id="apellido" placeholder="Apellido">
-<input class="campo" id="correo" placeholder="Correo">
-<input class="campo" id="password" type="password" placeholder="Contraseña">
-
-<!-- CAMBIAR CONTRASEÑA -->
-<button onclick="togglePassword()">Cambiar contraseña</button>
-
-<div id="formPassword" style="display:none;">
-
-  <input class="campo" id="passActual" type="password" placeholder="Contraseña actual">
-
-  <div style="text-align:left; margin-top:-5px;">
-    <span onclick="olvido()" class="olvide-pass">
-  ¿Olvidaste tu contraseña?
-</span>
-  </div>
-
-  <input class="campo" id="passNueva" type="password" placeholder="Nueva contraseña">
-
-  <input class="campo" id="passConfirmar" type="password" placeholder="Confirmar contraseña">
-
-  <button onclick="guardarPassword()">Guardar nueva contraseña</button>
-
-</div>
-
- <button onclick="guardarPerfil()">
-Guardar cambios
-</button>
-
-<!-- CERRAR SESIÓN -->
-<button class="secundario" onclick="logout()">
-Cerrar sesión
-</button>
-
-</div>
-
-<div id="menuBotonBajo"></div>
-
-<script>
-
-let usuario = JSON.parse(localStorage.getItem("usuario")) || {}
-let correoOriginal = usuario.correo
-
-function cargarPerfil(){
-
-if(!usuario){
-  window.location = "login.html"
-  return
-}
-
-document.getElementById("nombreUsuario").innerText = usuario.nombre
-
-document.getElementById("nombre").value = usuario.nombre || ""
-document.getElementById("apellido").value = usuario.apellido || ""
-document.getElementById("correo").value = usuario.correo || ""
-document.getElementById("password").value = usuario.password || ""
-
-}
-
-async function guardarPerfil(){
-
-usuario.nombre = document.getElementById("nombre").value
-usuario.apellido = document.getElementById("apellido").value
-usuario.correo = document.getElementById("correo").value
-usuario.password = document.getElementById("password").value
-
-try{
-
-let res = await fetch("/actualizar-usuario", {
-  method:"POST",
-  headers:{
-    "Content-Type":"application/json"
-  },
-  body: JSON.stringify({
-  viejoCorreo: correoOriginal,
-  nombre: usuario.nombre,
-  apellido: usuario.apellido,
-  correo: usuario.correo,
-  password: usuario.password
-})
-})
-
-let data = await res.json()
-
-if(data.ok){
-  localStorage.setItem("usuario", JSON.stringify(usuario))
-  
-  correoOriginal = usuario.correo
-}else{
-  alert(data.mensaje || "Error al guardar")
-}
-
-}catch(e){
-console.log(e)
-alert("Error de conexión")
-}
-
-if(usuario.foto){
-  document.getElementById("fotoPerfil").src = usuario.foto
-}
-
-if(usuario.foto){
-  document.getElementById("btnEliminarFoto").style.display = "block"
-}
-
-
-cargarPerfil()
-}
-
-function toggleMenu(){
-  let menu = document.getElementById("menuMovil")
-  menu.classList.toggle("activo")
-}
-
-document.querySelectorAll("#menuMovil a").forEach(link=>{
-  link.addEventListener("click", ()=>{
-    document.getElementById("menuMovil").classList.remove("activo")
-  })
-})
-
-function logout(){
-
-// borrar sesión
-localStorage.removeItem("usuario")
-
-// redirigir
-window.location.href = "index.html"
-
-}
-
-/* FOTO */
-function cambiarFoto(){
-  document.getElementById("inputFoto").click()
-}
-
-async function eliminarFoto(){
-
-try{
-
-let res = await fetch("/eliminar-foto",{
-  method:"POST",
-  headers:{"Content-Type":"application/json"},
-  body: JSON.stringify({ correo: usuario.correo })
-})
-
-let data = await res.json()
-
-if(data.ok){
-
-  usuario.foto = null
-  localStorage.setItem("usuario", JSON.stringify(usuario))
-
-  document.getElementById("fotoPerfil").src = "user.png"
-  document.getElementById("btnEliminarFoto").style.display = "none"
-
-}else{
-  alert("Error eliminando foto")
-}
-
-}catch(e){
-console.log(e)
-alert("Error de conexión")
-}
-}
-
-async function subirFoto(e){
-  let file = e.target.files[0]
-  if(!file) return
-
-  let formData = new FormData()
-  formData.append("foto", file)
-  formData.append("correo", usuario.correo)
-
-  try{
-
-    let res = await fetch("/subir-foto",{
-      method:"POST",
-      body: formData
-    })
-
-    let data = await res.json()
-
-    if(data.ok){
-
-      usuario.foto = data.foto
-      localStorage.setItem("usuario", JSON.stringify(usuario))
-
-      document.getElementById("fotoPerfil").src = data.foto
-
-      document.getElementById("btnEliminarFoto").style.display = "block"
-
-    }else{
-      alert("Error subiendo foto")
-    }
-
-  }catch(e){
-    console.log(e)
-    alert("Error de conexión")
-  }
-}
-
-/* CONTRASEÑA */
-function togglePassword(){
-
-let form = document.getElementById("formPassword")
-
-if(form.style.display === "none"){
-  form.style.display = "block"
-}else{
-  form.style.display = "none"
-}
-
-}
-
-function guardarPassword(){
-
-let actual = document.getElementById("passActual").value
-let nueva = document.getElementById("passNueva").value
-let confirmar = document.getElementById("passConfirmar").value
-
-if(!actual || !nueva || !confirmar){
-  alert("Completa todos los campos")
-  return
-}
-
-if(actual !== usuario.password){
-  alert("Contraseña actual incorrecta")
-  return
-}
-
-if(nueva !== confirmar){
-  alert("Las contraseñas no coinciden")
-  return
-}
-
-usuario.password = nueva
-localStorage.setItem("usuario", JSON.stringify(usuario))
-
-alert("Contraseña actualizada 💜")
-
-document.getElementById("formPassword").style.display = "none"
-
-document.getElementById("passActual").value = ""
-document.getElementById("passNueva").value = ""
-document.getElementById("passConfirmar").value = ""
-
-}
-
-function olvido(){
-  window.location = "recuperar.html"
-}
-
-async function aplicarColores(){
-
-let colores = await fetch("/colores").then(r=>r.json())
-
-let root = document.documentElement
-
-root.style.setProperty("--color-principal", colores.principal)
-root.style.setProperty("--color-secundario", colores.secundario)
-root.style.setProperty("--color-acento", colores.acento)
-root.style.setProperty("--color-texto", colores.texto)
-root.style.setProperty("--color-card", colores.card)
-
-}
-
-window.onload = () => {
-  cargarPerfil()
-  aplicarColores()
-}
-
-fetch("menubotonbajo.html")
-.then(r=>r.text())
-.then(data=>{
-
-let contenedor =
-document.getElementById(
-"menuBotonBajo"
-)
-
-contenedor.innerHTML = data
-
-/* EJECUTAR SCRIPTS */
-
-contenedor
-.querySelectorAll("script")
-.forEach(script=>{
-
-let nuevo =
-document.createElement("script")
-
-if(script.src){
-nuevo.src = script.src
-}else{
-nuevo.textContent =
-script.textContent
-}
-
-document.body.appendChild(nuevo)
-
-})
-
-})
-
-</script>
+<script src="js/utils.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/perfil.js"></script>
 
 </body>
+
 </html>

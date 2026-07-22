@@ -1,0 +1,183 @@
+:root{
+    --color-principal:#0F172A;
+    --color-secundario:#2563EB;
+    --color-acento:#38BDF8;
+    --color-texto:#F8FAFC;
+    --color-card:#1E293B;
+}
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+    font-family:'Poppins',sans-serif;
+}
+
+body{
+    background:linear-gradient(180deg,var(--color-principal),#000);
+    color:var(--color-texto);
+    min-height:100vh;
+}
+
+/* CONTENEDOR */
+
+.perfil{
+    max-width:430px;
+    width:90%;
+    margin:40px auto;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:14px;
+}
+
+/* VOLVER */
+
+.volver{
+    width:100%;
+    display:flex;
+    justify-content:flex-start;
+    margin-bottom:10px;
+}
+
+.volver button{
+    width:auto;
+    padding:10px 18px;
+}
+
+/* FOTO */
+
+.foto-container{
+    position:relative;
+    width:140px;
+    height:140px;
+    cursor:pointer;
+    border-radius:50%;
+    overflow:hidden;
+    border:3px solid var(--color-secundario);
+    box-shadow:0 0 15px var(--color-secundario);
+}
+
+.foto{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+
+.overlay{
+    position:absolute;
+    inset:0;
+    background:rgba(0,0,0,.55);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    opacity:0;
+    transition:.25s;
+    font-size:30px;
+}
+
+.foto-container:hover .overlay{
+    opacity:1;
+}
+
+#inputFoto{
+    display:none;
+}
+
+.eliminar-btn{
+    width:auto;
+    padding:8px 16px;
+    border-radius:20px;
+    font-size:13px;
+}
+
+/* TITULO */
+
+#nombreUsuario{
+    margin-top:8px;
+    margin-bottom:10px;
+    font-size:28px;
+}
+
+/* INPUTS */
+
+.campo{
+    width:100%;
+    padding:15px;
+    border:none;
+    border-radius:14px;
+    background:var(--color-card);
+    color:var(--color-texto);
+    outline:none;
+    font-size:16px;
+}
+
+.campo:focus{
+    box-shadow:0 0 0 2px var(--color-secundario);
+}
+
+/* BOTONES */
+
+button{
+    width:100%;
+    padding:14px;
+    border:none;
+    border-radius:14px;
+    cursor:pointer;
+    font-size:17px;
+    font-weight:600;
+    color:var(--color-texto);
+    background:linear-gradient(
+        90deg,
+        var(--color-secundario),
+        var(--color-acento)
+    );
+}
+
+button:hover{
+    transform:scale(1.02);
+}
+
+.secundario{
+    background:var(--color-acento);
+}
+
+/* CAMBIAR CONTRASEÑA */
+
+#formPassword{
+    width:100%;
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+}
+
+.olvide-pass{
+    font-size:13px;
+    color:var(--color-secundario);
+    cursor:pointer;
+}
+
+.olvide-pass:hover{
+    text-decoration:underline;
+    color:var(--color-acento);
+}
+
+/* RESPONSIVE */
+
+@media(max-width:768px){
+
+    .perfil{
+        width:92%;
+        margin:30px auto;
+    }
+
+    .foto-container{
+        width:120px;
+        height:120px;
+    }
+
+    #nombreUsuario{
+        font-size:24px;
+    }
+
+}
