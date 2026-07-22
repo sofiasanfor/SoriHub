@@ -43,6 +43,8 @@ body{
 .volver button{
     width:auto;
     padding:10px 18px;
+    border-radius:30px;
+    font-size:15px;
 }
 
 /* FOTO */

@@ -134,6 +134,64 @@ const token = jwt.sign(
     }
 });
 
+// ACTUALIZAR PERFIL
+router.post(
+    "/actualizar",
+    verificarToken,
+    async (req, res) => {
+        try {
+            const usuario = await Usuario.findById(req.usuario.id);
+
+            if (!usuario) {
+                return res.json({
+                    ok: false,
+                    mensaje: "usuario no encontrado"
+                });
+            }
+            const nombre = req.body.nombre.trim();
+            const apellido = req.body.apellido.trim();
+            const correo = req.body.correo.trim().toLowerCase();
+            // Verificar si el correo ya pertenece a otro usuario
+            const existe = await Usuario.findOne({
+                correo,
+                _id: { $ne: usuario._id }
+            });
+            if (existe) {
+                return res.json({
+                    ok: false,
+                    mensaje: "correo existente"
+                });
+            }
+            usuario.nombre = nombre;
+            usuario.apellido = apellido;
+            usuario.correo = correo;
+
+            await usuario.save();
+            res.json({
+                ok: true,
+                mensaje: "perfil actualizado",
+                usuario: {
+                    _id: usuario._id,
+                    nombre: usuario.nombre,
+                    apellido: usuario.apellido,
+                    correo: usuario.correo,
+                    fotoPerfil: usuario.fotoPerfil,
+                    rol: usuario.rol,
+                    estado: usuario.estado,
+                    fechaRegistro: usuario.fechaRegistro,
+                    ultimoAcceso: usuario.ultimoAcceso
+                }
+            });
+        } catch (error) {
+            console.log(error);
+            res.status(500).json({
+                ok: false,
+                mensaje: "error"
+            });
+        }
+    }
+);
+
 // VERIFICAR SESIÓN
 router.get( "/sesion", verificarToken, async (req, res) => {
 

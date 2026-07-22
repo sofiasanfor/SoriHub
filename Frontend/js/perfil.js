@@ -48,7 +48,6 @@ function volverPanel() {
 async function guardarPerfil() {
 
     const datos = {
-        viejoCorreo: correoOriginal,
         nombre: document.getElementById("nombre").value.trim(),
         apellido: document.getElementById("apellido").value.trim(),
         correo: document.getElementById("correo").value.trim().toLowerCase()
@@ -56,10 +55,11 @@ async function guardarPerfil() {
 
     try {
 
-        const res = await fetch("/actualizar-usuario", {
+        const res = await fetch("/auth/actualizar", {
             method: "POST",
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + obtenerToken()
             },
             body: JSON.stringify(datos)
         });
@@ -73,16 +73,12 @@ async function guardarPerfil() {
             return;
         }
 
-        usuario.nombre = datos.nombre;
-        usuario.apellido = datos.apellido;
-        usuario.correo = datos.correo;
+       guardarSesion(
+    obtenerToken(),
+    data.usuario
+);
 
-        correoOriginal = datos.correo;
-
-        guardarSesion(
-            obtenerToken(),
-            usuario
-        );
+usuario = data.usuario;
 
         mostrarMensaje(
             "Perfil actualizado correctamente.",
