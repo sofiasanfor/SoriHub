@@ -746,8 +746,14 @@ if(usuario){
   }
 
 }
-if(!usuario || usuario.rol !== "admin"){
-window.location="index.html"
+if (
+    !usuario ||
+    (
+        usuario.rol !== "administrador" &&
+        usuario.rol !== "superadministrador"
+    )
+) {
+    window.location = "index.html";
 }
 
 function irPerfil(){
