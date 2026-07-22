@@ -74,9 +74,9 @@ async function guardarPerfil() {
         }
 
        guardarSesion(
-    obtenerToken(),
-    data.usuario
-);
+        obtenerToken(),
+         data.usuario
+        );
 
 usuario = data.usuario;
 
