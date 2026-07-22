@@ -1,6 +1,6 @@
 window.onload = function () {
     if (haySesion()) {
-        window.location.href = "admin.html";
+        window.location.href = "registro.html";
         return;
     }
     document.getElementById("nombre").focus();
